@@ -2,41 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Excellence Academy School Website Design System
+Royal Blue (#1E3A8A) and Gold (#F59E0B) brand colors
+Typography: Poppins (headings) and Inter (body)
 */
 
 @layer base {
   :root {
+    /* Brand Colors */
+    --royal-blue: 220 75% 32%;
+    --gold: 44 96% 52%;
+    --gold-light: 44 90% 85%;
+    --gold-dark: 44 96% 42%;
+    
+    /* Background & Surface */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 220 15% 15%;
+    --surface: 0 0% 98%;
+    --surface-elevated: 0 0% 100%;
+    
+    /* Primary (Royal Blue) */
+    --primary: 220 75% 32%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 220 60% 50%;
+    --primary-dark: 220 85% 25%;
+    
+    /* Secondary (Gold) */
+    --secondary: 44 96% 52%;
+    --secondary-foreground: 220 15% 15%;
+    --secondary-light: 44 90% 85%;
+    --secondary-dark: 44 96% 42%;
+    
+    /* Accent & Supporting */
+    --accent: 220 60% 96%;
+    --accent-foreground: 220 15% 15%;
+    --muted: 220 15% 96%;
+    --muted-foreground: 220 10% 45%;
+    
+    /* Interactive */
+    --border: 220 15% 90%;
+    --input: 220 15% 95%;
+    --ring: 220 75% 32%;
+    
+    /* Semantic */
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 44 96% 52%;
+    --warning-foreground: 220 15% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--royal-blue)), hsl(var(--primary-light)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-dark)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--royal-blue)), hsl(var(--primary-light)) 50%, hsl(var(--gold)) 100%);
+    
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(var(--royal-blue) / 0.1);
+    --shadow-medium: 0 4px 16px -4px hsl(var(--royal-blue) / 0.15);
+    --shadow-large: 0 8px 32px -8px hsl(var(--royal-blue) / 0.2);
+    --shadow-glow: 0 0 40px hsl(var(--gold) / 0.3);
+    
+    /* Card & Layout */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 220 15% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +133,71 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-body;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-snug;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl leading-snug;
+  }
+}
+
+@layer components {
+  /* Hero Section */
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  /* Card Styles */
+  .card-elevated {
+    @apply bg-card rounded-2xl shadow-[var(--shadow-medium)] border border-border/50;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-[var(--shadow-large)] hover:-translate-y-1;
+  }
+  
+  /* Button Glow Effect */
+  .btn-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* Text Gradients */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .text-gradient-secondary {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Animations */
+  .animate-fade-in-up {
+    @apply animate-in slide-in-from-bottom-4 fade-in duration-700;
+  }
+  
+  .animate-stagger {
+    animation-delay: var(--animation-delay, 0ms);
   }
 }
