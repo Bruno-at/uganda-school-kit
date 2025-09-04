@@ -174,8 +174,8 @@ const Parents = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Pay School Fees</h3>
               <p className="text-sm text-muted-foreground mb-4">Secure online payment platform</p>
-              <Button variant="outline" size="sm" className="w-full">
-                Pay Now
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <Link to="/fees">Pay Now</Link>
               </Button>
             </Card>
 
@@ -187,8 +187,8 @@ const Parents = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">School Calendar</h3>
               <p className="text-sm text-muted-foreground mb-4">View important dates and events</p>
-              <Button variant="outline" size="sm" className="w-full">
-                View Calendar
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <Link to="/parents/downloads">View Calendar</Link>
               </Button>
             </Card>
 

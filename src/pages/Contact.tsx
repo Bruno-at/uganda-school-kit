@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -279,8 +280,8 @@ const Contact = () => {
                       <h4 className="font-semibold">Schedule a Campus Visit</h4>
                       <p className="text-sm text-muted-foreground">Book a personalized tour of our facilities</p>
                     </div>
-                    <Button variant="outline" size="sm">
-                      Book Now
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to="/contact">Book Now</Link>
                     </Button>
                   </div>
                 </Card>

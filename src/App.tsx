@@ -15,6 +15,10 @@ import Portal from "./pages/Portal";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import UniformGuide from "./pages/UniformGuide";
+import ParentNotices from "./pages/ParentNotices";
+import ParentDownloads from "./pages/ParentDownloads";
+import ParentSupport from "./pages/ParentSupport";
+import FeeStructure from "./pages/FeeStructure";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +42,10 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/uniforms" element={<UniformGuide />} />
+          <Route path="/parents/notices" element={<ParentNotices />} />
+          <Route path="/parents/downloads" element={<ParentDownloads />} />
+          <Route path="/parents/support" element={<ParentSupport />} />
+          <Route path="/fees" element={<FeeStructure />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
