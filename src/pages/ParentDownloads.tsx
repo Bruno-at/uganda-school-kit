@@ -212,9 +212,11 @@ const ParentDownloads = () => {
                   </span>
                 </div>
                 
-                <Button variant="outline" size="sm" className="w-full">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download PDF
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <a href={`/downloads/${download.title.toLowerCase().replace(/\s+/g, '-')}.pdf`} download>
+                    <Download className="h-4 w-4 mr-2" />
+                    Download PDF
+                  </a>
                 </Button>
               </Card>
             ))}

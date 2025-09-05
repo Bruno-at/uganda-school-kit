@@ -19,6 +19,10 @@ import ParentNotices from "./pages/ParentNotices";
 import ParentDownloads from "./pages/ParentDownloads";
 import ParentSupport from "./pages/ParentSupport";
 import FeeStructure from "./pages/FeeStructure";
+import PTA from "./pages/PTA";
+import BookVisit from "./pages/BookVisit";
+import VirtualTour from "./pages/VirtualTour";
+import NewsArticle from "./pages/NewsArticle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +50,10 @@ const App = () => (
           <Route path="/parents/downloads" element={<ParentDownloads />} />
           <Route path="/parents/support" element={<ParentSupport />} />
           <Route path="/fees" element={<FeeStructure />} />
+          <Route path="/pta" element={<PTA />} />
+          <Route path="/book-visit" element={<BookVisit />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
+          <Route path="/news/:id" element={<NewsArticle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

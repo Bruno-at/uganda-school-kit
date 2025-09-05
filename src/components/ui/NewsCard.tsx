@@ -61,7 +61,7 @@ const NewsCard: React.FC<NewsCardProps> = ({
         </div>
         
         <Button variant="ghost" size="sm" className="group/btn p-0 h-auto hover:bg-transparent" asChild>
-          <Link to={href}>
+          <Link to={`/news/${href}`}>
             Read More
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
           </Link>

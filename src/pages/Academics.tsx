@@ -218,9 +218,11 @@ const Academics = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Class Timetables</h3>
               <p className="text-sm text-muted-foreground mb-4">Download current term timetables for all classes</p>
-              <Button variant="outline" size="sm" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <a href="/downloads/timetables.pdf" download>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </a>
               </Button>
             </Card>
 
@@ -232,9 +234,11 @@ const Academics = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Curriculum Guide</h3>
               <p className="text-sm text-muted-foreground mb-4">Comprehensive guide to our academic programs</p>
-              <Button variant="outline" size="sm" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <a href="/downloads/curriculum.pdf" download>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </a>
               </Button>
             </Card>
 
@@ -246,9 +250,11 @@ const Academics = () => {
               </div>
               <h3 className="text-lg font-semibold mb-2">Assessment Policy</h3>
               <p className="text-sm text-muted-foreground mb-4">Learn about our evaluation and grading system</p>
-              <Button variant="outline" size="sm" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Download
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <a href="/downloads/assessment-policy.pdf" download>
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </a>
               </Button>
             </Card>
           </div>

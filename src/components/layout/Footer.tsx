@@ -85,6 +85,7 @@ const Footer = () => {
                 { href: '/portal', label: 'Parent Portal' },
                 { href: '/fees', label: 'Fee Structure' },
                 { href: '/uniforms', label: 'Uniform Guide' },
+                { href: '/pta', label: 'PTA' },
               ].map((link) => (
                 <Link
                   key={link.href}
