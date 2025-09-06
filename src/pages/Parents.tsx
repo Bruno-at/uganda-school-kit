@@ -343,9 +343,11 @@ const Parents = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" size="lg" className="border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10">
-              <Users className="mr-2 h-5 w-5" />
-              Join PTA
+            <Button variant="outline" size="lg" className="border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10" asChild>
+              <Link to="/pta">
+                <Users className="mr-2 h-5 w-5" />
+                Join PTA
+              </Link>
             </Button>
             <Button variant="outline" size="lg" className="border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10" asChild>
               <Link to="/contact">
