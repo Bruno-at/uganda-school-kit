@@ -28,12 +28,14 @@ const VirtualTour = () => {
   const [currentStop, setCurrentStop] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
 
   const tourStops = [
     {
       id: 1,
       title: "Main Entrance & Reception",
       description: "Welcome to our beautiful main entrance. Our reception area is staffed with friendly personnel ready to assist visitors and ensure campus security.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "2:30",
       highlights: ["Modern security system", "Visitor management", "Information displays"]
@@ -42,6 +44,7 @@ const VirtualTour = () => {
       id: 2,
       title: "Primary Classrooms",
       description: "Step into our bright, spacious primary classrooms designed for optimal learning. Each room features modern technology and flexible seating arrangements.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "3:45",
       highlights: ["Interactive whiteboards", "Learning zones", "Natural lighting"]
@@ -50,6 +53,7 @@ const VirtualTour = () => {
       id: 3,
       title: "Science Laboratory",
       description: "Explore our state-of-the-art science laboratory where students conduct hands-on experiments and discover the wonders of science.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "4:15",
       highlights: ["Modern equipment", "Safety features", "Research stations"]
@@ -58,6 +62,7 @@ const VirtualTour = () => {
       id: 4,
       title: "Library & Learning Center",
       description: "Our comprehensive library houses thousands of books, digital resources, and quiet study areas for independent learning.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "3:20",
       highlights: ["Digital catalog", "Study rooms", "Reading corners"]
@@ -66,6 +71,7 @@ const VirtualTour = () => {
       id: 5,
       title: "Sports Facilities",
       description: "Tour our excellent sports facilities including the gymnasium, outdoor courts, and playing fields for various athletic activities.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "5:00",
       highlights: ["Full-size gymnasium", "Outdoor courts", "Athletic equipment"]
@@ -74,6 +80,7 @@ const VirtualTour = () => {
       id: 6,
       title: "Art & Music Rooms",
       description: "Visit our creative spaces where students explore artistic expression through visual arts, music, and performance.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "3:30",
       highlights: ["Art studios", "Music practice rooms", "Performance space"]
@@ -82,6 +89,7 @@ const VirtualTour = () => {
       id: 7,
       title: "Cafeteria & Kitchen",
       description: "See our modern cafeteria and commercial kitchen where healthy, nutritious meals are prepared daily for our students.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "2:45",
       highlights: ["Commercial kitchen", "Healthy menus", "Spacious dining"]
@@ -90,6 +98,7 @@ const VirtualTour = () => {
       id: 8,
       title: "Playground & Outdoor Areas",
       description: "Explore our safe, fun outdoor spaces including playgrounds, gardens, and recreational areas for student activities.",
+      video: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
       image: "/api/placeholder/800/500",
       duration: "4:00",
       highlights: ["Safety equipment", "Age-appropriate zones", "Garden areas"]
@@ -98,11 +107,47 @@ const VirtualTour = () => {
 
   const nextStop = () => {
     setCurrentStop((prev) => (prev + 1) % tourStops.length);
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   };
 
   const previousStop = () => {
     setCurrentStop((prev) => (prev - 1 + tourStops.length) % tourStops.length);
+    setIsPlaying(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   };
+
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const handleVideoClick = () => {
+    togglePlayPause();
+  };
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [currentStop, isMuted]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -197,23 +242,31 @@ const VirtualTour = () => {
             <Card className="overflow-hidden">
               {/* Video Player Area */}
               <div className="relative bg-black aspect-video">
-                <img
-                  src={tourStops[currentStop].image}
-                  alt={tourStops[currentStop].title}
-                  className="w-full h-full object-cover"
+                <video
+                  ref={videoRef}
+                  src={tourStops[currentStop].video}
+                  poster={tourStops[currentStop].image}
+                  className="w-full h-full object-cover cursor-pointer"
+                  onClick={handleVideoClick}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                  muted={isMuted}
                 />
                 
-                {/* Play/Pause Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Button
-                    size="lg"
-                    variant="secondary"
-                    className="h-16 w-16 rounded-full"
-                    onClick={() => setIsPlaying(!isPlaying)}
-                  >
-                    {isPlaying ? <Pause className="h-8 w-8" /> : <Play className="h-8 w-8" />}
-                  </Button>
-                </div>
+                {/* Play/Pause Overlay - only show when paused */}
+                {!isPlaying && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      className="h-16 w-16 rounded-full"
+                      onClick={togglePlayPause}
+                    >
+                      <Play className="h-8 w-8" />
+                    </Button>
+                  </div>
+                )}
 
                 {/* Controls Bar */}
                 <div className="absolute bottom-0 left-0 right-0 bg-black/80 p-4">
@@ -223,7 +276,7 @@ const VirtualTour = () => {
                         size="sm"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
-                        onClick={() => setIsPlaying(!isPlaying)}
+                        onClick={togglePlayPause}
                       >
                         {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                       </Button>
@@ -231,7 +284,7 @@ const VirtualTour = () => {
                         size="sm"
                         variant="ghost"
                         className="text-white hover:bg-white/20"
-                        onClick={() => setIsMuted(!isMuted)}
+                        onClick={toggleMute}
                       >
                         {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                       </Button>
