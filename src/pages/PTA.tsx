@@ -29,23 +29,40 @@ const PTA = () => {
       date: "January 15, 2025",
       time: "7:00 PM",
       location: "School Auditorium",
-      description: "Discuss upcoming fundraising events and school improvements"
+      description: "Discuss upcoming fundraising events and school improvements",
+      startDate: "20250115T190000",
+      endDate: "20250115T200000"
     },
     {
       title: "Parent-Teacher Conference",
       date: "January 22, 2025", 
       time: "3:00 PM - 8:00 PM",
       location: "Various Classrooms",
-      description: "Individual meetings to discuss student progress"
+      description: "Individual meetings to discuss student progress",
+      startDate: "20250122T150000",
+      endDate: "20250122T200000"
     },
     {
       title: "Spring Fundraiser Planning",
       date: "February 5, 2025",
       time: "6:30 PM",
       location: "Conference Room",
-      description: "Plan our annual spring fundraising event"
+      description: "Plan our annual spring fundraising event",
+      startDate: "20250205T183000",
+      endDate: "20250205T193000"
     }
   ];
+
+  const generateCalendarLink = (event) => {
+    const baseUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE";
+    const params = new URLSearchParams({
+      text: event.title,
+      dates: `${event.startDate}/${event.endDate}`,
+      details: event.description,
+      location: event.location
+    });
+    return `${baseUrl}&${params.toString()}`;
+  };
 
   const initiatives = [
     {
@@ -231,8 +248,10 @@ const PTA = () => {
                   </div>
                 </div>
                 <p className="text-sm text-muted-foreground mb-4">{event.description}</p>
-                <Button variant="outline" size="sm" className="w-full">
-                  Add to Calendar
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <a href={generateCalendarLink(event)} target="_blank" rel="noopener noreferrer">
+                    Add to Calendar
+                  </a>
                 </Button>
               </Card>
             ))}
