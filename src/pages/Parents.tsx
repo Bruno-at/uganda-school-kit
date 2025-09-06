@@ -246,9 +246,11 @@ const Parents = () => {
                         <p className="text-sm text-muted-foreground mb-2">{notice.excerpt}</p>
                         <p className="text-xs text-muted-foreground">{notice.date}</p>
                       </div>
-                      <Button variant="outline" size="sm">
-                        <FileText className="h-4 w-4 mr-2" />
-                        Read More
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/parents/notices">
+                          <FileText className="h-4 w-4 mr-2" />
+                          Read More
+                        </Link>
                       </Button>
                     </div>
                   </Card>
