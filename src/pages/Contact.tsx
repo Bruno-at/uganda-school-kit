@@ -258,9 +258,12 @@ const Contact = () => {
                     variant="outline" 
                     size="sm" 
                     className="absolute bottom-4 right-4"
+                    asChild
                   >
-                    <Navigation className="h-4 w-4 mr-2" />
-                    Get Directions
+                    <a href="https://maps.google.com/?q=Kyanja+Road,+Kampala,+Uganda" target="_blank" rel="noopener noreferrer">
+                      <Navigation className="h-4 w-4 mr-2" />
+                      Get Directions
+                    </a>
                   </Button>
                 </div>
                 <p className="text-sm text-muted-foreground mt-4">
@@ -281,7 +284,7 @@ const Contact = () => {
                       <p className="text-sm text-muted-foreground">Book a personalized tour of our facilities</p>
                     </div>
                     <Button variant="outline" size="sm" asChild>
-                      <Link to="/contact">Book Now</Link>
+                      <Link to="/book-visit">Book Now</Link>
                     </Button>
                   </div>
                 </Card>
@@ -295,8 +298,10 @@ const Contact = () => {
                       <h4 className="font-semibold">WhatsApp Quick Chat</h4>
                       <p className="text-sm text-muted-foreground">Get instant answers to your questions</p>
                     </div>
-                    <Button variant="outline" size="sm">
-                      Chat Now
+                    <Button variant="outline" size="sm" asChild>
+                      <a href="https://wa.me/256700123456" target="_blank" rel="noopener noreferrer">
+                        Chat Now
+                      </a>
                     </Button>
                   </div>
                 </Card>
@@ -310,8 +315,8 @@ const Contact = () => {
                       <h4 className="font-semibold">Virtual School Tour</h4>
                       <p className="text-sm text-muted-foreground">Explore our campus from home</p>
                     </div>
-                    <Button variant="outline" size="sm">
-                      Start Tour
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to="/virtual-tour">Start Tour</Link>
                     </Button>
                   </div>
                 </Card>
