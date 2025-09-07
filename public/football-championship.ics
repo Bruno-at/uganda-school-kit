@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Excellence Academy//EN
+BEGIN:VEVENT
+UID:football-2025-01-15@excellenceacademy.ug
+DTSTART:20250115T140000Z
+DTEND:20250115T170000Z
+SUMMARY:Inter-House Football Championship
+DESCRIPTION:Annual football competition between school houses.
+LOCATION:School Sports Ground
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

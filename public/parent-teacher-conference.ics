@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Excellence Academy//EN
+BEGIN:VEVENT
+UID:ptc-2025-01-08@excellenceacademy.ug
+DTSTART:20250108T090000Z
+DTEND:20250108T160000Z
+SUMMARY:Parent-Teacher Conference
+DESCRIPTION:Quarterly progress discussions and academic planning.
+LOCATION:School Main Hall
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

@@ -23,6 +23,7 @@ import PTA from "./pages/PTA";
 import BookVisit from "./pages/BookVisit";
 import VirtualTour from "./pages/VirtualTour";
 import NewsArticle from "./pages/NewsArticle";
+import Calendar from "./pages/Calendar";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/pta" element={<PTA />} />
           <Route path="/book-visit" element={<BookVisit />} />
           <Route path="/virtual-tour" element={<VirtualTour />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/news/:id" element={<NewsArticle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

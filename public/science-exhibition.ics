@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Excellence Academy//EN
+BEGIN:VEVENT
+UID:science-2025-01-22@excellenceacademy.ug
+DTSTART:20250122T100000Z
+DTEND:20250122T150000Z
+SUMMARY:Science Project Exhibition
+DESCRIPTION:Students showcase innovative science projects and experiments.
+LOCATION:Science Laboratories
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR

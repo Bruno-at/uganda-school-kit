@@ -20,19 +20,12 @@ const UniformGuide = () => {
               Complete guidelines for Excellence Academy uniform requirements, ensuring all students 
               maintain the school's professional appearance standards.
             </p>
-            <Button 
-              className="mt-4"
-              onClick={() => {
-                // Create a virtual PDF download
-                const link = document.createElement('a');
-                link.href = 'data:application/pdf;base64,JVBERi0xLjQKJeLjz9MKNyAwIG9iago8PAovVHlwZSAvRm9udERlc2NyaXB0b3IKL0ZvbnROYW1lIC9BcmlhbAovRmxhZ3MgMzIKL0l0YWxpY0FuZ2xlIDAKL0FzY2VudCA5MDUKL0Rlc2NlbnQgLTIxMQovQ2FwSGVpZ2h0IDEwMDAKL0F2Z1dpZHRoIDQ0MwovTWF4V2lkdGggMjY2NQovRm9udFdlaWdodCA0MDAKL1hIZWlnaHQgMjUwCi9TdGVtViA0NAovRm9udEJCb3ggWy02NjUgLTMyNSAyMDAwIDEwMDBdCi9Gb250RmlsZTIgOCAwIFIKPj4KZW5kb2JqCjggMCBvYmoKPDwKL0xlbmd0aDEgNjQ0NAovTGVuZ3RoIDQ2NDEKL0ZpbHRlciAvRmxhdGVEZWNvZGUKPj4Kc3RyZWFtCnicjVgJWBTX9T21qruru6p7g6YXoGmgbRpo2bfGBhJYRQSJ2JLESGJhVWKNmhgTNZrEaBJXJMaFLFozmlGMJk5iZhKNicY1o0li4hJjYhKzJ8bERGPihJl53/+6qqvbbhLHD+C/nHPfO+c85923vPevLwBASgAAALACABoBAMAAFgAAAOAJUAhBAAAAAGAJIABAA1AI4AkgCCAGAAAACBAPANAAcATgBSAM4A3gA8AX4AcgABAIEAQgFGATQDiAIkAEQBRANEAMQCxAHEA8QAJAIkASQDJACkAqQBpAOkAGQCZAFkA2QA5ALkAeQD5AAUAhQBFAMUAJQClAGUC5='; // This is a minimal PDF
-                link.download = 'Excellence_Academy_Uniform_Guide.pdf';
-                link.click();
-              }}
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Download Uniform Guide PDF
-            </Button>
+            <a href="/uniform-guide.pdf" target="_blank" download>
+              <Button className="mt-4">
+                <Download className="h-4 w-4 mr-2" />
+                Download Uniform Guide PDF
+              </Button>
+            </a>
           </div>
 
           <Tabs defaultValue="boys" className="mb-8">

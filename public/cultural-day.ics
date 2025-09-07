@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Excellence Academy//EN
+BEGIN:VEVENT
+UID:cultural-2025-02-05@excellenceacademy.ug
+DTSTART:20250205T080000Z
+DTEND:20250205T180000Z
+SUMMARY:Cultural Day Celebration
+DESCRIPTION:Celebrating Uganda's diverse cultures through music, dance, and food.
+LOCATION:Entire Campus
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+END:VCALENDAR
