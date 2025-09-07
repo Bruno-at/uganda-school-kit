@@ -289,7 +289,19 @@ const News = () => {
                       </div>
                     </div>
                     
-                    <Button variant="outline" size="sm" className="w-full mt-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full mt-4"
+                      onClick={() => {
+                        const startDate = new Date(event.date).toISOString().split('T')[0].replace(/-/g, '');
+                        const startTime = event.time.split(' - ')[0].replace(/:/g, '').replace(' AM', '').replace(' PM', '');
+                        const endTime = event.time.split(' - ')[1]?.replace(/:/g, '').replace(' AM', '').replace(' PM', '') || startTime;
+                        
+                        const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${startDate}T${startTime}00/${startDate}T${endTime}00&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`;
+                        window.open(calendarUrl, '_blank');
+                      }}
+                    >
                       <Calendar className="h-4 w-4 mr-2" />
                       Add to Calendar
                     </Button>
@@ -298,7 +310,13 @@ const News = () => {
               </div>
               
               <div className="text-center">
-                <Button variant="outline" size="lg">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => {
+                    window.open('https://calendar.google.com/calendar/u/0/r', '_blank');
+                  }}
+                >
                   <Calendar className="mr-2 h-5 w-5" />
                   View Full Calendar
                 </Button>
