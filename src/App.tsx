@@ -25,6 +25,7 @@ import VirtualTour from "./pages/VirtualTour";
 import NewsArticle from "./pages/NewsArticle";
 import Calendar from "./pages/Calendar";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/parents" element={<Parents />} />
           <Route path="/news" element={<News />} />
           <Route path="/portal" element={<Portal />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/uniforms" element={<UniformGuide />} />

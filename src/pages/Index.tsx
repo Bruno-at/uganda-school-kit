@@ -31,9 +31,9 @@ const Index = () => {
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 hero-gradient opacity-95"></div>
+        <div className="absolute inset-0 hero-gradient opacity-75"></div>
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
           style={{ backgroundImage: `url(${heroImage})` }}
         ></div>
         
@@ -58,6 +58,11 @@ const Index = () => {
                 <Link to="/portal">
                   Parent Portal
                   <ExternalLink className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+                <Link to="/auth">
+                  Login
                 </Link>
               </Button>
               <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
