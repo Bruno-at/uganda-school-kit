@@ -6,8 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Download,
   GraduationCap,
@@ -93,7 +91,6 @@ const Admissions = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground">
@@ -409,8 +406,6 @@ const Admissions = () => {
           </Card>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

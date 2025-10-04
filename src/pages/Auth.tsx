@@ -6,8 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import { useToast } from "@/hooks/use-toast";
 
 const Auth: React.FC = () => {
@@ -72,7 +70,6 @@ const Auth: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
 
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-xl mx-auto">
@@ -130,8 +127,6 @@ const Auth: React.FC = () => {
           </Card>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

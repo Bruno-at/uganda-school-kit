@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Target,
   Eye,
@@ -74,7 +72,6 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
@@ -250,8 +247,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

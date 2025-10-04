@@ -2,8 +2,6 @@ import React from 'react';
 import { Calendar as CalendarIcon, Clock, MapPin, Users } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 
 const Calendar = () => {
   const events = [
@@ -52,7 +50,6 @@ const Calendar = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
@@ -141,8 +138,6 @@ const Calendar = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

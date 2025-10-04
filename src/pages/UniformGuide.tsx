@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +8,6 @@ import { Button } from '@/components/ui/button';
 const UniformGuide = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       <main className="container mx-auto px-4 py-8 mt-20">
         <div className="max-w-6xl mx-auto">
@@ -341,8 +338,6 @@ const UniformGuide = () => {
           </Card>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 };

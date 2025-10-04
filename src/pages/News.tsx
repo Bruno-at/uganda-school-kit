@@ -6,8 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NewsCard from '@/components/ui/NewsCard';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Search,
   Calendar,
@@ -138,7 +136,6 @@ const News = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
@@ -337,8 +334,6 @@ const News = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

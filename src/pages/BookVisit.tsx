@@ -7,8 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { useToast } from '@/hooks/use-toast';
 import {
   Calendar,
@@ -114,7 +112,6 @@ const BookVisit = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Breadcrumb */}
       <section className="py-4 bg-muted/30">
@@ -393,8 +390,6 @@ const BookVisit = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

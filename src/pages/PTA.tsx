@@ -2,8 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Users,
   Calendar,
@@ -90,7 +88,6 @@ const PTA = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Breadcrumb */}
       <section className="py-4 bg-muted/30">
@@ -318,8 +315,6 @@ const PTA = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

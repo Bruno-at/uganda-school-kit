@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Users,
   Trophy,
@@ -109,7 +107,6 @@ const StudentLife = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground">
@@ -396,8 +393,6 @@ const StudentLife = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

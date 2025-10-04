@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Download,
   Calendar,
@@ -121,7 +119,6 @@ const ParentDownloads = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Breadcrumb */}
       <section className="py-4 bg-muted/30">
@@ -278,8 +275,6 @@ const ParentDownloads = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

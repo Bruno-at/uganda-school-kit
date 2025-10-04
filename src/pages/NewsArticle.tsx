@@ -2,8 +2,6 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Calendar,
   User,
@@ -114,7 +112,6 @@ const NewsArticle = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Breadcrumb */}
       <section className="py-4 bg-muted/30">
@@ -270,8 +267,6 @@ const NewsArticle = () => {
           </div>
         </div>
       </article>
-
-      <Footer />
     </div>
   );
 };

@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { AppLayout } from "@/components/layout/AppLayout";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admissions from "./pages/Admissions";
@@ -31,38 +33,42 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/admissions" element={<Admissions />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/academics" element={<Academics />} />
-          <Route path="/student-life" element={<StudentLife />} />
-          <Route path="/parents" element={<Parents />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/portal" element={<Portal />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/uniforms" element={<UniformGuide />} />
-          <Route path="/parents/notices" element={<ParentNotices />} />
-          <Route path="/parents/downloads" element={<ParentDownloads />} />
-          <Route path="/parents/support" element={<ParentSupport />} />
-          <Route path="/fees" element={<FeeStructure />} />
-          <Route path="/pta" element={<PTA />} />
-          <Route path="/book-visit" element={<BookVisit />} />
-          <Route path="/virtual-tour" element={<VirtualTour />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/news/:id" element={<NewsArticle />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="excellence-academy-theme">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AppLayout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/admissions" element={<Admissions />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/academics" element={<Academics />} />
+              <Route path="/student-life" element={<StudentLife />} />
+              <Route path="/parents" element={<Parents />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/portal" element={<Portal />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/uniforms" element={<UniformGuide />} />
+              <Route path="/parents/notices" element={<ParentNotices />} />
+              <Route path="/parents/downloads" element={<ParentDownloads />} />
+              <Route path="/parents/support" element={<ParentSupport />} />
+              <Route path="/fees" element={<FeeStructure />} />
+              <Route path="/pta" element={<PTA />} />
+              <Route path="/book-visit" element={<BookVisit />} />
+              <Route path="/virtual-tour" element={<VirtualTour />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/news/:id" element={<NewsArticle />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AppLayout>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

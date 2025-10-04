@@ -15,8 +15,6 @@ import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { supabase } from '@/integrations/supabase/client';
 import {
   User,
@@ -207,7 +205,6 @@ const Portal = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
@@ -633,8 +630,6 @@ const Portal = () => {
           )}
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

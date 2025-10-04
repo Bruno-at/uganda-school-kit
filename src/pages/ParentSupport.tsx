@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Phone,
   Mail,
@@ -121,7 +119,6 @@ const ParentSupport = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Breadcrumb */}
       <section className="py-4 bg-muted/30">
@@ -354,8 +351,6 @@ const ParentSupport = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };

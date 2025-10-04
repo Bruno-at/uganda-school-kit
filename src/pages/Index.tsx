@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/ui/StatsCard';
 import NewsCard from '@/components/ui/NewsCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import {
   Users,
   GraduationCap,
@@ -27,7 +25,6 @@ import classroomImage from '@/assets/classroom-scene.jpg';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
@@ -211,8 +208,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
