@@ -24,7 +24,6 @@ import {
   Users,
   Settings,
   BookOpen,
-  Calendar,
   FileText,
   BarChart3,
   Bell,
