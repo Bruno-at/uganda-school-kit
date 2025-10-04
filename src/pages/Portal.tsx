@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { supabase } from '@/integrations/supabase/client';
 import {
   User,
   GraduationCap,
@@ -22,16 +32,59 @@ import {
   ArrowRight,
   ExternalLink,
   Shield,
-  CheckCircle
+  CheckCircle,
+  Calendar as CalendarIcon,
+  UserPlus
 } from 'lucide-react';
+
+const registrationSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+  confirmPassword: z.string(),
+  fullName: z.string().min(2, { message: "Full name is required" }).max(100),
+  phone: z.string().min(10, { message: "Phone number must be at least 10 digits" }).max(15).optional().or(z.literal('')),
+  dateOfBirth: z.date({ required_error: "Date of birth is required" }),
+  address: z.string().max(500).optional().or(z.literal('')),
+  emergencyContact: z.string().max(100).optional().or(z.literal('')),
+  emergencyPhone: z.string().min(10).max(15).optional().or(z.literal('')),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
 
 const Portal = () => {
   const [selectedRole, setSelectedRole] = useState('');
-  const [loginData, setLoginData] = useState({
-    username: '',
-    password: '',
-    rememberMe: false
+  const [user, setUser] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  
+  const form = useForm<z.infer<typeof registrationSchema>>({
+    resolver: zodResolver(registrationSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      fullName: '',
+      phone: '',
+      address: '',
+      emergencyContact: '',
+      emergencyPhone: '',
+    },
   });
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const portalTypes = [
     {
@@ -96,11 +149,59 @@ const Portal = () => {
     }
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempt:', { ...loginData, role: selectedRole });
-    alert(`Login functionality would be implemented for ${selectedRole} portal`);
+  const onSubmitRegistration = async (values: z.infer<typeof registrationSchema>) => {
+    try {
+      // Sign up the user
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/portal`,
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // Create profile
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: data.user.id,
+            full_name: values.fullName,
+            phone: values.phone || null,
+            date_of_birth: format(values.dateOfBirth, 'yyyy-MM-dd'),
+            address: values.address || null,
+            emergency_contact: values.emergencyContact || null,
+            emergency_phone: values.emergencyPhone || null,
+          });
+
+        if (profileError) throw profileError;
+
+        // Create user role
+        const { error: roleError } = await supabase
+          .from('user_roles')
+          .insert({
+            user_id: data.user.id,
+            role: selectedRole as 'student' | 'parent' | 'teacher' | 'admin',
+          });
+
+        if (roleError) throw roleError;
+
+        toast({
+          title: "Registration successful!",
+          description: "Please check your email to verify your account.",
+        });
+
+        form.reset();
+      }
+    } catch (error: any) {
+      toast({
+        title: "Registration failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const selectedPortal = portalTypes.find(portal => portal.role === selectedRole);
@@ -158,8 +259,9 @@ const Portal = () => {
           {selectedPortal && (
             <div className="max-w-6xl mx-auto">
               <Tabs defaultValue="features" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
+                <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto mb-8">
                   <TabsTrigger value="features">Features</TabsTrigger>
+                  <TabsTrigger value="register">Register</TabsTrigger>
                   <TabsTrigger value="login">Login</TabsTrigger>
                 </TabsList>
                 
@@ -185,6 +287,206 @@ const Portal = () => {
                     </div>
                   </Card>
                 </TabsContent>
+
+                <TabsContent value="register">
+                  <Card className="p-8 max-w-2xl mx-auto">
+                    <div className="text-center mb-6">
+                      <div className="flex justify-center mb-4">
+                        <div className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${selectedPortal.color} text-white`}>
+                          <UserPlus className="h-8 w-8" />
+                        </div>
+                      </div>
+                      <h3 className="text-2xl font-bold mb-2">Register for {selectedPortal.title}</h3>
+                      <p className="text-muted-foreground">Create your account to access the portal</p>
+                    </div>
+
+                    <Form {...form}>
+                      <form onSubmit={form.handleSubmit(onSubmitRegistration)} className="space-y-4">
+                        <FormField
+                          control={form.control}
+                          name="fullName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Full Name</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Enter your full name" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email</FormLabel>
+                              <FormControl>
+                                <Input type="email" placeholder="Enter your email" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                  <Input type="password" placeholder="At least 6 characters" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl>
+                                  <Input type="password" placeholder="Confirm password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Phone Number (Optional)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Enter phone number" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="dateOfBirth"
+                            render={({ field }) => (
+                              <FormItem className="flex flex-col">
+                                <FormLabel>Date of Birth</FormLabel>
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <FormControl>
+                                      <Button
+                                        variant="outline"
+                                        className={cn(
+                                          "w-full pl-3 text-left font-normal",
+                                          !field.value && "text-muted-foreground"
+                                        )}
+                                      >
+                                        {field.value ? (
+                                          format(field.value, "PPP")
+                                        ) : (
+                                          <span>Pick a date</span>
+                                        )}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                      </Button>
+                                    </FormControl>
+                                  </PopoverTrigger>
+                                  <PopoverContent className="w-auto p-0" align="start">
+                                    <CalendarComponent
+                                      mode="single"
+                                      selected={field.value}
+                                      onSelect={field.onChange}
+                                      disabled={(date) =>
+                                        date > new Date() || date < new Date("1900-01-01")
+                                      }
+                                      initialFocus
+                                      className={cn("p-3 pointer-events-auto")}
+                                    />
+                                  </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <FormField
+                          control={form.control}
+                          name="address"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Address (Optional)</FormLabel>
+                              <FormControl>
+                                <Textarea placeholder="Enter your address" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="emergencyContact"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Emergency Contact (Optional)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Contact name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="emergencyPhone"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Emergency Phone (Optional)</FormLabel>
+                                <FormControl>
+                                  <Input placeholder="Emergency phone number" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <Button type="submit" className="w-full" size="lg">
+                          <UserPlus className="mr-2 h-5 w-5" />
+                          Register for {selectedPortal.title}
+                        </Button>
+                      </form>
+                    </Form>
+
+                    <div className="mt-6 text-center">
+                      <p className="text-sm text-muted-foreground">
+                        Already have an account?{' '}
+                        <Button 
+                          variant="link" 
+                          className="p-0 h-auto"
+                          onClick={() => {
+                            const loginTab = document.querySelector('[value="login"]') as HTMLElement;
+                            loginTab?.click();
+                          }}
+                        >
+                          Login here
+                        </Button>
+                      </p>
+                    </div>
+                  </Card>
+                </TabsContent>
                 
                 <TabsContent value="login">
                   <div className="grid lg:grid-cols-2 gap-8">
@@ -197,60 +499,35 @@ const Portal = () => {
                           </div>
                         </div>
                         <h3 className="text-2xl font-bold mb-2">Login to {selectedPortal.title}</h3>
-                        <p className="text-muted-foreground">Enter your credentials to access your portal</p>
+                        <p className="text-muted-foreground">Use your registered email to login</p>
                       </div>
                       
-                      <form onSubmit={handleLogin} className="space-y-6">
-                        <div className="space-y-2">
-                          <Label htmlFor="username">Username / Student ID</Label>
-                          <Input
-                            id="username"
-                            value={loginData.username}
-                            onChange={(e) => setLoginData({...loginData, username: e.target.value})}
-                            placeholder="Enter your username or student ID"
-                            required
-                          />
-                        </div>
+                      <div className="space-y-6">
+                        <p className="text-center text-sm text-muted-foreground">
+                          Please use the Auth page to login with your registered credentials.
+                        </p>
                         
-                        <div className="space-y-2">
-                          <Label htmlFor="password">Password</Label>
-                          <Input
-                            id="password"
-                            type="password"
-                            value={loginData.password}
-                            onChange={(e) => setLoginData({...loginData, password: e.target.value})}
-                            placeholder="Enter your password"
-                            required
-                          />
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <label className="flex items-center space-x-2 text-sm">
-                            <input
-                              type="checkbox"
-                              checked={loginData.rememberMe}
-                              onChange={(e) => setLoginData({...loginData, rememberMe: e.target.checked})}
-                              className="rounded border-gray-300"
-                            />
-                            <span>Remember me</span>
-                          </label>
-                          <Button variant="link" size="sm" className="p-0 h-auto">
-                            Forgot password?
-                          </Button>
-                        </div>
-                        
-                        <Button type="submit" className="w-full" size="lg">
-                          <Lock className="mr-2 h-5 w-5" />
-                          Login Securely
+                        <Button asChild className="w-full" size="lg">
+                          <Link to="/auth">
+                            <Lock className="mr-2 h-5 w-5" />
+                            Go to Login Page
+                          </Link>
                         </Button>
-                      </form>
+                      </div>
                       
                       <div className="mt-6 text-center">
                         <p className="text-sm text-muted-foreground">
-                          Need help accessing your account?{' '}
-                          <Link to="/contact" className="text-primary hover:underline">
-                            Contact IT Support
-                          </Link>
+                          Don't have an account?{' '}
+                          <Button 
+                            variant="link" 
+                            className="p-0 h-auto"
+                            onClick={() => {
+                              const registerTab = document.querySelector('[value="register"]') as HTMLElement;
+                              registerTab?.click();
+                            }}
+                          >
+                            Register here
+                          </Button>
                         </p>
                       </div>
                     </Card>
