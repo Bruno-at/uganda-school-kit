@@ -10,6 +10,7 @@ import {
   Facebook, 
   Twitter, 
   Youtube,
+  Music,
   Send
 } from 'lucide-react';
 
@@ -140,6 +141,11 @@ const Footer = () => {
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
                   <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our YouTube channel">
                     <Youtube className="h-4 w-4" />
+                  </a>
+                </Button>
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our TikTok page">
+                    <Music className="h-4 w-4" />
                   </a>
                 </Button>
               </div>
