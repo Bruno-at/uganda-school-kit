@@ -11,7 +11,10 @@ import {
   Twitter, 
   Youtube,
   Music,
-  Send
+  Send,
+  Linkedin,
+  Instagram,
+  MessageCircle
 } from 'lucide-react';
 
 const Footer = () => {
@@ -146,6 +149,21 @@ const Footer = () => {
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
                   <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our TikTok page">
                     <Music className="h-4 w-4" />
+                  </a>
+                </Button>
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our LinkedIn page">
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                </Button>
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram page">
+                    <Instagram className="h-4 w-4" />
+                  </a>
+                </Button>
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://t.me" target="_blank" rel="noopener noreferrer" aria-label="Visit our Telegram channel">
+                    <MessageCircle className="h-4 w-4" />
                   </a>
                 </Button>
               </div>
