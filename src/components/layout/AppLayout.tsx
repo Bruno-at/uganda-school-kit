@@ -3,7 +3,7 @@ import { AppSidebar } from './AppSidebar';
 import Footer from './Footer';
 import { Separator } from '@/components/ui/separator';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -56,8 +56,12 @@ export function AppLayout({ children }: AppLayoutProps) {
               </BreadcrumbList>
             </Breadcrumb>
             
-            {/* Theme Toggle */}
-            <div className="ml-auto">
+            {/* Actions */}
+            <div className="ml-auto flex items-center gap-2">
+              <Button asChild variant="default" size="sm">
+                <Link to="/admissions">Apply Now</Link>
+              </Button>
+              
               <Button
                 variant="ghost"
                 size="icon"
