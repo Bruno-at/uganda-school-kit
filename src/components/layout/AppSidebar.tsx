@@ -8,12 +8,9 @@ import {
   Phone, 
   Calendar,
   LogIn,
-  UserPlus,
-  Sun,
-  Moon
+  UserPlus
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { useTheme } from 'next-themes';
 import {
   Sidebar,
   SidebarContent,
@@ -23,11 +20,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarFooter,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 
 const mainNavItems = [
   { title: 'Home', url: '/', icon: Home },
@@ -47,7 +41,6 @@ const portalItems = [
 
 export function AppSidebar() {
   const { open } = useSidebar();
-  const { theme, setTheme } = useTheme();
 
   return (
     <Sidebar collapsible="icon">
@@ -120,40 +113,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      {/* Theme Toggle Footer */}
-      <SidebarFooter className="border-t border-sidebar-border">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between gap-2">
-            {open ? (
-              <>
-                <div className="flex items-center gap-2">
-                  <Sun className="h-4 w-4 text-sidebar-foreground" />
-                  <Label htmlFor="theme-toggle" className="text-sm text-sidebar-foreground">
-                    Dark Mode
-                  </Label>
-                </div>
-                <Switch
-                  id="theme-toggle"
-                  checked={theme === 'dark'}
-                  onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-                />
-              </>
-            ) : (
-              <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-sidebar-accent"
-              >
-                {theme === 'dark' ? (
-                  <Moon className="h-4 w-4 text-sidebar-foreground" />
-                ) : (
-                  <Sun className="h-4 w-4 text-sidebar-foreground" />
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </SidebarFooter>
     </Sidebar>
   );
 }

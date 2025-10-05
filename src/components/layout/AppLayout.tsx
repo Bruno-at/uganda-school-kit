@@ -4,6 +4,9 @@ import Footer from './Footer';
 import { Separator } from '@/components/ui/separator';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { useLocation } from 'react-router-dom';
+import { useTheme } from 'next-themes';
+import { Sun, Moon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -11,6 +14,7 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
+  const { theme, setTheme } = useTheme();
   
   // Generate breadcrumbs from path
   const pathSegments = location.pathname.split('/').filter(Boolean);
@@ -51,6 +55,23 @@ export function AppLayout({ children }: AppLayoutProps) {
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
+            
+            {/* Theme Toggle */}
+            <div className="ml-auto">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="h-9 w-9"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+                <span className="sr-only">Toggle theme</span>
+              </Button>
+            </div>
           </header>
 
           {/* Main Content */}
