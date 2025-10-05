@@ -127,14 +127,20 @@ const Footer = () => {
             <div className="space-y-2">
               <p className="text-sm font-medium">Follow Us</p>
               <div className="flex space-x-2">
-                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10">
-                  <Facebook className="h-4 w-4" />
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page">
+                    <Facebook className="h-4 w-4" />
+                  </a>
                 </Button>
-                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10">
-                  <Twitter className="h-4 w-4" />
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page">
+                    <Twitter className="h-4 w-4" />
+                  </a>
                 </Button>
-                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10">
-                  <Youtube className="h-4 w-4" />
+                <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our YouTube channel">
+                    <Youtube className="h-4 w-4" />
+                  </a>
                 </Button>
               </div>
             </div>
