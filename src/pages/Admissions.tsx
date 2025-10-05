@@ -285,6 +285,7 @@ const Admissions = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="Enter student's full name"
+                    className="shadow-sm"
                   />
                 </div>
                 
@@ -297,6 +298,7 @@ const Admissions = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="Enter parent/guardian name"
+                    className="shadow-sm"
                   />
                 </div>
               </div>
@@ -312,6 +314,7 @@ const Admissions = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="+256 700 123 456"
+                    className="shadow-sm"
                   />
                 </div>
                 
@@ -325,6 +328,7 @@ const Admissions = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="parent@example.com"
+                    className="shadow-sm"
                   />
                 </div>
               </div>
@@ -333,7 +337,7 @@ const Admissions = () => {
                 <div className="space-y-2">
                   <Label htmlFor="currentClass">Current Class/Level</Label>
                   <Select onValueChange={(value) => handleSelectChange('currentClass', value)}>
-                    <SelectTrigger>
+                    <SelectTrigger className="shadow-sm">
                       <SelectValue placeholder="Select current class" />
                     </SelectTrigger>
                     <SelectContent>
@@ -352,7 +356,7 @@ const Admissions = () => {
                 <div className="space-y-2">
                   <Label htmlFor="applyingFor">Applying For *</Label>
                   <Select onValueChange={(value) => handleSelectChange('applyingFor', value)}>
-                    <SelectTrigger>
+                    <SelectTrigger className="shadow-sm">
                       <SelectValue placeholder="Select class applying for" />
                     </SelectTrigger>
                     <SelectContent>
@@ -375,6 +379,7 @@ const Admissions = () => {
                   value={formData.previousSchool}
                   onChange={handleInputChange}
                   placeholder="Name of current/previous school"
+                  className="shadow-sm"
                 />
               </div>
               
@@ -387,6 +392,7 @@ const Admissions = () => {
                   onChange={handleInputChange}
                   placeholder="Any additional information you'd like to share..."
                   rows={4}
+                  className="shadow-sm"
                 />
               </div>
               
