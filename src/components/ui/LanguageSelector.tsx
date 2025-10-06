@@ -15,6 +15,7 @@ const languages: { code: Language; name: string; flag: string }[] = [
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'ar', name: 'العربية', flag: '🇸🇦' },
   { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'sw', name: 'Kiswahili', flag: '🇰🇪' },
 ];
 
 const LanguageSelector: React.FC = () => {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-export type Language = 'en' | 'fr' | 'es' | 'ar' | 'zh';
+export type Language = 'en' | 'fr' | 'es' | 'ar' | 'zh' | 'sw';
 
 interface LanguageContextType {
   language: Language;
@@ -131,6 +131,30 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.quickLinks': '快速链接',
     'footer.forParents': '家长专区',
     'footer.newsletter': '通讯',
+  },
+  sw: {
+    'nav.home': 'Nyumbani',
+    'nav.about': 'Kuhusu',
+    'nav.admissions': 'Uandikishaji',
+    'nav.academics': 'Masomo',
+    'nav.studentLife': 'Maisha ya Wanafunzi',
+    'nav.parents': 'Wazazi',
+    'nav.news': 'Habari na Matukio',
+    'nav.contact': 'Wasiliana',
+    'hero.title': 'Kulisha Tabia, Ubora, na Ubunifu',
+    'hero.subtitle': 'Excellence Academy imejitolea kutoa elimu ya kiwango cha kimataifa inayoendeleza ubora wa kitaaluma, tabia imara, na mawazo ya ubunifu kwa kila mwanafunzi.',
+    'cta.applyNow': 'Omba Sasa',
+    'cta.parentPortal': 'Lango la Wazazi',
+    'cta.login': 'Ingia',
+    'cta.contactUs': 'Wasiliana Nasi',
+    'stats.yearsOfExcellence': 'Miaka ya Ubora',
+    'stats.happyStudents': 'Wanafunzi Wenye Furaha',
+    'stats.qualifiedTeachers': 'Walimu Wenye Sifa',
+    'stats.nationalAwards': 'Tuzo za Kitaifa',
+    'footer.schoolInfo': 'Habari za Shule',
+    'footer.quickLinks': 'Viungo vya Haraka',
+    'footer.forParents': 'Kwa Wazazi',
+    'footer.newsletter': 'Jarida',
   },
 };
 
