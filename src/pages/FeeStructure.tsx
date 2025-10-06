@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import CurrencyConverter from '@/components/ui/CurrencyConverter';
 import {
   CreditCard,
   Download,
@@ -194,6 +195,11 @@ const FeeStructure = () => {
                 <p className="text-muted-foreground">
                   All fees are quoted in Uganda Shillings (UGX) per academic year.
                 </p>
+              </div>
+              
+              {/* Currency Converter */}
+              <div className="max-w-2xl mx-auto mb-8">
+                <CurrencyConverter baseAmount={500000} baseCurrency="UGX" />
               </div>
               
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail, GraduationCap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,6 +83,7 @@ const Header = () => {
 
             {/* Desktop CTA buttons */}
             <div className="hidden lg:flex items-center space-x-2">
+              <LanguageSelector />
               <Button variant="outline" size="sm" asChild>
                 <Link to="/portal">Portal</Link>
               </Button>
@@ -122,6 +124,9 @@ const Header = () => {
                 </Link>
               ))}
               <div className="pt-4 space-y-2">
+                <div className="flex justify-center mb-2">
+                  <LanguageSelector />
+                </div>
                 <Button variant="outline" className="w-full" asChild>
                   <Link to="/portal">Portal Login</Link>
                 </Button>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/ui/StatsCard';
 import NewsCard from '@/components/ui/NewsCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
+import AccreditationBadge from '@/components/ui/AccreditationBadge';
 import {
   Users,
   GraduationCap,
@@ -181,29 +182,80 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Partners & Accreditations */}
+      {/* International Accreditations & Partnerships */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Accreditations & Partners</h2>
-            <p className="text-xl text-muted-foreground">
-              Recognized by leading educational bodies and partnering with institutions of excellence.
+            <h2 className="text-4xl font-bold mb-4">International Accreditations & Partnerships</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Globally recognized and partnering with leading educational institutions worldwide to provide world-class education.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center opacity-60">
-            {/* Placeholder for partner logos */}
-            <div className="h-16 bg-muted rounded-xl flex items-center justify-center">
-              <span className="text-sm font-medium text-muted-foreground">UNEB</span>
-            </div>
-            <div className="h-16 bg-muted rounded-xl flex items-center justify-center">
-              <span className="text-sm font-medium text-muted-foreground">Ministry of Education</span>
-            </div>
-            <div className="h-16 bg-muted rounded-xl flex items-center justify-center">
-              <span className="text-sm font-medium text-muted-foreground">Cambridge Int'l</span>
-            </div>
-            <div className="h-16 bg-muted rounded-xl flex items-center justify-center">
-              <span className="text-sm font-medium text-muted-foreground">USAID</span>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <AccreditationBadge
+              name="Cambridge International"
+              organization="Cambridge Assessment International Education"
+              year="2010"
+              description="Authorized Cambridge International School offering IGCSE and A-Level programs recognized worldwide."
+              verified
+            />
+            <AccreditationBadge
+              name="IB World School"
+              organization="International Baccalaureate"
+              year="2015"
+              description="Authorized to offer the IB Diploma Programme, recognized by universities globally."
+              verified
+            />
+            <AccreditationBadge
+              name="COBIS Membership"
+              organization="Council of British International Schools"
+              year="2018"
+              description="Member of COBIS, ensuring British educational standards and international best practices."
+              verified
+            />
+            <AccreditationBadge
+              name="Ministry of Education"
+              organization="Republic of Uganda"
+              year="1999"
+              description="Fully registered and accredited by the Uganda Ministry of Education and Sports."
+              verified
+            />
+            <AccreditationBadge
+              name="East African Examination Council"
+              organization="EAEC"
+              year="2012"
+              description="Recognized examination center for East African Community educational assessments."
+              verified
+            />
+            <AccreditationBadge
+              name="UNESCO Associated School"
+              organization="UNESCO ASPnet"
+              year="2020"
+              description="Part of UNESCO's global network promoting quality education, peace, and sustainable development."
+              verified
+            />
+          </div>
+
+          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20">
+            <h3 className="text-2xl font-bold text-center mb-6">Global University Partnerships</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center">
+              <div className="text-center p-4">
+                <p className="font-semibold text-sm">University of Oxford</p>
+                <p className="text-xs text-muted-foreground">Academic Exchange</p>
+              </div>
+              <div className="text-center p-4">
+                <p className="font-semibold text-sm">MIT</p>
+                <p className="text-xs text-muted-foreground">STEM Programs</p>
+              </div>
+              <div className="text-center p-4">
+                <p className="font-semibold text-sm">Makerere University</p>
+                <p className="text-xs text-muted-foreground">Research Partner</p>
+              </div>
+              <div className="text-center p-4">
+                <p className="font-semibold text-sm">Yale University</p>
+                <p className="text-xs text-muted-foreground">Leadership Programs</p>
+              </div>
             </div>
           </div>
         </div>
