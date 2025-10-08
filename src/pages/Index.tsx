@@ -53,20 +53,20 @@ const Index = () => {
                 </Link>
               </Button>
               <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
-                <Link to="/portal">
-                  Parent Portal
-                  <ExternalLink className="ml-2 h-5 w-5" />
+                <Link to="/membership">
+                  Join PTA/Alumni
+                  <Users className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
-                <Link to="/auth">
-                  Login
+                <Link to="/shop">
+                  School Shop
+                  <ExternalLink className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
-                <Link to="/contact">
-                  Contact Us
-                  <Phone className="ml-2 h-5 w-5" />
+                <Link to="/donate">
+                  Support Us
                 </Link>
               </Button>
             </div>

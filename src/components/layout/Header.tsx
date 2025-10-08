@@ -26,6 +26,8 @@ const Header = () => {
     { href: '/student-life', label: 'Student Life' },
     { href: '/parents', label: 'Parents' },
     { href: '/news', label: 'News & Events' },
+    { href: '/shop', label: 'Shop' },
+    { href: '/donate', label: 'Donate' },
     { href: '/contact', label: 'Contact' },
   ];
 

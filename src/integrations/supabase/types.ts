@@ -14,6 +14,216 @@ export type Database = {
   }
   public: {
     Tables: {
+      donations: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          donor_email: string
+          donor_name: string
+          id: string
+          is_anonymous: boolean | null
+          message: string | null
+          payment_status: string | null
+          purpose: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          donor_email: string
+          donor_name: string
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_status?: string | null
+          purpose: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          donor_email?: string
+          donor_name?: string
+          id?: string
+          is_anonymous?: boolean | null
+          message?: string | null
+          payment_status?: string | null
+          purpose?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      memberships: {
+        Row: {
+          auto_renew: boolean | null
+          created_at: string
+          end_date: string | null
+          id: string
+          membership_type: string
+          start_date: string
+          status: string | null
+          tier: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auto_renew?: boolean | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          membership_type: string
+          start_date?: string
+          status?: string | null
+          tier: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auto_renew?: boolean | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          membership_type?: string
+          start_date?: string
+          status?: string | null
+          tier?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          order_id: string
+          price: number
+          product_id: string | null
+          product_name: string
+          quantity: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_id: string
+          price: number
+          product_id?: string | null
+          product_name: string
+          quantity: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_id?: string
+          price?: number
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string | null
+          id: string
+          shipping_address: string | null
+          status: string | null
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          customer_email: string
+          customer_name: string
+          customer_phone?: string | null
+          id?: string
+          shipping_address?: string | null
+          status?: string | null
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string | null
+          id?: string
+          shipping_address?: string | null
+          status?: string | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          price: number
+          stock_quantity: number | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          price: number
+          stock_quantity?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          price?: number
+          stock_quantity?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
