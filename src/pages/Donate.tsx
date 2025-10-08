@@ -1,71 +1,71 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, Building, Book, Users, Trophy } from "lucide-react";
+import { Heart, Building2, BookOpen, Users, Trophy } from "lucide-react";
 
 const Donate = () => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    donor_name: "",
-    donor_email: "",
+    donorName: "",
+    donorEmail: "",
     amount: "",
     purpose: "general",
     message: "",
-    is_anonymous: false,
+    isAnonymous: false,
   });
 
   const donationPurposes = [
-    { value: "general", label: "General Development", icon: Building },
-    { value: "scholarships", label: "Student Scholarships", icon: Users },
-    { value: "infrastructure", label: "Infrastructure & Facilities", icon: Building },
-    { value: "library", label: "Library & Resources", icon: Book },
+    { value: "general", label: "General School Development", icon: Building2 },
+    { value: "library", label: "Library & Learning Resources", icon: BookOpen },
     { value: "sports", label: "Sports & Athletics", icon: Trophy },
+    { value: "scholarship", label: "Student Scholarships", icon: Users },
   ];
 
-  const suggestedAmounts = [50, 100, 250, 500, 1000, 2500];
+  const suggestedAmounts = [50, 100, 250, 500, 1000];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("donations").insert([
-        {
-          donor_name: formData.donor_name,
-          donor_email: formData.donor_email,
-          amount: parseFloat(formData.amount),
-          purpose: formData.purpose,
-          message: formData.message,
-          is_anonymous: formData.is_anonymous,
-        },
-      ]);
+      const { error } = await supabase.from("donations").insert({
+        donor_name: formData.donorName,
+        donor_email: formData.donorEmail,
+        amount: parseFloat(formData.amount),
+        purpose: formData.purpose,
+        message: formData.message,
+        is_anonymous: formData.isAnonymous,
+        payment_status: "pending",
+      });
 
       if (error) throw error;
 
       toast({
-        title: "Thank you for your donation!",
-        description: "Your contribution will make a real difference in our students' lives.",
+        title: "Thank You for Your Donation!",
+        description: "Your donation request has been received. We will contact you with payment details.",
       });
 
       setFormData({
-        donor_name: "",
-        donor_email: "",
+        donorName: "",
+        donorEmail: "",
         amount: "",
         purpose: "general",
         message: "",
-        is_anonymous: false,
+        isAnonymous: false,
       });
     } catch (error) {
+      console.error("Error submitting donation:", error);
       toast({
         title: "Error",
         description: "Failed to submit donation. Please try again.",
@@ -77,31 +77,37 @@ const Donate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
+      <div className="container mx-auto px-4 py-8">
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('nav.home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Donate</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <Heart className="w-16 h-16 mx-auto mb-4 text-primary" />
             <h1 className="text-4xl font-bold mb-4">Support Our School</h1>
             <p className="text-xl text-muted-foreground">
-              Your generous donation helps us provide quality education and opportunities for all students
+              Your generous donation helps us provide excellence in education and create opportunities for our students.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-12">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             {donationPurposes.map((purpose) => {
               const Icon = purpose.icon;
               return (
-                <Card 
-                  key={purpose.value}
-                  className={`cursor-pointer transition-all ${
-                    formData.purpose === purpose.value ? "ring-2 ring-primary" : ""
-                  }`}
-                  onClick={() => setFormData({ ...formData, purpose: purpose.value })}
-                >
+                <Card key={purpose.value} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <Icon className="w-8 h-8 mb-2 text-primary" />
-                    <CardTitle className="text-lg">{purpose.label}</CardTitle>
+                    <Icon className="w-8 h-8 text-primary mb-2" />
+                    <CardTitle>{purpose.label}</CardTitle>
                   </CardHeader>
                 </Card>
               );
@@ -112,36 +118,36 @@ const Donate = () => {
             <CardHeader>
               <CardTitle>Make a Donation</CardTitle>
               <CardDescription>
-                Fill in your details below. All donations support our school development initiatives.
+                Fill out the form below to make your contribution. We'll contact you with payment details.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="donor_name">Full Name</Label>
+                    <Label htmlFor="donorName">Full Name *</Label>
                     <Input
-                      id="donor_name"
-                      value={formData.donor_name}
-                      onChange={(e) => setFormData({ ...formData, donor_name: e.target.value })}
+                      id="donorName"
                       required
+                      value={formData.donorName}
+                      onChange={(e) => setFormData({ ...formData, donorName: e.target.value })}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="donor_email">Email</Label>
+                    <Label htmlFor="donorEmail">Email Address *</Label>
                     <Input
-                      id="donor_email"
+                      id="donorEmail"
                       type="email"
-                      value={formData.donor_email}
-                      onChange={(e) => setFormData({ ...formData, donor_email: e.target.value })}
                       required
+                      value={formData.donorEmail}
+                      onChange={(e) => setFormData({ ...formData, donorEmail: e.target.value })}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Select Amount (USD)</Label>
-                  <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                  <Label>Donation Amount (USD) *</Label>
+                  <div className="flex flex-wrap gap-2 mb-2">
                     {suggestedAmounts.map((amount) => (
                       <Button
                         key={amount}
@@ -153,52 +159,61 @@ const Donate = () => {
                       </Button>
                     ))}
                   </div>
-                  <div className="mt-4">
-                    <Label htmlFor="custom_amount">Or Enter Custom Amount</Label>
-                    <Input
-                      id="custom_amount"
-                      type="number"
-                      min="1"
-                      step="0.01"
-                      placeholder="Enter amount"
-                      value={formData.amount}
-                      onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                      required
-                    />
-                  </div>
+                  <Input
+                    type="number"
+                    placeholder="Enter custom amount"
+                    min="1"
+                    step="0.01"
+                    required
+                    value={formData.amount}
+                    onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Donation Purpose *</Label>
+                  <RadioGroup
+                    value={formData.purpose}
+                    onValueChange={(value) => setFormData({ ...formData, purpose: value })}
+                  >
+                    {donationPurposes.map((purpose) => (
+                      <div key={purpose.value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={purpose.value} id={purpose.value} />
+                        <Label htmlFor={purpose.value} className="cursor-pointer">
+                          {purpose.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="message">Message (Optional)</Label>
                   <Textarea
                     id="message"
+                    placeholder="Share your thoughts or dedication..."
+                    rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Share why you're supporting our school..."
-                    rows={4}
                   />
                 </div>
 
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    id="is_anonymous"
-                    checked={formData.is_anonymous}
+                    id="anonymous"
+                    checked={formData.isAnonymous}
                     onCheckedChange={(checked) =>
-                      setFormData({ ...formData, is_anonymous: checked as boolean })
+                      setFormData({ ...formData, isAnonymous: checked as boolean })
                     }
                   />
-                  <Label htmlFor="is_anonymous" className="cursor-pointer">
+                  <Label htmlFor="anonymous" className="cursor-pointer">
                     Make this donation anonymous
                   </Label>
                 </div>
 
                 <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? "Processing..." : "Donate Now"}
+                  {isSubmitting ? "Processing..." : "Submit Donation Request"}
                 </Button>
-
-                <p className="text-sm text-muted-foreground text-center">
-                  Note: Payment processing will be enabled once payment gateway is configured.
-                </p>
               </form>
             </CardContent>
           </Card>

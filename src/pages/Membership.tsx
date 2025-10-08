@@ -1,241 +1,208 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, Crown, Star, Users } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { Check, Users, GraduationCap, Crown } from "lucide-react";
 
 const Membership = () => {
-  const { toast } = useToast();
-  const [selectedTab, setSelectedTab] = useState("pta");
+  const { t } = useLanguage();
+  const [selectedType, setSelectedType] = useState<"pta" | "alumni">("pta");
 
   const ptaTiers = [
     {
-      name: "Basic",
+      name: "Basic Member",
       tier: "basic",
-      price: 50,
-      duration: "per year",
-      features: [
-        "Monthly newsletter",
+      price: "$50/year",
+      icon: Users,
+      benefits: [
         "Access to PTA meetings",
-        "Voting rights on key decisions",
-        "Event notifications",
+        "Monthly newsletter",
+        "Voting rights on school matters",
+        "Community events access",
       ],
     },
     {
-      name: "Premium",
+      name: "Premium Member",
       tier: "premium",
-      price: 150,
-      duration: "per year",
+      price: "$150/year",
+      icon: GraduationCap,
       popular: true,
-      features: [
-        "All Basic features",
+      benefits: [
+        "All Basic Member benefits",
         "Priority event registration",
-        "Exclusive parent workshops",
-        "Direct communication channel",
+        "Exclusive workshops and seminars",
+        "Direct communication with leadership",
         "Recognition in annual report",
       ],
     },
     {
-      name: "Lifetime",
+      name: "Lifetime Member",
       tier: "lifetime",
-      price: 1000,
-      duration: "one-time",
-      features: [
-        "All Premium features",
-        "Lifetime membership benefits",
-        "Special recognition plaque",
-        "Invitation to exclusive events",
-        "Legacy donor status",
-        "Tax benefits documentation",
+      price: "$1,000 (one-time)",
+      icon: Crown,
+      benefits: [
+        "All Premium Member benefits",
+        "Lifetime voting rights",
+        "Legacy plaque on school grounds",
+        "VIP event access",
+        "Annual appreciation dinner",
+        "Exclusive school merchandise",
       ],
     },
   ];
 
   const alumniTiers = [
     {
-      name: "Basic Alumni",
+      name: "Alumni Member",
       tier: "basic",
-      price: 30,
-      duration: "per year",
-      features: [
+      price: "$30/year",
+      icon: Users,
+      benefits: [
         "Alumni directory access",
-        "Quarterly newsletter",
-        "Networking events invitation",
-        "Career support services",
+        "Reunion event invitations",
+        "School magazine subscription",
+        "Career networking opportunities",
       ],
     },
     {
-      name: "Premium Alumni",
+      name: "Distinguished Alumni",
       tier: "premium",
-      price: 100,
-      duration: "per year",
+      price: "$100/year",
+      icon: GraduationCap,
       popular: true,
-      features: [
-        "All Basic features",
-        "Mentorship program access",
-        "Priority job postings",
-        "Exclusive reunions",
-        "Professional development workshops",
+      benefits: [
+        "All Alumni Member benefits",
+        "Mentorship program participation",
+        "Priority reunion seating",
+        "Featured in alumni spotlight",
+        "Exclusive networking events",
       ],
     },
     {
-      name: "Lifetime Alumni",
+      name: "Legacy Alumni",
       tier: "lifetime",
-      price: 750,
-      duration: "one-time",
-      features: [
-        "All Premium features",
+      price: "$750 (one-time)",
+      icon: Crown,
+      benefits: [
+        "All Distinguished Alumni benefits",
         "Permanent alumni hall recognition",
-        "Legacy scholarship naming rights",
-        "Board meeting participation",
-        "Exclusive networking privileges",
+        "Scholarship fund naming rights",
+        "Board advisory opportunities",
+        "Annual gala VIP access",
       ],
     },
   ];
 
-  const handleJoinMembership = async (tier: string, membershipType: string) => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        toast({
-          title: "Authentication Required",
-          description: "Please log in to join a membership tier.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { error } = await supabase.from("memberships").insert([
-        {
-          user_id: user.id,
-          membership_type: membershipType,
-          tier: tier,
-          status: "active",
-        },
-      ]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Membership Request Submitted",
-        description: "We'll contact you shortly to complete your membership registration.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to submit membership request. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const renderTierCard = (tier: any, membershipType: string) => (
-    <Card key={tier.tier} className={`relative ${tier.popular ? "ring-2 ring-primary" : ""}`}>
-      {tier.popular && (
-        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <Badge className="bg-primary">Most Popular</Badge>
-        </div>
-      )}
-      <CardHeader>
-        {tier.tier === "lifetime" && <Crown className="w-8 h-8 mb-2 text-primary" />}
-        {tier.tier === "premium" && <Star className="w-8 h-8 mb-2 text-primary" />}
-        {tier.tier === "basic" && <Users className="w-8 h-8 mb-2 text-primary" />}
-        <CardTitle>{tier.name}</CardTitle>
-        <CardDescription>
-          <span className="text-3xl font-bold text-foreground">${tier.price}</span>
-          <span className="text-muted-foreground"> {tier.duration}</span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <ul className="space-y-2">
-          {tier.features.map((feature: string, index: number) => (
-            <li key={index} className="flex items-start gap-2">
-              <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-              <span className="text-sm">{feature}</span>
-            </li>
-          ))}
-        </ul>
-        <Button
-          className="w-full"
-          variant={tier.popular ? "default" : "outline"}
-          onClick={() => handleJoinMembership(tier.tier, membershipType)}
-        >
-          Join {tier.name}
-        </Button>
-      </CardContent>
-    </Card>
-  );
+  const currentTiers = selectedType === "pta" ? ptaTiers : alumniTiers;
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
+      <div className="container mx-auto px-4 py-8">
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">{t('nav.home')}</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Membership</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Membership Tiers</h1>
-            <p className="text-xl text-muted-foreground">
-              Join our community and support our school's mission
+            <h1 className="text-4xl font-bold mb-4">Join Our Community</h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              Become a member and support our school's mission while enjoying exclusive benefits
             </p>
+
+            <div className="flex justify-center gap-4 mb-8">
+              <Button
+                variant={selectedType === "pta" ? "default" : "outline"}
+                onClick={() => setSelectedType("pta")}
+                size="lg"
+              >
+                PTA Membership
+              </Button>
+              <Button
+                variant={selectedType === "alumni" ? "default" : "outline"}
+                onClick={() => setSelectedType("alumni")}
+                size="lg"
+              >
+                Alumni Association
+              </Button>
+            </div>
           </div>
 
-          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
-              <TabsTrigger value="pta">PTA Membership</TabsTrigger>
-              <TabsTrigger value="alumni">Alumni Association</TabsTrigger>
-            </TabsList>
+          <div className="grid md:grid-cols-3 gap-8">
+            {currentTiers.map((membership) => {
+              const Icon = membership.icon;
+              return (
+                <Card
+                  key={membership.tier}
+                  className={`relative ${
+                    membership.popular ? "border-primary shadow-xl scale-105" : ""
+                  }`}
+                >
+                  {membership.popular && (
+                    <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      Most Popular
+                    </Badge>
+                  )}
+                  <CardHeader className="text-center">
+                    <Icon className="w-12 h-12 mx-auto mb-4 text-primary" />
+                    <CardTitle className="text-2xl">{membership.name}</CardTitle>
+                    <CardDescription className="text-3xl font-bold text-foreground mt-2">
+                      {membership.price}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3 mb-6">
+                      {membership.benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Button
+                      className="w-full"
+                      variant={membership.popular ? "default" : "outline"}
+                      size="lg"
+                    >
+                      Join Now
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
 
-            <TabsContent value="pta">
-              <div className="mb-8 text-center">
-                <h2 className="text-2xl font-bold mb-2">Parent Teacher Association</h2>
-                <p className="text-muted-foreground">
-                  Be an active part of your child's educational journey
-                </p>
-              </div>
-              <div className="grid md:grid-cols-3 gap-8">
-                {ptaTiers.map((tier) => renderTierCard(tier, "pta"))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="alumni">
-              <div className="mb-8 text-center">
-                <h2 className="text-2xl font-bold mb-2">Alumni Association</h2>
-                <p className="text-muted-foreground">
-                  Stay connected with your alma mater and fellow alumni
-                </p>
-              </div>
-              <div className="grid md:grid-cols-3 gap-8">
-                {alumniTiers.map((tier) => renderTierCard(tier, "alumni"))}
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <Card className="mt-12 bg-muted">
+          <Card className="mt-12">
             <CardHeader>
               <CardTitle>Why Become a Member?</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="font-semibold mb-2">For PTA Members:</h3>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• Directly influence school policies and programs</li>
-                    <li>• Network with other parents and teachers</li>
-                    <li>• Support fundraising initiatives</li>
-                    <li>• Enhance your child's educational experience</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2">For Alumni Members:</h3>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• Reconnect with classmates and mentors</li>
-                    <li>• Give back to future generations</li>
-                    <li>• Access professional networking opportunities</li>
-                    <li>• Participate in exclusive alumni events</li>
-                  </ul>
-                </div>
+            <CardContent className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold mb-2">For PTA Members:</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Active involvement in your child's education</li>
+                  <li>• Direct impact on school policies and programs</li>
+                  <li>• Build connections with other parents and teachers</li>
+                  <li>• Support fundraising for essential school resources</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">For Alumni Members:</h3>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Stay connected with your alma mater</li>
+                  <li>• Network with fellow graduates across generations</li>
+                  <li>• Give back to the next generation of students</li>
+                  <li>• Access exclusive alumni events and resources</li>
+                </ul>
               </div>
             </CardContent>
           </Card>
