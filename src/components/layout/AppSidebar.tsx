@@ -8,7 +8,8 @@ import {
   Phone, 
   Calendar,
   LogIn,
-  UserPlus
+  UserPlus,
+  Settings
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -22,6 +23,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from '@/components/ui/sidebar';
+import LanguageSelector from '@/components/ui/LanguageSelector';
 
 const mainNavItems = [
   { title: 'Home', url: '/', icon: Home },
@@ -109,7 +111,32 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Settings">
+                  <NavLink 
+                    to="/settings"
+                    className={({ isActive }) => 
+                      isActive 
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
+                        : ''
+                    }
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>Settings</span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Language Selector */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Language</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <div className="px-2">
+              <LanguageSelector />
+            </div>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
