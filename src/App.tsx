@@ -32,6 +32,7 @@ import Auth from "./pages/Auth";
 import Donate from "./pages/Donate";
 import Membership from "./pages/Membership";
 import Shop from "./pages/Shop";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const App = () => (
               <Route path="/donate" element={<Donate />} />
               <Route path="/membership" element={<Membership />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/settings" element={<Settings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, Mail, GraduationCap } from 'lucide-react';
+import { Menu, X, Phone, Mail, GraduationCap, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 
@@ -92,6 +92,11 @@ const Header = () => {
               <Button variant="admission" size="sm" asChild>
                 <Link to="/admissions">Apply Now</Link>
               </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <Link to="/settings" aria-label="Settings">
+                  <Settings className="h-5 w-5" />
+                </Link>
+              </Button>
             </div>
 
             {/* Mobile menu button */}
@@ -134,6 +139,12 @@ const Header = () => {
                 </Button>
                 <Button variant="admission" className="w-full" asChild>
                   <Link to="/admissions">Apply Now</Link>
+                </Button>
+                <Button variant="ghost" className="w-full" asChild>
+                  <Link to="/settings">
+                    <Settings className="h-5 w-5 mr-2" />
+                    Settings
+                  </Link>
                 </Button>
               </div>
             </div>
