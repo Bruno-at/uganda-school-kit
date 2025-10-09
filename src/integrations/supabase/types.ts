@@ -286,7 +286,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      donations_public: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          currency: string | null
+          donor_email: string | null
+          donor_name: string | null
+          id: string | null
+          is_anonymous: boolean | null
+          message: string | null
+          payment_status: string | null
+          purpose: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          donor_email?: never
+          donor_name?: never
+          id?: string | null
+          is_anonymous?: boolean | null
+          message?: never
+          payment_status?: string | null
+          purpose?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          currency?: string | null
+          donor_email?: never
+          donor_name?: never
+          id?: string | null
+          is_anonymous?: boolean | null
+          message?: never
+          payment_status?: string | null
+          purpose?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
