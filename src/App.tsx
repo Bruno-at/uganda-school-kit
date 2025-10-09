@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useEffect } from 'react';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admissions from "./pages/Admissions";
@@ -36,6 +37,74 @@ import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
+declare global {
+  interface Window {
+    google: any;
+    googleTranslateElementInit: () => void;
+  }
+}
+
+const GoogleTranslateLoader = () => {
+  useEffect(() => {
+    // Load Google Translate script
+    const script = document.createElement('script');
+    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Initialize Google Translate
+    window.googleTranslateElementInit = function() {
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: 'en',
+          includedLanguages: 'en,sw,fr,ar,zh-CN,es,de,pt,it,ja,ko,hi,ru',
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false,
+        },
+        'google_translate_element'
+      );
+
+      // Restore saved language preference
+      const savedLang = localStorage.getItem('preferredLanguage');
+      if (savedLang && savedLang !== 'en') {
+        setTimeout(() => {
+          const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+          if (select) {
+            select.value = savedLang;
+            select.dispatchEvent(new Event('change'));
+          }
+        }, 1000);
+      }
+    };
+
+    // Hide Google Translate toolbar
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .goog-te-banner-frame,
+      .goog-te-balloon-frame,
+      #goog-gt-tt,
+      .goog-te-balloon-frame {
+        display: none !important;
+      }
+      body {
+        top: 0 !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, []);
+
+  return <div id="google_translate_element" style={{ display: 'none' }}></div>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="excellence-academy-theme">
@@ -43,6 +112,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <GoogleTranslateLoader />
           <BrowserRouter>
           <AppLayout>
             <Routes>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import {
@@ -9,14 +9,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-declare global {
-  interface Window {
-    google: any;
-    googleTranslateElementInit: () => void;
-  }
-}
-
 const Settings = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+
   useEffect(() => {
     // Set page title and meta description
     document.title = 'Settings - Excellence Academy';
@@ -25,49 +20,30 @@ const Settings = () => {
       metaDescription.setAttribute('content', 'Configure your language preferences and settings for Excellence Academy website.');
     }
 
-    // Load Google Translate script
-    const script = document.createElement('script');
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    document.body.appendChild(script);
-
-    // Initialize Google Translate
-    window.googleTranslateElementInit = function() {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'en',
-          includedLanguages: 'en,sw,fr,ar,zh-CN,es,de,pt,it,ja,ko,hi,ru',
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-        },
-        'google_translate_element'
-      );
-
-      // Restore saved language preference
-      const savedLang = localStorage.getItem('preferredLanguage');
-      if (savedLang && savedLang !== 'en') {
-        setTimeout(() => {
-          const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-          if (select) {
-            select.value = savedLang;
-            select.dispatchEvent(new Event('change'));
-          }
-        }, 1000);
-      }
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    // Get saved language from localStorage
+    const savedLang = localStorage.getItem('preferredLanguage');
+    if (savedLang) {
+      setSelectedLanguage(savedLang);
+    }
   }, []);
 
   const handleLanguageChange = (value: string) => {
+    setSelectedLanguage(value);
     localStorage.setItem('preferredLanguage', value);
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-    if (select) {
-      select.value = value;
-      select.dispatchEvent(new Event('change'));
-    }
+    
+    // Wait for Google Translate to be ready
+    const checkAndTranslate = () => {
+      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+      if (select) {
+        select.value = value;
+        select.dispatchEvent(new Event('change'));
+      } else {
+        // If not ready, try again in 100ms
+        setTimeout(checkAndTranslate, 100);
+      }
+    };
+    
+    checkAndTranslate();
   };
 
   const languages = [
@@ -99,7 +75,7 @@ const Settings = () => {
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="language-select">Choose Language</Label>
-              <Select onValueChange={handleLanguageChange} defaultValue="en">
+              <Select onValueChange={handleLanguageChange} value={selectedLanguage}>
                 <SelectTrigger id="language-select">
                   <SelectValue placeholder="Select a language" />
                 </SelectTrigger>
@@ -115,9 +91,6 @@ const Settings = () => {
                 Your language preference will be saved and remembered on your next visit.
               </p>
             </div>
-
-            {/* Hidden Google Translate Element */}
-            <div id="google_translate_element" style={{ display: 'none' }}></div>
 
             <div className="pt-4 border-t">
               <h3 className="text-sm font-medium mb-2">About Translation</h3>
