@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail, GraduationCap, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from '@/components/ui/LanguageSelector';
+import logo from '@/assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,9 +57,7 @@ const Header = () => {
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
-                <GraduationCap className="h-6 w-6" />
-              </div>
+              <img src={logo} alt="Excellence Academy Logo" className="h-12 w-12 object-contain" />
               <div>
                 <h1 className="text-xl font-bold text-primary">Excellence Academy</h1>
                 <p className="text-xs text-muted-foreground">Kampala, Uganda</p>
