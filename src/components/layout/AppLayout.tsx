@@ -7,6 +7,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ChatBot from '@/components/chat/ChatBot';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -86,6 +87,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           {/* Footer */}
           <Footer />
         </SidebarInset>
+        <ChatBot />
       </div>
     </SidebarProvider>
   );
