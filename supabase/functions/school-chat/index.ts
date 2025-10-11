@@ -18,6 +18,50 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
+    // Check if the last message contains visual keywords
+    const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
+    const visualKeywords = ['draw', 'show', 'illustrate', 'diagram', 'structure', 'picture', 'sketch', 'graph', 'chart', 'visualize', 'depict', 'image of'];
+    const needsVisualization = visualKeywords.some(keyword => lastMessage.includes(keyword));
+
+    if (needsVisualization) {
+      // Generate image using Lovable AI
+      const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image-preview",
+          messages: [
+            {
+              role: "user",
+              content: `Create a clear, educational ${language === 'en' ? 'English' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : language === 'ar' ? 'Arabic' : language === 'zh' ? 'Chinese' : language === 'sw' ? 'Kiswahili' : 'English'} labeled diagram or illustration for: ${lastMessage}. Make it suitable for academic learning with clear labels and professional quality.`
+            }
+          ],
+          modalities: ["image", "text"]
+        }),
+      });
+
+      if (imageResponse.ok) {
+        const imageData = await imageResponse.json();
+        const imageUrl = imageData.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+        const textExplanation = imageData.choices?.[0]?.message?.content || '';
+
+        if (imageUrl) {
+          // Return both text explanation and image
+          return new Response(JSON.stringify({ 
+            content: textExplanation || 'Here is the visualization you requested:',
+            image: imageUrl,
+            hasImage: true
+          }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      }
+    }
+
+    // Regular text-based response
     const systemPrompt = `You are an AI School Support & Academic Assistant for an international school. You help students, parents, and visitors with:
 
 1. General school questions: admissions, fees, uniforms, class schedules, events, contact information

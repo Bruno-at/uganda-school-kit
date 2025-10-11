@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Trash2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Trash2, Minimize2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  image?: string;
+  imageId?: string;
 }
 
 const ChatBot: React.FC = () => {
@@ -48,18 +51,6 @@ const ChatBot: React.FC = () => {
     setMessages(newMessages);
     setIsLoading(true);
 
-    let assistantContent = '';
-    const upsertAssistant = (chunk: string) => {
-      assistantContent += chunk;
-      setMessages(prev => {
-        const last = prev[prev.length - 1];
-        if (last?.role === 'assistant') {
-          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantContent } : m));
-        }
-        return [...prev, { role: 'assistant', content: assistantContent }];
-      });
-    };
-
     try {
       const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/school-chat`;
       const resp = await fetch(CHAT_URL, {
@@ -75,7 +66,38 @@ const ChatBot: React.FC = () => {
         throw new Error(`HTTP error! status: ${resp.status}`);
       }
 
+      const contentType = resp.headers.get('content-type');
+      
+      // Check if response contains image
+      if (contentType?.includes('application/json')) {
+        const data = await resp.json();
+        if (data.hasImage && data.image) {
+          const imageId = crypto.randomUUID();
+          setMessages([...newMessages, { 
+            role: 'assistant', 
+            content: data.content,
+            image: data.image,
+            imageId
+          }]);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Regular streaming response
       if (!resp.body) throw new Error('No response body');
+
+      let assistantContent = '';
+      const upsertAssistant = (chunk: string) => {
+        assistantContent += chunk;
+        setMessages(prev => {
+          const last = prev[prev.length - 1];
+          if (last?.role === 'assistant') {
+            return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantContent } : m));
+          }
+          return [...prev, { role: 'assistant', content: assistantContent }];
+        });
+      };
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -138,6 +160,27 @@ const ChatBot: React.FC = () => {
         content: 'Sorry, I encountered an error. Please try again.' 
       }]);
     }
+  };
+
+  const handleDownloadImage = (imageUrl: string) => {
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = `school-diagram-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('Image downloaded!');
+  };
+
+  const handleDeleteImage = (imageId: string) => {
+    setMessages(prevMessages => 
+      prevMessages.map(msg => 
+        msg.imageId === imageId 
+          ? { ...msg, image: undefined, imageId: undefined }
+          : msg
+      )
+    );
+    toast.success('Image removed');
   };
 
   const handleSend = async () => {
@@ -208,13 +251,43 @@ const ChatBot: React.FC = () => {
               <div
                 key={idx}
                 className={cn(
-                  "mb-4 p-3 rounded-lg max-w-[85%]",
+                  "mb-4 p-3 rounded-lg",
                   msg.role === 'user'
-                    ? "bg-primary text-primary-foreground ml-auto"
-                    : "bg-muted text-foreground"
+                    ? "bg-primary text-primary-foreground ml-auto max-w-[85%]"
+                    : "bg-muted text-foreground max-w-full"
                 )}
               >
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                
+                {msg.image && msg.imageId && (
+                  <div className="mt-3 space-y-2 animate-fade-in">
+                    <img 
+                      src={msg.image} 
+                      alt="AI Generated Diagram" 
+                      className="rounded-lg border border-border max-w-full h-auto"
+                    />
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDownloadImage(msg.image!)}
+                        className="gap-1"
+                      >
+                        <Download className="h-3 w-3" />
+                        Download
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDeleteImage(msg.imageId!)}
+                        className="gap-1 text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
             {isLoading && (
