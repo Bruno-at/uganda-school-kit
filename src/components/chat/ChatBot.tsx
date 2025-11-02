@@ -19,6 +19,7 @@ interface Message {
   image?: string;
   imageId?: string;
   imageCreatedAt?: number;
+  isRemoving?: boolean;
 }
 
 const ChatBot: React.FC = () => {
@@ -211,6 +212,20 @@ const ChatBot: React.FC = () => {
     return imageCreatedAt < twoMinutesAgo;
   };
 
+  const handleDeleteMessage = (index: number) => {
+    setMessages(prev => prev.map((m, i) => i === index ? { ...m, isRemoving: true } : m));
+    setTimeout(() => {
+      setMessages(prev => prev.filter((_, i) => i !== index));
+    }, 300);
+  };
+
+  const handleEditMessage = (index: number) => {
+    const msg = messages[index];
+    if (!msg) return;
+    setInput(msg.content);
+    toast.info('Edit the message and press Send');
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     const userMessage = input.trim();
@@ -279,12 +294,32 @@ const ChatBot: React.FC = () => {
               <div
                 key={idx}
                 className={cn(
-                  "mb-4 p-3 rounded-lg",
+                  "mb-4 p-3 rounded-lg relative transition-all",
+                  msg.isRemoving ? "animate-fade-out" : "animate-fade-in",
                   msg.role === 'user'
                     ? "bg-primary text-primary-foreground ml-auto max-w-[85%]"
                     : "bg-muted text-foreground max-w-full"
                 )}
               >
+                <div className="absolute top-2 right-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="icon" variant="ghost" className="h-6 w-6 p-0 text-foreground/70 hover:text-foreground">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="bg-background z-50">
+                      <DropdownMenuItem onClick={() => handleEditMessage(idx)} className="gap-2">
+                        <Edit className="h-4 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDeleteMessage(idx)} className="gap-2 text-destructive focus:text-destructive">
+                        <Trash2 className="h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                 
                 {msg.image && msg.imageId && (
