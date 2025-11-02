@@ -1,17 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Trash2, Minimize2, Download } from 'lucide-react';
+import { MessageCircle, X, Send, Trash2, Minimize2, MoreVertical, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
   image?: string;
   imageId?: string;
+  imageCreatedAt?: number;
 }
 
 const ChatBot: React.FC = () => {
@@ -77,7 +84,8 @@ const ChatBot: React.FC = () => {
             role: 'assistant', 
             content: data.content,
             image: data.image,
-            imageId
+            imageId,
+            imageCreatedAt: Date.now()
           }]);
           setIsLoading(false);
           return;
@@ -176,11 +184,31 @@ const ChatBot: React.FC = () => {
     setMessages(prevMessages => 
       prevMessages.map(msg => 
         msg.imageId === imageId 
-          ? { ...msg, image: undefined, imageId: undefined }
+          ? { ...msg, image: undefined, imageId: undefined, imageCreatedAt: undefined }
           : msg
       )
     );
     toast.success('Image removed');
+  };
+
+  const handleEditChart = (imageId: string) => {
+    const message = messages.find(msg => msg.imageId === imageId);
+    if (!message) return;
+    
+    const twoMinutesAgo = Date.now() - 2 * 60 * 1000;
+    if (message.imageCreatedAt && message.imageCreatedAt < twoMinutesAgo) {
+      toast.error('Chart can no longer be edited (2 minute limit exceeded)');
+      return;
+    }
+    
+    setInput(`Edit the chart: `);
+    toast.info('Type your edit instructions');
+  };
+
+  const isEditDisabled = (imageCreatedAt?: number) => {
+    if (!imageCreatedAt) return true;
+    const twoMinutesAgo = Date.now() - 2 * 60 * 1000;
+    return imageCreatedAt < twoMinutesAgo;
   };
 
   const handleSend = async () => {
@@ -261,30 +289,43 @@ const ChatBot: React.FC = () => {
                 
                 {msg.image && msg.imageId && (
                   <div className="mt-3 space-y-2 animate-fade-in">
-                    <img 
-                      src={msg.image} 
-                      alt="AI Generated Diagram" 
-                      className="rounded-lg border border-border max-w-full h-auto"
-                    />
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDownloadImage(msg.image!)}
-                        className="gap-1"
-                      >
-                        <Download className="h-3 w-3" />
-                        Download
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDeleteImage(msg.imageId!)}
-                        className="gap-1 text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                        Delete
-                      </Button>
+                    <div className="relative">
+                      <img 
+                        src={msg.image} 
+                        alt="AI Generated Diagram" 
+                        className="rounded-lg border border-border max-w-full h-auto"
+                      />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="absolute top-2 right-2 h-8 w-8 p-0 bg-background/80 backdrop-blur-sm"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="bg-background">
+                          <DropdownMenuItem
+                            onClick={() => handleEditChart(msg.imageId!)}
+                            disabled={isEditDisabled(msg.imageCreatedAt)}
+                            className="gap-2"
+                          >
+                            <Edit className="h-4 w-4" />
+                            Edit Chart
+                            {isEditDisabled(msg.imageCreatedAt) && (
+                              <span className="text-xs text-muted-foreground ml-auto">(Expired)</span>
+                            )}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteImage(msg.imageId!)}
+                            className="gap-2 text-destructive focus:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 )}
