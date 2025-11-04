@@ -55,15 +55,42 @@ const Settings = () => {
     setSelectedLanguage(value);
     localStorage.setItem('preferredLanguage', value);
     
-    // Wait for Google Translate to be ready
-    const checkAndTranslate = () => {
+    // Dispatch custom event for language change
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: value } }));
+    
+    // Wait for Google Translate to be ready and apply translation
+    const checkAndTranslate = (attempts = 0) => {
       const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
       if (select) {
-        select.value = value;
-        select.dispatchEvent(new Event('change'));
+        if (value === 'en') {
+          // Reset to English
+          select.value = '';
+          select.dispatchEvent(new Event('change'));
+          toast({ 
+            title: 'Language changed', 
+            description: 'Website is now in English.' 
+          });
+        } else {
+          // Change to selected language
+          select.value = value;
+          select.dispatchEvent(new Event('change'));
+          
+          // Show toast notification
+          const langName = languages.find(l => l.code === value)?.name || value;
+          toast({ 
+            title: 'Language changed', 
+            description: `Website is now translating to ${langName}. This may take a moment.` 
+          });
+        }
+      } else if (attempts < 20) {
+        // If not ready, try again (max 20 attempts = 2 seconds)
+        setTimeout(() => checkAndTranslate(attempts + 1), 100);
       } else {
-        // If not ready, try again in 100ms
-        setTimeout(checkAndTranslate, 100);
+        toast({ 
+          title: 'Translation unavailable', 
+          description: 'Please refresh the page and try again.',
+          variant: 'destructive'
+        });
       }
     };
     
