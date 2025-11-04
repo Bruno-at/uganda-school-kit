@@ -172,7 +172,6 @@ const ChatBot: React.FC = () => {
       const response = await fetch(imageUrl);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      
       const link = document.createElement('a');
       link.href = url;
       link.download = `school-diagram-${Date.now()}.png`;
@@ -180,7 +179,6 @@ const ChatBot: React.FC = () => {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
       toast.success('Image downloaded successfully!');
     } catch (error) {
       console.error('Download error:', error);
@@ -291,13 +289,9 @@ const ChatBot: React.FC = () => {
                     <div className="relative group">
                       <img src={msg.image} alt="AI Generated Diagram" className="rounded-lg border border-border max-w-full h-auto shadow-sm" />
                       <div className="absolute top-2 right-2 flex gap-2">
-                        <Button 
-                          size="sm" 
-                          onClick={() => handleDownloadImage(msg.image!)}
-                          className="h-8 gap-1 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-accent/50 backdrop-blur-sm font-medium animate-pulse hover:animate-none transition-all"
-                        >
+                        <Button size="sm" onClick={() => handleDownloadImage(msg.image!)} className="h-8 gap-1 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-accent/50 backdrop-blur-sm font-medium animate-pulse hover:animate-none transition-all text-blue-700">
                           <Download className="h-3.5 w-3.5" />
-                          <span className="text-xs">Download</span>
+                          <span className="text-xs text-red-600">Download</span>
                         </Button>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
