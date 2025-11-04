@@ -293,9 +293,8 @@ const ChatBot: React.FC = () => {
                       <div className="absolute top-2 right-2 flex gap-2">
                         <Button 
                           size="sm" 
-                          variant="secondary" 
                           onClick={() => handleDownloadImage(msg.image!)}
-                          className="h-8 gap-1 bg-background/90 backdrop-blur-sm hover:bg-background shadow-sm"
+                          className="h-8 gap-1 bg-gradient-to-r from-accent to-accent/80 text-accent-foreground hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-accent/50 backdrop-blur-sm font-medium animate-pulse hover:animate-none transition-all"
                         >
                           <Download className="h-3.5 w-3.5" />
                           <span className="text-xs">Download</span>
