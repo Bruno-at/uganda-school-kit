@@ -42,7 +42,13 @@ const portalItems = [
 ];
 
 export function AppSidebar() {
-  const { open } = useSidebar();
+  const { open, isMobile, setOpenMobile } = useSidebar();
+
+  const handleNavClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
     <Sidebar collapsible="icon">
@@ -73,6 +79,7 @@ export function AppSidebar() {
                     <NavLink 
                       to={item.url}
                       end
+                      onClick={handleNavClick}
                       className={({ isActive }) => 
                         isActive 
                           ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
@@ -99,6 +106,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild tooltip={item.title}>
                     <NavLink 
                       to={item.url}
+                      onClick={handleNavClick}
                       className={({ isActive }) => 
                         isActive 
                           ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
@@ -115,6 +123,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild tooltip="Settings">
                   <NavLink 
                     to="/settings"
+                    onClick={handleNavClick}
                     className={({ isActive }) => 
                       isActive 
                         ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
