@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Trash2, Minimize2, MoreVertical, Edit } from 'lucide-react';
+import { MessageCircle, X, Send, Trash2, Minimize2, MoreVertical, Edit, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -166,14 +166,26 @@ const ChatBot: React.FC = () => {
       }]);
     }
   };
-  const handleDownloadImage = (imageUrl: string) => {
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = `school-diagram-${Date.now()}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success('Image downloaded!');
+  const handleDownloadImage = async (imageUrl: string) => {
+    try {
+      // Convert base64 to blob for better download handling
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `school-diagram-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Image downloaded successfully!');
+    } catch (error) {
+      console.error('Download error:', error);
+      toast.error('Failed to download image');
+    }
   };
   const handleDeleteImage = (imageId: string) => {
     setMessages(prevMessages => prevMessages.map(msg => msg.imageId === imageId ? {
@@ -276,26 +288,37 @@ const ChatBot: React.FC = () => {
                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                 
                 {msg.image && msg.imageId && <div className="mt-3 space-y-2 animate-fade-in">
-                    <div className="relative">
-                      <img src={msg.image} alt="AI Generated Diagram" className="rounded-lg border border-border max-w-full h-auto" />
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button size="sm" variant="outline" className="absolute top-2 right-2 h-8 w-8 p-0 bg-background/80 backdrop-blur-sm">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-background">
-                          <DropdownMenuItem onClick={() => handleEditChart(msg.imageId!)} disabled={isEditDisabled(msg.imageCreatedAt)} className="gap-2">
-                            <Edit className="h-4 w-4" />
-                            Edit Chart
-                            {isEditDisabled(msg.imageCreatedAt) && <span className="text-xs text-muted-foreground ml-auto">(Expired)</span>}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleDeleteImage(msg.imageId!)} className="gap-2 text-destructive focus:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                    <div className="relative group">
+                      <img src={msg.image} alt="AI Generated Diagram" className="rounded-lg border border-border max-w-full h-auto shadow-sm" />
+                      <div className="absolute top-2 right-2 flex gap-2">
+                        <Button 
+                          size="sm" 
+                          variant="secondary" 
+                          onClick={() => handleDownloadImage(msg.image!)}
+                          className="h-8 gap-1 bg-background/90 backdrop-blur-sm hover:bg-background shadow-sm"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          <span className="text-xs">Download</span>
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button size="sm" variant="outline" className="h-8 w-8 p-0 bg-background/90 backdrop-blur-sm hover:bg-background shadow-sm">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-background">
+                            <DropdownMenuItem onClick={() => handleEditChart(msg.imageId!)} disabled={isEditDisabled(msg.imageCreatedAt)} className="gap-2">
+                              <Edit className="h-4 w-4" />
+                              Edit Chart
+                              {isEditDisabled(msg.imageCreatedAt) && <span className="text-xs text-muted-foreground ml-auto">(Expired)</span>}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDeleteImage(msg.imageId!)} className="gap-2 text-destructive focus:text-destructive">
+                              <Trash2 className="h-4 w-4" />
+                              Delete Image
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </div>
                   </div>}
               </div>)}
