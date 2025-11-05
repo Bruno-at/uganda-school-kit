@@ -20,10 +20,63 @@ serve(async (req) => {
 
     // Check if the last message contains visual keywords
     const lastMessage = messages[messages.length - 1]?.content?.toLowerCase() || '';
-    const visualKeywords = ['draw', 'show', 'illustrate', 'diagram', 'structure', 'picture', 'sketch', 'graph', 'chart', 'visualize', 'depict', 'image of'];
+    const visualKeywords = ['draw', 'show', 'illustrate', 'diagram', 'structure', 'picture', 'sketch', 'graph', 'chart', 'visualize', 'depict', 'image of', 'create', 'generate'];
     const needsVisualization = visualKeywords.some(keyword => lastMessage.includes(keyword));
 
-    if (needsVisualization) {
+    // Detect if this is a request for a real-world image (person, place, historical figure)
+    const realWorldKeywords = ['who is', 'show me', 'picture of', 'photo of', 'image of'];
+    const scientificKeywords = ['diagram', 'structure', 'draw', 'illustrate', 'label', 'anatomy', 'circuit', 'molecule', 'cell', 'system'];
+    const isRealWorldImageRequest = realWorldKeywords.some(keyword => lastMessage.includes(keyword)) && 
+                                     !scientificKeywords.some(keyword => lastMessage.includes(keyword));
+    const isScientificDiagram = scientificKeywords.some(keyword => lastMessage.includes(keyword)) || 
+                                (needsVisualization && !isRealWorldImageRequest);
+
+    // Handle real-world image requests by fetching from the web
+    if (needsVisualization && isRealWorldImageRequest) {
+      try {
+        // Extract the subject from the query
+        const subjectMatch = lastMessage.match(/(?:who is|show|picture of|photo of|image of)\s+(.+?)(?:\?|$)/i);
+        const subject = subjectMatch ? subjectMatch[1].trim() : lastMessage;
+        
+        console.log(`Fetching real-world image for: ${subject}`);
+        
+        // Use Wikipedia/Wikimedia as primary source (no API key required)
+        const wikiSearchResponse = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageimages|pageterms&piprop=thumbnail&pithumbsize=800&titles=${encodeURIComponent(subject)}&origin=*`
+        );
+        
+        if (wikiSearchResponse.ok) {
+          const wikiData = await wikiSearchResponse.json();
+          const pages = wikiData.query?.pages;
+          
+          if (pages) {
+            const pageId = Object.keys(pages)[0];
+            const page = pages[pageId];
+            const imageUrl = page?.thumbnail?.source;
+            
+            if (imageUrl && pageId !== '-1') {
+              console.log(`Found Wikipedia image: ${imageUrl}`);
+              return new Response(JSON.stringify({ 
+                content: `Here is an image of ${subject}:`,
+                image: imageUrl,
+                hasImage: true,
+                isRealImage: true
+              }), {
+                headers: { ...corsHeaders, "Content-Type": "application/json" },
+              });
+            }
+          }
+        }
+        
+        console.log('No image found, falling back to text response');
+      } catch (error) {
+        console.error('Error fetching real-world image:', error);
+        // Fall through to text response if image fetching fails
+      }
+    }
+
+    // Handle scientific/educational diagram generation
+    if (needsVisualization && isScientificDiagram) {
       // Generate image using Lovable AI
       const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
