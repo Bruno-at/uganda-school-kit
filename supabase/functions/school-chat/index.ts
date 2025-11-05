@@ -36,7 +36,34 @@ serve(async (req) => {
           messages: [
             {
               role: "user",
-              content: `Create a clear, educational ${language === 'en' ? 'English' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : language === 'ar' ? 'Arabic' : language === 'zh' ? 'Chinese' : language === 'sw' ? 'Kiswahili' : 'English'} labeled diagram or illustration for: ${lastMessage}. Make it suitable for academic learning with clear labels and professional quality.`
+              content: `You are an expert educational illustrator. Create a highly accurate, professionally labeled diagram for: "${lastMessage}"
+
+CRITICAL REQUIREMENTS:
+1. ACCURATE LABELING: Every part must be correctly labeled with its actual scientific/anatomical name
+   - Eye → labeled as "Eye" (not random text)
+   - Wing → labeled as "Wing" (not misplaced)
+   - Each component must match real-world structure exactly
+
+2. DIAGRAM QUALITY:
+   - Use clear, bold labels with leader lines pointing to exact features
+   - Labels in ${language === 'en' ? 'English' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : language === 'ar' ? 'Arabic' : language === 'zh' ? 'Chinese' : language === 'sw' ? 'Kiswahili' : 'English'}
+   - Professional educational textbook style
+   - Clean white or light background
+   - High contrast for visibility
+
+3. INTELLIGENT CONTEXT UNDERSTANDING:
+   - For biological subjects (animals, plants, cells): Include all major anatomical features
+   - For physics/engineering (X-ray tubes, circuits): Show all functional components with technical labels
+   - For geography/maps: Accurate geographical features and locations
+   - For chemistry: Proper molecular structures and apparatus labels
+
+4. LAYOUT:
+   - Main subject centered and clearly visible
+   - Labels positioned around the subject without overlapping
+   - Use arrows or lines connecting labels to features
+   - Include a simple title at the top
+
+Generate a scientifically accurate, educational-quality labeled diagram now.`
             }
           ],
           modalities: ["image", "text"]
