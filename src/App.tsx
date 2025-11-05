@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AppLayout } from "@/components/layout/AppLayout";
+import '@/i18n/config';
 import { useEffect } from 'react';
 import Index from "./pages/Index";
 import About from "./pages/About";
@@ -37,118 +38,6 @@ import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
-declare global {
-  interface Window {
-    google: any;
-    googleTranslateElementInit: () => void;
-  }
-}
-
-const GoogleTranslateLoader = () => {
-  useEffect(() => {
-    // Add comprehensive styling to hide Google Translate UI elements
-    const style = document.createElement('style');
-    style.innerHTML = `
-      .goog-te-banner-frame,
-      .goog-te-balloon-frame,
-      #goog-gt-tt,
-      .goog-te-balloon-frame,
-      .skiptranslate,
-      .goog-te-gadget,
-      .goog-te-combo,
-      body > .skiptranslate,
-      body > .skiptranslate iframe.skiptranslate,
-      #goog-gt-,
-      .VIpgJd-ZVi9od-ORHb-OEVmcd {
-        display: none !important;
-      }
-      #google_translate_element {
-        display: none !important;
-      }
-      body {
-        top: 0 !important;
-        position: static !important;
-      }
-      .translated-ltr {
-        margin-top: 0 !important;
-      }
-      .goog-te-banner-frame.skiptranslate {
-        display: none !important;
-      }
-      body {
-        position: relative !important;
-      }
-    `;
-    document.head.appendChild(style);
-
-    // Set custom event for language change detection
-    window.addEventListener('languageChanged', ((event: CustomEvent) => {
-      const lang = event.detail.language;
-      if (lang === 'en') {
-        // Reset to original language
-        const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-        if (select) {
-          select.value = '';
-          select.dispatchEvent(new Event('change'));
-        }
-      }
-    }) as EventListener);
-
-    // Load Google Translate script
-    const script = document.createElement('script');
-    script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-
-    // Initialize Google Translate
-    window.googleTranslateElementInit = function() {
-      new window.google.translate.TranslateElement(
-        {
-          pageLanguage: 'en',
-          includedLanguages: 'en,sw,fr,ar,zh-CN,es,de,pt,it,ja,ko,hi,ru',
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-          multilanguagePage: true,
-        },
-        'google_translate_element'
-      );
-
-      // Wait for the translate element to be fully initialized
-      const checkTranslateReady = setInterval(() => {
-        const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-        if (select) {
-          clearInterval(checkTranslateReady);
-          
-          // Restore saved language preference
-          const savedLang = localStorage.getItem('preferredLanguage');
-          if (savedLang && savedLang !== 'en') {
-            setTimeout(() => {
-              select.value = savedLang;
-              select.dispatchEvent(new Event('change'));
-            }, 500);
-          }
-        }
-      }, 100);
-
-      // Clear the interval after 10 seconds if not found
-      setTimeout(() => clearInterval(checkTranslateReady), 10000);
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      if (document.body.contains(script)) {
-        document.body.removeChild(script);
-      }
-      if (document.head.contains(style)) {
-        document.head.removeChild(style);
-      }
-      window.removeEventListener('languageChanged', (() => {}) as EventListener);
-    };
-  }, []);
-
-  return <div id="google_translate_element" style={{ display: 'none', visibility: 'hidden', width: 0, height: 0 }}></div>;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="excellence-academy-theme">
@@ -156,7 +45,6 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <GoogleTranslateLoader />
           <BrowserRouter>
           <AppLayout>
             <Routes>
