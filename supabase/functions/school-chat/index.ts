@@ -34,9 +34,22 @@ serve(async (req) => {
     // Handle real-world image requests by fetching from the web
     if (needsVisualization && isRealWorldImageRequest) {
       try {
-        // Extract the subject from the query
-        const subjectMatch = lastMessage.match(/(?:who is|show|picture of|photo of|image of)\s+(.+?)(?:\?|$)/i);
-        const subject = subjectMatch ? subjectMatch[1].trim() : lastMessage;
+        // Extract the subject from the query - improved regex to handle various patterns
+        let subject = lastMessage;
+        
+        // Try different patterns to extract the subject
+        const patterns = [
+          /(?:who is|show me|picture of|photo of|image of)\s+(?:the\s+)?(?:image\s+of\s+)?(.+?)(?:\?|$)/i,
+          /(?:show|draw|generate)\s+(?:me\s+)?(?:the\s+)?(?:image\s+of\s+)?(?:a\s+)?(?:picture\s+of\s+)?(.+?)(?:\?|$)/i
+        ];
+        
+        for (const pattern of patterns) {
+          const match = lastMessage.match(pattern);
+          if (match && match[1]) {
+            subject = match[1].trim();
+            break;
+          }
+        }
         
         console.log(`Fetching real-world image for: ${subject}`);
         
