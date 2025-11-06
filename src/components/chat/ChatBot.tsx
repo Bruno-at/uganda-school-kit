@@ -37,7 +37,21 @@ const ChatBot: React.FC = () => {
   }, []);
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem('chatbot-messages', JSON.stringify(messages));
+      try {
+        // Don't store images in localStorage - only text messages
+        const messagesWithoutImages = messages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
+        localStorage.setItem('chatbot-messages', JSON.stringify(messagesWithoutImages));
+      } catch (error) {
+        if (error instanceof Error && error.name === 'QuotaExceededError') {
+          console.warn('localStorage quota exceeded, clearing old messages');
+          // Clear chat history when quota exceeded
+          localStorage.removeItem('chatbot-messages');
+          toast.error('Chat history cleared due to storage limit');
+        }
+      }
     }
   }, [messages]);
   useEffect(() => {
