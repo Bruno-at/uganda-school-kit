@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Phone, Mail, GraduationCap, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from '@/components/ui/LanguageSelector';
+import { useLanguage } from '@/contexts/LanguageContext';
 import logo from '@/assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,16 +22,16 @@ const Header = () => {
   }, []);
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/admissions', label: 'Admissions' },
-    { href: '/academics', label: 'Academics' },
-    { href: '/student-life', label: 'Student Life' },
-    { href: '/parents', label: 'Parents' },
-    { href: '/news', label: 'News & Events' },
-    { href: '/shop', label: 'Shop' },
-    { href: '/donate', label: 'Donate' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t('nav.home') },
+    { href: '/about', label: t('nav.about') },
+    { href: '/admissions', label: t('nav.admissions') },
+    { href: '/academics', label: t('nav.academics') },
+    { href: '/student-life', label: t('nav.studentLife') },
+    { href: '/parents', label: t('nav.parents') },
+    { href: '/news', label: t('nav.news') },
+    { href: '/shop', label: t('nav.shop') },
+    { href: '/donate', label: t('nav.donate') },
+    { href: '/contact', label: t('nav.contact') },
   ];
 
   return (
@@ -38,9 +40,9 @@ const Header = () => {
       <div className="bg-gradient-to-r from-primary to-primary-light text-primary-foreground py-2 px-4">
         <div className="container mx-auto text-center">
           <p className="text-sm font-medium">
-            🎓 Admissions Open for 2024 Academic Year - Term 1 Starts Soon!{' '}
+            {t('header.announcement')}{' '}
             <Link to="/admissions" className="underline hover:no-underline font-semibold">
-              Apply Now
+              {t('header.applyNow')}
             </Link>
           </p>
         </div>
@@ -86,10 +88,10 @@ const Header = () => {
             <div className="hidden lg:flex items-center space-x-2">
               <LanguageSelector />
               <Button variant="outline" size="sm" asChild>
-                <Link to="/portal">Portal</Link>
+                <Link to="/portal">{t('nav.portal')}</Link>
               </Button>
               <Button variant="admission" size="sm" asChild>
-                <Link to="/admissions">Apply Now</Link>
+                <Link to="/admissions">{t('cta.applyNow')}</Link>
               </Button>
               <Button variant="ghost" size="icon" asChild>
                 <Link to="/settings" aria-label="Settings">

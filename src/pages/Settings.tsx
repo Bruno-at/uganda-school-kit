@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Select,
   SelectContent,
@@ -17,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [fontSize, setFontSize] = useState<string>('medium');
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
@@ -72,8 +74,8 @@ const Settings = () => {
     <div className="min-h-screen bg-background py-12">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Settings</h1>
-          <p className="text-muted-foreground">Manage your preferences and account settings</p>
+          <h1 className="text-4xl font-bold mb-2">{t('settings.title')}</h1>
+          <p className="text-muted-foreground">{t('settings.subtitle')}</p>
         </div>
 
         <div className="grid gap-6">
