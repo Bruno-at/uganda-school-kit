@@ -23,13 +23,19 @@ serve(async (req) => {
     const visualKeywords = ['draw', 'show', 'illustrate', 'diagram', 'structure', 'picture', 'sketch', 'graph', 'chart', 'visualize', 'depict', 'image of', 'create', 'generate'];
     const needsVisualization = visualKeywords.some(keyword => lastMessage.includes(keyword));
 
+    // Detect comparison requests
+    const comparisonKeywords = ['compare', 'difference between', 'vs', 'versus', 'contrast'];
+    const isComparisonRequest = comparisonKeywords.some(keyword => lastMessage.includes(keyword));
+
     // Detect if this is a request for a real-world image (person, place, historical figure)
     const realWorldKeywords = ['who is', 'show me', 'picture of', 'photo of', 'image of'];
     const scientificKeywords = ['diagram', 'structure', 'draw', 'illustrate', 'label', 'anatomy', 'circuit', 'molecule', 'cell', 'system'];
     const isRealWorldImageRequest = realWorldKeywords.some(keyword => lastMessage.includes(keyword)) && 
-                                     !scientificKeywords.some(keyword => lastMessage.includes(keyword));
+                                     !scientificKeywords.some(keyword => lastMessage.includes(keyword)) &&
+                                     !isComparisonRequest;
     const isScientificDiagram = scientificKeywords.some(keyword => lastMessage.includes(keyword)) || 
-                                (needsVisualization && !isRealWorldImageRequest);
+                                (needsVisualization && !isRealWorldImageRequest) ||
+                                isComparisonRequest;
 
     // Handle real-world image requests by fetching from the web
     if (needsVisualization && isRealWorldImageRequest) {
@@ -77,32 +83,51 @@ serve(async (req) => {
               }), {
                 headers: { ...corsHeaders, "Content-Type": "application/json" },
               });
+            } else {
+              console.log(`Wikipedia page found but no image available for: ${subject}`);
             }
           }
         }
         
-        console.log('No image found, falling back to text response');
+        console.log('No Wikipedia image found, will provide text response');
       } catch (error) {
         console.error('Error fetching real-world image:', error);
-        // Fall through to text response if image fetching fails
       }
     }
 
-    // Handle scientific/educational diagram generation
+    // Handle scientific/educational diagram generation and comparisons
     if (needsVisualization && isScientificDiagram) {
       // Generate image using Lovable AI
-      const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image-preview",
-          messages: [
-            {
-              role: "user",
-              content: `You are an expert educational illustrator. Create a highly accurate, professionally labeled diagram for: "${lastMessage}"
+      let promptContent = '';
+      
+      if (isComparisonRequest) {
+        promptContent = `You are an expert educational illustrator. Create a side-by-side comparison diagram for: "${lastMessage}"
+
+CRITICAL REQUIREMENTS FOR COMPARISON DIAGRAMS:
+1. SIDE-BY-SIDE LAYOUT: 
+   - Show both concepts clearly separated (left vs right)
+   - Each side should be properly labeled with the concept name
+   - Use dividing line or clear visual separation
+
+2. ACCURATE LABELING: 
+   - Every part must be correctly labeled with its actual scientific name
+   - Match real-world structures exactly
+   - Labels in ${language === 'en' ? 'English' : language === 'fr' ? 'French' : language === 'es' ? 'Spanish' : language === 'ar' ? 'Arabic' : language === 'zh' ? 'Chinese' : language === 'sw' ? 'Kiswahili' : 'English'}
+
+3. HIGHLIGHT DIFFERENCES:
+   - Use colors or annotations to show key differences
+   - Add brief text notes explaining major distinctions
+   - Make similarities and differences visually obvious
+
+4. PROFESSIONAL QUALITY:
+   - Educational textbook style
+   - Clean white or light background
+   - Clear, bold labels with leader lines
+   - High contrast for visibility
+
+Generate a scientifically accurate comparison diagram now.`;
+      } else {
+        promptContent = `You are an expert educational illustrator. Create a highly accurate, professionally labeled diagram for: "${lastMessage}"
 
 CRITICAL REQUIREMENTS:
 1. ACCURATE LABELING: Every part must be correctly labeled with its actual scientific/anatomical name
@@ -129,7 +154,21 @@ CRITICAL REQUIREMENTS:
    - Use arrows or lines connecting labels to features
    - Include a simple title at the top
 
-Generate a scientifically accurate, educational-quality labeled diagram now.`
+Generate a scientifically accurate, educational-quality labeled diagram now.`;
+      }
+
+      const imageResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image-preview",
+          messages: [
+            {
+              role: "user",
+              content: promptContent
             }
           ],
           modalities: ["image", "text"]
