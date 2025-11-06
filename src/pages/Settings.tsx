@@ -11,11 +11,10 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
-import { Moon, Sun, Bell, Type, Shield, Globe } from 'lucide-react';
+import { Moon, Sun, Bell, Type, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Settings = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const [fontSize, setFontSize] = useState<string>('medium');
@@ -31,12 +30,6 @@ const Settings = () => {
       metaDescription.setAttribute('content', 'Configure your language preferences and settings for Excellence Academy website.');
     }
 
-    // Get saved language from localStorage
-    const savedLang = localStorage.getItem('preferredLanguage');
-    if (savedLang) {
-      setSelectedLanguage(savedLang);
-    }
-
     // Get saved preferences
     const savedFontSize = localStorage.getItem('fontSize');
     if (savedFontSize) setFontSize(savedFontSize);
@@ -50,52 +43,6 @@ const Settings = () => {
     const savedAnalytics = localStorage.getItem('analyticsEnabled');
     if (savedAnalytics !== null) setAnalyticsEnabled(savedAnalytics === 'true');
   }, []);
-
-  const handleLanguageChange = (value: string) => {
-    setSelectedLanguage(value);
-    localStorage.setItem('preferredLanguage', value);
-    
-    // Dispatch custom event for language change
-    window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: value } }));
-    
-    // Wait for Google Translate to be ready and apply translation
-    const checkAndTranslate = (attempts = 0) => {
-      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-      if (select) {
-        if (value === 'en') {
-          // Reset to English
-          select.value = '';
-          select.dispatchEvent(new Event('change'));
-          toast({ 
-            title: 'Language changed', 
-            description: 'Website is now in English.' 
-          });
-        } else {
-          // Change to selected language
-          select.value = value;
-          select.dispatchEvent(new Event('change'));
-          
-          // Show toast notification
-          const langName = languages.find(l => l.code === value)?.name || value;
-          toast({ 
-            title: 'Language changed', 
-            description: `Website is now translating to ${langName}. This may take a moment.` 
-          });
-        }
-      } else if (attempts < 20) {
-        // If not ready, try again (max 20 attempts = 2 seconds)
-        setTimeout(() => checkAndTranslate(attempts + 1), 100);
-      } else {
-        toast({ 
-          title: 'Translation unavailable', 
-          description: 'Please refresh the page and try again.',
-          variant: 'destructive'
-        });
-      }
-    };
-    
-    checkAndTranslate();
-  };
 
   const handleFontSizeChange = (value: string) => {
     setFontSize(value);
@@ -120,22 +67,6 @@ const Settings = () => {
     localStorage.setItem('analyticsEnabled', String(value));
     toast({ title: 'Privacy settings updated', description: `Analytics ${value ? 'enabled' : 'disabled'}.` });
   };
-
-  const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'sw', name: 'Kiswahili' },
-    { code: 'fr', name: 'Français' },
-    { code: 'ar', name: 'العربية (Arabic)' },
-    { code: 'zh-CN', name: '中文 (Chinese)' },
-    { code: 'es', name: 'Español' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'pt', name: 'Português' },
-    { code: 'it', name: 'Italiano' },
-    { code: 'ja', name: '日本語 (Japanese)' },
-    { code: 'ko', name: '한국어 (Korean)' },
-    { code: 'hi', name: 'हिन्दी (Hindi)' },
-    { code: 'ru', name: 'Русский (Russian)' },
-  ];
 
   return (
     <div className="min-h-screen bg-background py-12">
@@ -192,47 +123,6 @@ const Settings = () => {
                 </Select>
                 <p className="text-sm text-muted-foreground">
                   Adjust the text size for better readability
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Language Settings */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Globe className="h-5 w-5" />
-                <CardTitle>Language</CardTitle>
-              </div>
-              <CardDescription>
-                Choose your preferred language. The entire website will be translated automatically.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="language-select">Choose Language</Label>
-                <Select onValueChange={handleLanguageChange} value={selectedLanguage}>
-                  <SelectTrigger id="language-select">
-                    <SelectValue placeholder="Select a language" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {languages.map((lang) => (
-                      <SelectItem key={lang.code} value={lang.code}>
-                        {lang.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <p className="text-sm text-muted-foreground">
-                  Your language preference will be saved and remembered on your next visit.
-                </p>
-              </div>
-
-              <div className="pt-4 border-t">
-                <h3 className="text-sm font-medium mb-2">About Translation</h3>
-                <p className="text-sm text-muted-foreground">
-                  Translation is powered by Google Translate. The selected language will apply to all pages across the website.
-                  Please note that automatic translations may not always be perfect.
                 </p>
               </div>
             </CardContent>
