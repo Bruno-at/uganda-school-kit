@@ -67,10 +67,17 @@
   "settings.analytics": "Análisis y rendimiento",
   "settings.analyticsDesc": "Ayúdenos a mejorar compartiendo datos de uso anónimos",
   
-  "footer.schoolInfo": "Información escolar",
-  "footer.quickLinks": "Enlaces rápidos",
-  "footer.forParents": "Para padres",
+  "footer.schoolInfo": "Información de la Escuela",
+  "footer.quickLinks": "Enlaces Rápidos",
+  "footer.forParents": "Para Padres",
   "footer.newsletter": "Boletín",
   "footer.copyright": "© 2024 Excellence Academy. Todos los derechos reservados.",
-  "footer.location": "Kampala, Uganda"
+  "footer.location": "Kampala, Uganda",
+  
+  "about.title": "Acerca de Excellence Academy",
+  "academics.title": "Programas Académicos",
+  "contact.title": "Contáctenos",
+  "donate.title": "Apoya Excellence Academy",
+  "auth.title": "Portal Excellence Academy",
+  "calendar.title": "Calendario Escolar"
 }
