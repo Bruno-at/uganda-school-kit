@@ -254,7 +254,7 @@ const ChatBot: React.FC = () => {
         <MessageCircle className="h-6 w-6" />
       </button>;
   }
-  return <div className={cn("fixed bottom-6 right-6 z-50 bg-background border border-border rounded-lg shadow-2xl transition-all duration-300", isMinimized ? "w-80 h-14" : "w-96 h-[600px]")}>
+  return <div className={cn("fixed bottom-6 right-6 z-50 bg-background border border-border rounded-lg shadow-2xl transition-all duration-300", isMinimized ? "w-80 h-14" : "w-[32rem] h-[600px]")}>
       <div className="flex items-center justify-between p-4 border-b border-border bg-primary text-primary-foreground rounded-t-lg">
         <h3 className="font-semibold flex items-center gap-2">
           <MessageCircle className="h-5 w-5" />
@@ -277,7 +277,7 @@ const ChatBot: React.FC = () => {
                 <p className="text-sm">Hello! I'm your AI School Assistant.</p>
                 <p className="text-xs mt-1">Ask me anything about school or academics!</p>
               </div>}
-            {messages.map((msg, idx) => <div key={idx} className={cn("mb-4 p-3 rounded-lg relative transition-all", msg.isRemoving ? "animate-fade-out" : "animate-fade-in", msg.role === 'user' ? "bg-primary text-primary-foreground ml-auto max-w-[85%]" : "bg-muted text-foreground max-w-full")}>
+            {messages.map((msg, idx) => <div key={idx} className={cn("mb-4 p-3 rounded-lg relative transition-all", msg.isRemoving ? "animate-fade-out" : "animate-fade-in", msg.role === 'user' ? "bg-primary text-primary-foreground ml-auto max-w-[90%]" : "bg-muted text-foreground max-w-full")}>
                 <div className="absolute top-2 right-2 bg-slate-50">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -297,7 +297,7 @@ const ChatBot: React.FC = () => {
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
-                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                <p className="text-sm whitespace-pre-wrap break-words pr-8">{msg.content}</p>
                 
                 {msg.image && msg.imageId && <div className="mt-3 space-y-2 animate-fade-in">
                     <div className="relative group">
