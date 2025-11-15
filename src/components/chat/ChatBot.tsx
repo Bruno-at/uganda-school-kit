@@ -21,17 +21,29 @@ const ChatBot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [deletedImageIds, setDeletedImageIds] = useState<Set<string>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
   const {
     language
   } = useLanguage();
+  // Load messages and deleted image IDs on mount
   useEffect(() => {
     const saved = localStorage.getItem('chatbot-messages');
+    const savedDeletedIds = localStorage.getItem('chatbot-deleted-images');
+    
     if (saved) {
       try {
         setMessages(JSON.parse(saved));
       } catch (e) {
         console.error('Failed to parse saved messages:', e);
+      }
+    }
+    
+    if (savedDeletedIds) {
+      try {
+        setDeletedImageIds(new Set(JSON.parse(savedDeletedIds)));
+      } catch (e) {
+        console.error('Failed to parse deleted image IDs:', e);
       }
     }
   }, []);
@@ -89,13 +101,22 @@ const ChatBot: React.FC = () => {
         const data = await resp.json();
         if (data.hasImage && data.image) {
           const imageId = crypto.randomUUID();
-          setMessages([...newMessages, {
-            role: 'assistant',
-            content: data.content,
-            image: data.image,
-            imageId,
-            imageCreatedAt: Date.now()
-          }]);
+          
+          // Check if this image was previously deleted
+          if (deletedImageIds.has(imageId)) {
+            setMessages([...newMessages, {
+              role: 'assistant',
+              content: data.content
+            }]);
+          } else {
+            setMessages([...newMessages, {
+              role: 'assistant',
+              content: data.content,
+              image: data.image,
+              imageId,
+              imageCreatedAt: Date.now()
+            }]);
+          }
           setIsLoading(false);
           return;
         }
@@ -200,13 +221,22 @@ const ChatBot: React.FC = () => {
     }
   };
   const handleDeleteImage = (imageId: string) => {
+    // Add to deleted images set
+    const newDeletedIds = new Set(deletedImageIds);
+    newDeletedIds.add(imageId);
+    setDeletedImageIds(newDeletedIds);
+    
+    // Persist to localStorage
+    localStorage.setItem('chatbot-deleted-images', JSON.stringify(Array.from(newDeletedIds)));
+    
+    // Remove from messages
     setMessages(prevMessages => prevMessages.map(msg => msg.imageId === imageId ? {
       ...msg,
       image: undefined,
       imageId: undefined,
       imageCreatedAt: undefined
     } : msg));
-    toast.success('Image removed');
+    toast.success('Image removed permanently');
   };
   const handleEditChart = (imageId: string) => {
     const message = messages.find(msg => msg.imageId === imageId);
@@ -247,7 +277,9 @@ const ChatBot: React.FC = () => {
   };
   const handleClear = () => {
     setMessages([]);
+    setDeletedImageIds(new Set());
     localStorage.removeItem('chatbot-messages');
+    localStorage.removeItem('chatbot-deleted-images');
   };
   if (!isOpen) {
     return <button onClick={() => setIsOpen(true)} className="fixed bottom-6 right-6 z-50 bg-primary text-primary-foreground rounded-full p-4 shadow-lg hover:scale-110 transition-transform duration-200" aria-label="Open AI School Assistant">
