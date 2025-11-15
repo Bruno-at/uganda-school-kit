@@ -46,25 +46,25 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up [--animation-delay:400ms] animate-stagger">
-              <Button variant="secondary" size="xl" asChild>
+              <Button variant="secondary" size="xl" className="border-2 border-primary-foreground/30 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/admissions">
                   Apply Now
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
+              <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/membership">
                   Join PTA/Alumni
                   <Users className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
+              <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/shop">
                   School Shop
                   <ExternalLink className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
+              <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/donate">
                   Support Us
                 </Link>
