@@ -52,13 +52,13 @@ const Index = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+              <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
                 <Link to="/membership">
                   Join PTA/Alumni
                   <Users className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button variant="outline" size="xl" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
+              <Button variant="ghost" size="xl" className="text-primary-foreground hover:bg-primary-foreground/10" asChild>
                 <Link to="/shop">
                   School Shop
                   <ExternalLink className="ml-2 h-5 w-5" />
