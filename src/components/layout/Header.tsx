@@ -136,15 +136,15 @@ const Header = () => {
                   <LanguageSelector />
                 </div>
                 <Button variant="outline" className="w-full" asChild>
-                  <Link to="/portal">Portal Login</Link>
+                  <Link to="/portal">{t('nav.portal')}</Link>
                 </Button>
                 <Button variant="admission" className="w-full" asChild>
-                  <Link to="/admissions">Apply Now</Link>
+                  <Link to="/admissions">{t('cta.applyNow')}</Link>
                 </Button>
                 <Button variant="ghost" className="w-full" asChild>
                   <Link to="/settings">
                     <Settings className="h-5 w-5 mr-2" />
-                    Settings
+                    {t('nav.settings')}
                   </Link>
                 </Button>
               </div>

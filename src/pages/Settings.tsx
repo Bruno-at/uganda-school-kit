@@ -84,18 +84,18 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Sun className="h-5 w-5" />
-                <CardTitle>Appearance</CardTitle>
+                <CardTitle>{t('settings.appearance')}</CardTitle>
               </div>
               <CardDescription>
-                Customize how Excellence Academy looks on your device
+                {t('settings.appearanceDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label htmlFor="theme-toggle">Theme</Label>
+                  <Label htmlFor="theme-toggle">{t('settings.theme')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Choose between light and dark mode
+                    {t('settings.themeDesc')}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -112,19 +112,19 @@ const Settings = () => {
               <Separator />
 
               <div className="space-y-2">
-                <Label htmlFor="font-size">Font Size</Label>
+                <Label htmlFor="font-size">{t('settings.fontSize')}</Label>
                 <Select onValueChange={handleFontSizeChange} value={fontSize}>
                   <SelectTrigger id="font-size">
                     <SelectValue placeholder="Select font size" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="small">Small</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="large">Large</SelectItem>
+                    <SelectItem value="small">{t('settings.fontSmall')}</SelectItem>
+                    <SelectItem value="medium">{t('settings.fontMedium')}</SelectItem>
+                    <SelectItem value="large">{t('settings.fontLarge')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-sm text-muted-foreground">
-                  Adjust the text size for better readability
+                  {t('settings.fontSizeDesc')}
                 </p>
               </div>
             </CardContent>
@@ -135,18 +135,18 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Bell className="h-5 w-5" />
-                <CardTitle>Notifications</CardTitle>
+                <CardTitle>{t('settings.notifications')}</CardTitle>
               </div>
               <CardDescription>
-                Manage how you receive updates from Excellence Academy
+                {t('settings.notificationsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label htmlFor="email-notifications">Email Notifications</Label>
+                  <Label htmlFor="email-notifications">{t('settings.emailNotifications')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Receive updates about events, news, and announcements
+                    {t('settings.emailDesc')}
                   </p>
                 </div>
                 <Switch
@@ -160,9 +160,9 @@ const Settings = () => {
 
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label htmlFor="push-notifications">Push Notifications</Label>
+                  <Label htmlFor="push-notifications">{t('settings.pushNotifications')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Get instant alerts for important school updates
+                    {t('settings.pushDesc')}
                   </p>
                 </div>
                 <Switch
@@ -179,18 +179,18 @@ const Settings = () => {
             <CardHeader>
               <div className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
-                <CardTitle>Privacy & Data</CardTitle>
+                <CardTitle>{t('settings.privacy')}</CardTitle>
               </div>
               <CardDescription>
-                Control how your data is used and shared
+                {t('settings.privacyDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label htmlFor="analytics">Analytics & Performance</Label>
+                  <Label htmlFor="analytics">{t('settings.analytics')}</Label>
                   <p className="text-sm text-muted-foreground">
-                    Help us improve by sharing anonymous usage data
+                    {t('settings.analyticsDesc')}
                   </p>
                 </div>
                 <Switch
