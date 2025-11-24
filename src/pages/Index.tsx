@@ -5,6 +5,7 @@ import StatsCard from '@/components/ui/StatsCard';
 import NewsCard from '@/components/ui/NewsCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import AccreditationBadge from '@/components/ui/AccreditationBadge';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Users,
   GraduationCap,
@@ -24,6 +25,7 @@ import heroImage from '@/assets/hero-students.jpg';
 import classroomImage from '@/assets/classroom-scene.jpg';
 
 const Index = () => {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
       
@@ -38,35 +40,34 @@ const Index = () => {
         <div className="relative container mx-auto px-4 py-20 lg:py-32">
           <div className="max-w-4xl mx-auto text-center text-primary-foreground space-y-8">
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight animate-fade-in-up">
-              Nurturing Character, Excellence, and Innovation
+              {t('hero.title')}
             </h1>
             <p className="text-xl lg:text-2xl leading-relaxed text-primary-foreground/90 animate-fade-in-up [--animation-delay:200ms] animate-stagger">
-              Excellence Academy is committed to providing world-class education that develops academic excellence, 
-              strong character, and innovative thinking in every student.
+              {t('hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up [--animation-delay:400ms] animate-stagger">
               <Button variant="secondary" size="xl" className="border-2 border-primary-foreground/30 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/admissions">
-                  Apply Now
+                  {t('cta.applyNow')}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/membership">
-                  Join PTA/Alumni
+                  {t('cta.joinPTA')}
                   <Users className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/shop">
-                  School Shop
+                  {t('cta.schoolShop')}
                   <ExternalLink className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="ghost" size="xl" className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]" asChild>
                 <Link to="/donate">
-                  Support Us
+                  {t('cta.supportUs')}
                 </Link>
               </Button>
             </div>
@@ -79,27 +80,27 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             <StatsCard
-              title="Years of Excellence"
+              title={t('stats.yearsOfExcellence')}
               value="25+"
-              description="Serving Kampala families since 1999"
+              description={t('stats.yearsDesc')}
               icon={<Award className="h-6 w-6" />}
             />
             <StatsCard
-              title="Happy Students"
+              title={t('stats.happyStudents')}
               value="1,200+"
-              description="Currently enrolled across all levels"
+              description={t('stats.studentsDesc')}
               icon={<Users className="h-6 w-6" />}
             />
             <StatsCard
-              title="Qualified Teachers"
+              title={t('stats.qualifiedTeachers')}
               value="80+"
-              description="Dedicated and experienced educators"
+              description={t('stats.teachersDesc')}
               icon={<GraduationCap className="h-6 w-6" />}
             />
             <StatsCard
-              title="National Awards"
+              title={t('stats.nationalAwards')}
               value="15+"
-              description="Recognition for academic excellence"
+              description={t('stats.awardsDesc')}
               icon={<BookOpen className="h-6 w-6" />}
             />
           </div>
@@ -110,9 +111,9 @@ const Index = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Latest News & Events</h2>
+            <h2 className="text-4xl font-bold mb-4">{t('home.newsTitle')}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Stay updated with the latest happenings, achievements, and upcoming events at Excellence Academy.
+              {t('home.newsSubtitle')}
             </p>
           </div>
           
@@ -144,7 +145,7 @@ const Index = () => {
           <div className="text-center">
             <Button variant="outline" size="lg" asChild>
               <Link to="/news">
-                View All News & Events
+                {t('cta.viewAll')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
@@ -156,9 +157,9 @@ const Index = () => {
       <section className="py-16 bg-surface">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">What Our Community Says</h2>
+            <h2 className="text-4xl font-bold mb-4">{t('home.testimonialsTitle')}</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Hear from our students, parents, and alumni about their experience at Excellence Academy.
+              {t('home.testimonialsSubtitle')}
             </p>
           </div>
           
@@ -186,9 +187,9 @@ const Index = () => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">International Accreditations & Partnerships</h2>
+            <h2 className="text-4xl font-bold mb-4">{t('home.accreditationsTitle')}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Globally recognized and partnering with leading educational institutions worldwide to provide world-class education.
+              {t('home.accreditationsSubtitle')}
             </p>
           </div>
           
@@ -238,7 +239,7 @@ const Index = () => {
           </div>
 
           <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20">
-            <h3 className="text-2xl font-bold text-center mb-6">Global University Partnerships</h3>
+            <h3 className="text-2xl font-bold text-center mb-6">{t('home.universityPartnerships')}</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center">
               <div className="text-center p-4">
                 <p className="font-semibold text-sm">University of Oxford</p>
