@@ -56,6 +56,60 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          end_date: string
+          full_details: string
+          id: string
+          image_url: string | null
+          is_highlighted: boolean | null
+          location: string
+          short_description: string
+          slug: string
+          start_date: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          end_date: string
+          full_details: string
+          id?: string
+          image_url?: string | null
+          is_highlighted?: boolean | null
+          location: string
+          short_description: string
+          slug: string
+          start_date: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          end_date?: string
+          full_details?: string
+          id?: string
+          image_url?: string | null
+          is_highlighted?: boolean | null
+          location?: string
+          short_description?: string
+          slug?: string
+          start_date?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       memberships: {
         Row: {
           auto_renew: boolean | null
@@ -92,6 +146,60 @@ export type Database = {
           tier?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      news_items: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          date_published: string
+          full_content: string
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          reading_time: number | null
+          short_description: string
+          slug: string
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          date_published?: string
+          full_content: string
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          reading_time?: number | null
+          short_description: string
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          date_published?: string
+          full_content?: string
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          reading_time?: number | null
+          short_description?: string
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
