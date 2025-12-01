@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Select,
@@ -12,8 +13,9 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
-import { Moon, Sun, Bell, Type, Shield } from 'lucide-react';
+import { Moon, Sun, Bell, Type, Shield, Newspaper } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
 
 const Settings = () => {
   const { theme, setTheme } = useTheme();
@@ -79,6 +81,27 @@ const Settings = () => {
         </div>
 
         <div className="grid gap-6">
+          {/* News & Events Management */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Newspaper className="h-5 w-5" />
+                <CardTitle>News & Events</CardTitle>
+              </div>
+              <CardDescription>
+                Manage news articles and upcoming events for your website
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link to="/settings/news-events">
+                <Button className="w-full">
+                  <Newspaper className="h-4 w-4 mr-2" />
+                  Open News & Events Settings
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
           {/* Appearance Settings */}
           <Card>
             <CardHeader>

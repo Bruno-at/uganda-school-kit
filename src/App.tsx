@@ -35,6 +35,7 @@ import Donate from "./pages/Donate";
 import Membership from "./pages/Membership";
 import Shop from "./pages/Shop";
 import Settings from "./pages/Settings";
+import NewsEventsSettings from "./pages/NewsEventsSettings";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
               <Route path="/membership" element={<Membership />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/settings/news-events" element={<NewsEventsSettings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
