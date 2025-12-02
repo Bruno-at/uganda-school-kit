@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/ui/StatsCard';
 import NewsCard from '@/components/ui/NewsCard';
 import TestimonialCard from '@/components/ui/TestimonialCard';
 import AccreditationBadge from '@/components/ui/AccreditationBadge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   Users,
@@ -12,13 +15,9 @@ import {
   Award,
   BookOpen,
   ArrowRight,
-  MapPin,
-  Phone,
-  Mail,
-  Calendar,
-  Download,
   ExternalLink
 } from 'lucide-react';
+import { format } from 'date-fns';
 
 // Import images
 import heroImage from '@/assets/hero-students.jpg';
@@ -26,6 +25,23 @@ import classroomImage from '@/assets/classroom-scene.jpg';
 
 const Index = () => {
   const { t } = useLanguage();
+
+  // Fetch latest 3 published news items from database
+  const { data: latestNews, isLoading: newsLoading } = useQuery({
+    queryKey: ['latest-news-home'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('news_items')
+        .select('*')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(3);
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <div className="min-h-screen bg-background">
       
@@ -118,28 +134,35 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            <NewsCard
-              title="Science Fair 2024 Winners Announced"
-              excerpt="Our students excelled in the annual inter-school science fair, winning top prizes in multiple categories including innovation and environmental science."
-              date="December 15, 2024"
-              image={classroomImage}
-              href="/news/science-fair-2024"
-              category="Achievement"
-            />
-            <NewsCard
-              title="New ICT Lab Opens for A-Level Students"
-              excerpt="State-of-the-art computer laboratory equipped with latest technology to enhance digital literacy and programming skills."
-              date="December 10, 2024"
-              href="/news/new-ict-lab"
-              category="Facilities"
-            />
-            <NewsCard
-              title="Parent-Teacher Conference - January 2025"
-              excerpt="Join us for our quarterly parent-teacher conference to discuss student progress and upcoming term plans."
-              date="January 8, 2025"
-              href="/events/parent-teacher-conference"
-              category="Event"
-            />
+            {newsLoading ? (
+              <>
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="space-y-4">
+                    <Skeleton className="h-48 w-full rounded-lg" />
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-6 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-3/4" />
+                  </div>
+                ))}
+              </>
+            ) : latestNews && latestNews.length > 0 ? (
+              latestNews.map((news) => (
+                <NewsCard
+                  key={news.id}
+                  title={news.title}
+                  excerpt={news.short_description}
+                  date={format(new Date(news.created_at), 'MMMM d, yyyy')}
+                  image={news.image_url || classroomImage}
+                  href={`/news/${news.slug}`}
+                  category={news.category}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-8 text-muted-foreground">
+                No news items available yet.
+              </div>
+            )}
           </div>
           
           <div className="text-center">
