@@ -29,29 +29,50 @@ const News = () => {
   const { data: newsData, isLoading: newsLoading } = useNewsItems();
   const { data: eventsData, isLoading: eventsLoading } = useEvents();
 
-  // Filter only published news items
-  const newsItems = (newsData || []).filter(item => item.status === 'published').map(item => ({
-    title: item.title,
-    excerpt: item.short_description,
-    date: format(new Date(item.date_published), 'MMMM dd, yyyy'),
-    category: item.category,
-    image: item.image_url,
-    readTime: item.reading_time ? `${item.reading_time} min read` : '3 min read',
-    featured: item.is_featured,
-    slug: item.slug,
-  }));
+  const now = new Date();
 
-  // Filter only upcoming events
+  // Filter only published news items (within 2 weeks of creation)
+  const newsItems = (newsData || [])
+    .filter(item => item.status === 'published')
+    .map(item => ({
+      title: item.title,
+      excerpt: item.short_description,
+      date: format(new Date(item.date_published), 'MMMM dd, yyyy'),
+      category: item.category,
+      image: item.image_url,
+      readTime: item.reading_time ? `${item.reading_time} min read` : '3 min read',
+      featured: item.is_featured,
+      slug: item.slug,
+      created_at: item.created_at,
+    }));
+
+  // Filter active events (expiry date has not passed)
   const upcomingEvents = (eventsData || [])
-    .filter(event => event.status === 'upcoming')
+    .filter(event => new Date(event.end_date) > now)
     .map(event => ({
       title: event.title,
-      date: format(new Date(event.start_date), 'MMMM dd, yyyy'),
-      time: `${format(new Date(event.start_date), 'h:mm a')} - ${format(new Date(event.end_date), 'h:mm a')}`,
+      eventDate: format(new Date(event.start_date), 'MMMM dd, yyyy'),
+      expiryDate: format(new Date(event.end_date), 'MMMM dd, yyyy'),
+      publishedDate: format(new Date(event.created_at), 'MMMM dd, yyyy'),
       location: event.location,
       type: event.category,
       description: event.short_description,
       slug: event.slug,
+    }));
+
+  // Get expired events to show in Latest News
+  const expiredEvents = (eventsData || [])
+    .filter(event => new Date(event.end_date) <= now)
+    .map(event => ({
+      title: event.title,
+      excerpt: event.short_description,
+      date: format(new Date(event.created_at), 'MMMM dd, yyyy'),
+      category: event.category,
+      image: event.image_url,
+      readTime: '2 min read',
+      featured: event.is_highlighted,
+      slug: event.slug,
+      isExpiredEvent: true,
     }));
 
   const legacyNewsItems = [
@@ -107,8 +128,10 @@ const News = () => {
     }
   ];
 
-  // Combine legacy and database news items
-  const allNewsItems = newsItems.length > 0 ? newsItems : legacyNewsItems;
+  // Combine news items with expired events (expired events become news)
+  const allNewsItems = [...newsItems, ...expiredEvents].length > 0 
+    ? [...newsItems, ...expiredEvents] 
+    : legacyNewsItems;
 
   const categories = [
     { value: 'all', label: 'All Categories' },
@@ -264,51 +287,53 @@ const News = () => {
             <TabsContent value="events" className="space-y-8">
               <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h2>
               
-              <div className="grid md:grid-cols-2 gap-8">
-                {upcomingEvents.map((event, index) => (
-                  <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-1 bg-secondary/10 text-secondary text-xs font-medium rounded-full">
-                            {event.type}
-                          </span>
+              {upcomingEvents.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-8">
+                  {upcomingEvents.map((event, index) => (
+                    <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="px-2 py-1 bg-secondary/10 text-secondary text-xs font-medium rounded-full">
+                              {event.type}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                          <p className="text-muted-foreground mb-4">{event.description}</p>
                         </div>
-                        <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                        <p className="text-muted-foreground mb-4">{event.description}</p>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2 border-t pt-4">
-                      <div className="flex items-center text-sm">
-                        <Calendar className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span>{event.date}</span>
+                      
+                      <div className="space-y-2 border-t pt-4">
+                        <div className="flex items-center text-sm">
+                          <Calendar className="h-4 w-4 mr-3 text-primary" />
+                          <span><strong>Event Date:</strong> {event.eventDate}</span>
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <Clock className="h-4 w-4 mr-3 text-muted-foreground" />
+                          <span><strong>Published:</strong> {event.publishedDate}</span>
+                        </div>
+                        <div className="flex items-center text-sm text-destructive">
+                          <Tag className="h-4 w-4 mr-3" />
+                          <span><strong>Expires:</strong> {event.expiryDate}</span>
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <MapPin className="h-4 w-4 mr-3 text-muted-foreground" />
+                          <span>{event.location}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center text-sm">
-                        <Clock className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span>{event.time}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <MapPin className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span>{event.location}</span>
-                      </div>
-                    </div>
-                    
-                    <a 
-                      href={index === 0 ? "/parent-teacher-conference.ics" : 
-                            index === 1 ? "/football-championship.ics" :
-                            index === 2 ? "/science-exhibition.ics" : 
-                            "/cultural-day.ics"} 
-                      download
-                    >
+                      
                       <Button variant="outline" size="sm" className="w-full mt-4">
                         <Calendar className="h-4 w-4 mr-2" />
                         Add to Calendar
                       </Button>
-                    </a>
-                  </Card>
-                ))}
-              </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No upcoming events at this time.</p>
+                </div>
+              )}
               
               <div className="text-center">
                 <a href="/calendar">
