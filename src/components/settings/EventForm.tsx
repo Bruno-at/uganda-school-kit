@@ -239,7 +239,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
             name="start_date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Event Date *</FormLabel>
+                <FormLabel>Start Date *</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -250,7 +250,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
                           !field.value && 'text-muted-foreground'
                         )}
                       >
-                        {field.value ? format(field.value, 'PPP') : <span>Pick event date</span>}
+                        {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -265,7 +265,6 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>When the event takes place</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -276,7 +275,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
             name="end_date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Expiry Date *</FormLabel>
+                <FormLabel>End Date *</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -287,7 +286,7 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
                           !field.value && 'text-muted-foreground'
                         )}
                       >
-                        {field.value ? format(field.value, 'PPP') : <span>Pick expiry date</span>}
+                        {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
@@ -302,7 +301,6 @@ const EventForm: React.FC<EventFormProps> = ({ eventId, onClose, onSuccess }) =>
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>Event will move to Latest News after this date</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

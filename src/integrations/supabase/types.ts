@@ -435,7 +435,6 @@ export type Database = {
       }
     }
     Functions: {
-      delete_old_news_items: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
