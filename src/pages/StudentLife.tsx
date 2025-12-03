@@ -3,113 +3,79 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Users,
-  Trophy,
-  Music,
-  Palette,
-  Book,
-  Heart,
-  Home,
-  Calendar,
-  Camera,
-  ArrowRight,
-  Award,
-  Shield,
-  Star
-} from 'lucide-react';
-
+import { Users, Trophy, Music, Palette, Book, Heart, Home, Calendar, Camera, ArrowRight, Award, Shield, Star } from 'lucide-react';
 const StudentLife = () => {
-  const clubs = [
-    {
-      name: "Debate Club",
-      icon: <Book className="h-6 w-6" />,
-      description: "Developing critical thinking and public speaking skills",
-      activities: ["Weekly debates", "Inter-school competitions", "Model UN participation"]
-    },
-    {
-      name: "Drama Society",
-      icon: <Users className="h-6 w-6" />,
-      description: "Expressing creativity through theatrical performances",
-      activities: ["Annual school plays", "Drama festivals", "Creative writing workshops"]
-    },
-    {
-      name: "Science Club",
-      icon: <Award className="h-6 w-6" />,
-      description: "Hands-on experiments and scientific discovery",
-      activities: ["Science fair projects", "Laboratory experiments", "STEM competitions"]
-    },
-    {
-      name: "Environmental Club",
-      icon: <Heart className="h-6 w-6" />,
-      description: "Promoting sustainability and environmental awareness",
-      activities: ["Tree planting", "Recycling programs", "Environmental education"]
-    }
-  ];
-
-  const sports = [
-    {
-      name: "Football",
-      level: "Boys & Girls Teams",
-      achievements: "Regional Champions 2024",
-      icon: <Trophy className="h-6 w-6" />
-    },
-    {
-      name: "Basketball",
-      level: "Senior & Junior Teams",
-      achievements: "Inter-school Tournament Winners",
-      icon: <Trophy className="h-6 w-6" />
-    },
-    {
-      name: "Netball",
-      level: "Girls Teams",
-      achievements: "District League Champions",
-      icon: <Trophy className="h-6 w-6" />
-    },
-    {
-      name: "Athletics",
-      level: "Track & Field",
-      achievements: "Multiple individual medals",
-      icon: <Star className="h-6 w-6" />
-    }
-  ];
-
-  const houses = [
-    {
-      name: "Wisdom House",
-      color: "Blue",
-      motto: "Knowledge is Power",
-      patron: "Owl",
-      achievements: "Academic Excellence Award 2024"
-    },
-    {
-      name: "Courage House", 
-      color: "Red",
-      motto: "Brave Hearts, Strong Minds",
-      patron: "Lion",
-      achievements: "Sports Day Champions 2024"
-    },
-    {
-      name: "Unity House",
-      color: "Green", 
-      motto: "Together We Achieve",
-      patron: "Eagle",
-      achievements: "Community Service Award 2024"
-    },
-    {
-      name: "Excellence House",
-      color: "Gold",
-      motto: "Striving for Greatness", 
-      patron: "Phoenix",
-      achievements: "Overall House Cup Winners 2024"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const clubs = [{
+    name: "Debate Club",
+    icon: <Book className="h-6 w-6" />,
+    description: "Developing critical thinking and public speaking skills",
+    activities: ["Weekly debates", "Inter-school competitions", "Model UN participation"]
+  }, {
+    name: "Drama Society",
+    icon: <Users className="h-6 w-6" />,
+    description: "Expressing creativity through theatrical performances",
+    activities: ["Annual school plays", "Drama festivals", "Creative writing workshops"]
+  }, {
+    name: "Science Club",
+    icon: <Award className="h-6 w-6" />,
+    description: "Hands-on experiments and scientific discovery",
+    activities: ["Science fair projects", "Laboratory experiments", "STEM competitions"]
+  }, {
+    name: "Environmental Club",
+    icon: <Heart className="h-6 w-6" />,
+    description: "Promoting sustainability and environmental awareness",
+    activities: ["Tree planting", "Recycling programs", "Environmental education"]
+  }];
+  const sports = [{
+    name: "Football",
+    level: "Boys & Girls Teams",
+    achievements: "Regional Champions 2024",
+    icon: <Trophy className="h-6 w-6" />
+  }, {
+    name: "Basketball",
+    level: "Senior & Junior Teams",
+    achievements: "Inter-school Tournament Winners",
+    icon: <Trophy className="h-6 w-6" />
+  }, {
+    name: "Netball",
+    level: "Girls Teams",
+    achievements: "District League Champions",
+    icon: <Trophy className="h-6 w-6" />
+  }, {
+    name: "Athletics",
+    level: "Track & Field",
+    achievements: "Multiple individual medals",
+    icon: <Star className="h-6 w-6" />
+  }];
+  const houses = [{
+    name: "Wisdom House",
+    color: "Blue",
+    motto: "Knowledge is Power",
+    patron: "Owl",
+    achievements: "Academic Excellence Award 2024"
+  }, {
+    name: "Courage House",
+    color: "Red",
+    motto: "Brave Hearts, Strong Minds",
+    patron: "Lion",
+    achievements: "Sports Day Champions 2024"
+  }, {
+    name: "Unity House",
+    color: "Green",
+    motto: "Together We Achieve",
+    patron: "Eagle",
+    achievements: "Community Service Award 2024"
+  }, {
+    name: "Excellence House",
+    color: "Gold",
+    motto: "Striving for Greatness",
+    patron: "Phoenix",
+    achievements: "Overall House Cup Winners 2024"
+  }];
+  return <div className="min-h-screen bg-background">
       
       {/* Page Header */}
-      <section className="py-20 bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground">
+      <section className="py-20 bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground bg-blue-700">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl lg:text-6xl font-bold mb-6">Student Life</h1>
           <p className="text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed">
@@ -184,8 +150,7 @@ const StudentLife = () => {
             
             <TabsContent value="clubs" className="space-y-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {clubs.map((club, index) => (
-                  <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+                {clubs.map((club, index) => <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
                     <div className="flex justify-center mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
                         {club.icon}
@@ -195,22 +160,18 @@ const StudentLife = () => {
                     <p className="text-sm text-muted-foreground mb-4 text-center">{club.description}</p>
                     
                     <div className="space-y-2">
-                      {club.activities.map((activity, i) => (
-                        <div key={i} className="flex items-center text-xs">
+                      {club.activities.map((activity, i) => <div key={i} className="flex items-center text-xs">
                           <div className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></div>
                           <span>{activity}</span>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </TabsContent>
             
             <TabsContent value="sports" className="space-y-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {sports.map((sport, index) => (
-                  <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+                {sports.map((sport, index) => <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
                     <div className="flex justify-center mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground">
                         {sport.icon}
@@ -224,8 +185,7 @@ const StudentLife = () => {
                         🏆 {sport.achievements}
                       </p>
                     </div>
-                  </Card>
-                ))}
+                  </Card>)}
               </div>
             </TabsContent>
             
@@ -298,8 +258,7 @@ const StudentLife = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {houses.map((house, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+            {houses.map((house, index) => <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
                 <div className="flex justify-center mb-4">
                   <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
                     <Home className="h-8 w-8" />
@@ -315,8 +274,7 @@ const StudentLife = () => {
                     🏆 {house.achievements}
                   </p>
                 </div>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -393,8 +351,6 @@ const StudentLife = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default StudentLife;
