@@ -52,6 +52,7 @@ const News = () => {
       type: event.category,
       description: event.short_description,
       slug: event.slug,
+      image: event.image_url,
     }));
 
   const legacyNewsItems = [
@@ -266,18 +267,28 @@ const News = () => {
               
               <div className="grid md:grid-cols-2 gap-8">
                 {upcomingEvents.map((event, index) => (
-                  <Card key={index} className="p-6 hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-1 bg-secondary/10 text-secondary text-xs font-medium rounded-full">
-                            {event.type}
-                          </span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                        <p className="text-muted-foreground mb-4">{event.description}</p>
+                  <Card key={index} className="overflow-hidden hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+                    {event.image && (
+                      <div className="aspect-video overflow-hidden">
+                        <img
+                          src={event.image}
+                          alt={event.title}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
                       </div>
-                    </div>
+                    )}
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="px-2 py-1 bg-secondary/10 text-secondary text-xs font-medium rounded-full">
+                              {event.type}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                          <p className="text-muted-foreground mb-4">{event.description}</p>
+                        </div>
+                      </div>
                     
                     <div className="space-y-2 border-t pt-4">
                       <div className="flex items-center text-sm">
@@ -294,18 +305,19 @@ const News = () => {
                       </div>
                     </div>
                     
-                    <a 
-                      href={index === 0 ? "/parent-teacher-conference.ics" : 
-                            index === 1 ? "/football-championship.ics" :
-                            index === 2 ? "/science-exhibition.ics" : 
-                            "/cultural-day.ics"} 
-                      download
-                    >
-                      <Button variant="outline" size="sm" className="w-full mt-4">
-                        <Calendar className="h-4 w-4 mr-2" />
-                        Add to Calendar
-                      </Button>
-                    </a>
+                      <a 
+                        href={index === 0 ? "/parent-teacher-conference.ics" : 
+                              index === 1 ? "/football-championship.ics" :
+                              index === 2 ? "/science-exhibition.ics" : 
+                              "/cultural-day.ics"} 
+                        download
+                      >
+                        <Button variant="outline" size="sm" className="w-full mt-4">
+                          <Calendar className="h-4 w-4 mr-2" />
+                          Add to Calendar
+                        </Button>
+                      </a>
+                    </div>
                   </Card>
                 ))}
               </div>
