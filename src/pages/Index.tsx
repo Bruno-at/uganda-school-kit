@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,6 +25,25 @@ import classroomImage from '@/assets/classroom-scene.jpg';
 
 const Index = () => {
   const { t } = useLanguage();
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
+
+  // Fetch background images from storage
+  const { data: backgroundImages } = useQuery({
+    queryKey: ['homepage-backgrounds'],
+    queryFn: async () => {
+      const { data, error } = await supabase.storage
+        .from('homepage-backgrounds')
+        .list('', { sortBy: { column: 'created_at', order: 'asc' } });
+
+      if (error) throw error;
+
+      const imageFiles = data?.filter(file => file.name !== '.emptyFolderPlaceholder') || [];
+      
+      return imageFiles.map(file => 
+        supabase.storage.from('homepage-backgrounds').getPublicUrl(file.name).data.publicUrl
+      );
+    },
+  });
 
   // Fetch latest 3 published news items from database
   const { data: latestNews, isLoading: newsLoading } = useQuery({
@@ -42,16 +61,44 @@ const Index = () => {
     },
   });
 
+  // Slideshow effect - change background every 5 seconds
+  useEffect(() => {
+    if (!backgroundImages || backgroundImages.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentBgIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [backgroundImages]);
+
+  const currentBackground = backgroundImages && backgroundImages.length > 0 
+    ? backgroundImages[currentBgIndex] 
+    : heroImage;
+
   return (
     <div className="min-h-screen bg-background">
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 hero-gradient opacity-75"></div>
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        ></div>
+        {backgroundImages && backgroundImages.length > 0 ? (
+          backgroundImages.map((bg, index) => (
+            <div 
+              key={bg}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000"
+              style={{ 
+                backgroundImage: `url(${bg})`,
+                opacity: index === currentBgIndex ? 0.5 : 0,
+              }}
+            />
+          ))
+        ) : (
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50"
+            style={{ backgroundImage: `url(${heroImage})` }}
+          />
+        )}
         
         <div className="relative container mx-auto px-4 py-20 lg:py-32">
           <div className="max-w-4xl mx-auto text-center text-primary-foreground space-y-8">
