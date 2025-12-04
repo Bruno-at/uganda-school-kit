@@ -101,10 +101,10 @@ export const useAdminAuth = () => {
   };
 
   const signUp = async (email: string, password: string) => {
-    // First check if admin already exists
+    // First check if admin already exists - block signup if so
     const exists = await checkAdminExists();
     if (exists) {
-      return { error: { message: 'An admin account already exists. Please sign in.' } };
+      return { error: { message: 'An admin account already exists. Only one admin is allowed.' } };
     }
 
     const redirectUrl = `${window.location.origin}/admin-auth`;
@@ -116,20 +116,22 @@ export const useAdminAuth = () => {
     
     if (error) return { error };
     
-    // If signup successful and user confirmed (or auto-confirmed), add admin role
+    // Check if email is already registered
     if (data.user && !data.user.identities?.length) {
       return { error: { message: 'This email is already registered. Please sign in instead.' } };
     }
     
+    // First signup - automatically assign admin role
     if (data.user) {
-      // Add admin role
       const { error: roleError } = await supabase
         .from('user_roles')
         .insert({ user_id: data.user.id, role: 'admin' });
       
       if (roleError) {
+        // If role assignment fails, sign out the user to prevent orphaned accounts
         console.error('Error adding admin role:', roleError);
-        return { error: { message: 'Account created but failed to assign admin role. Contact support.' } };
+        await supabase.auth.signOut();
+        return { error: { message: 'Failed to create admin account. Please try again.' } };
       }
       
       setAdminExists(true);
