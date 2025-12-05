@@ -13,25 +13,18 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
-import { Moon, Sun, Bell, Type, Shield, Newspaper, Image as ImageIcon, KeyRound, LogOut } from 'lucide-react';
+import { Moon, Sun, Bell, Shield, Newspaper, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
-import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 const Settings = () => {
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
   const { t } = useLanguage();
-  const { user, isAdmin, signOut } = useAdminAuth();
   const [fontSize, setFontSize] = useState<string>('medium');
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
-
-  const handleSignOut = async () => {
-    await signOut();
-    toast({ title: 'Signed out', description: 'You have been signed out from admin.' });
-  };
 
   useEffect(() => {
     // Set page title and meta description
@@ -88,44 +81,6 @@ const Settings = () => {
         </div>
 
         <div className="grid gap-6">
-          {/* Admin Status Card */}
-          <Card className="border-primary/20 bg-primary/5">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-primary" />
-                <CardTitle>Admin Access</CardTitle>
-              </div>
-              <CardDescription>
-                {user && isAdmin 
-                  ? `Logged in as ${user.email}`
-                  : 'Sign in to access admin features'}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {user && isAdmin ? (
-                <>
-                  <Link to="/admin-auth">
-                    <Button variant="outline" className="w-full">
-                      <KeyRound className="h-4 w-4 mr-2" />
-                      Change Admin Credentials
-                    </Button>
-                  </Link>
-                  <Button variant="destructive" onClick={handleSignOut} className="w-full">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <Link to="/admin-auth">
-                  <Button className="w-full">
-                    <Shield className="h-4 w-4 mr-2" />
-                    Admin Login
-                  </Button>
-                </Link>
-              )}
-            </CardContent>
-          </Card>
-
           {/* News & Events Management */}
           <Card>
             <CardHeader>
