@@ -17,7 +17,7 @@ import Academics from "./pages/Academics";
 import StudentLife from "./pages/StudentLife";
 import Parents from "./pages/Parents";
 import News from "./pages/News";
-import Portal from "./pages/Portal";
+
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import UniformGuide from "./pages/UniformGuide";
@@ -60,7 +60,7 @@ const App = () => (
               <Route path="/student-life" element={<StudentLife />} />
               <Route path="/parents" element={<Parents />} />
               <Route path="/news" element={<News />} />
-              <Route path="/portal" element={<Portal />} />
+              
               <Route path="/auth" element={<Auth />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
