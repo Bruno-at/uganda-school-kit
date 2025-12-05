@@ -6,9 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AppLayout } from "@/components/layout/AppLayout";
-import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import '@/i18n/config';
-import { useEffect } from 'react';
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admissions from "./pages/Admissions";
@@ -31,8 +29,6 @@ import VirtualTour from "./pages/VirtualTour";
 import NewsArticle from "./pages/NewsArticle";
 import Calendar from "./pages/Calendar";
 import NotFound from "./pages/NotFound";
-import Auth from "./pages/Auth";
-import AdminAuth from "./pages/AdminAuth";
 import Donate from "./pages/Donate";
 import Membership from "./pages/Membership";
 import Shop from "./pages/Shop";
@@ -61,7 +57,6 @@ const App = () => (
               <Route path="/parents" element={<Parents />} />
               <Route path="/news" element={<News />} />
               
-              <Route path="/auth" element={<Auth />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/uniforms" element={<UniformGuide />} />
@@ -78,9 +73,8 @@ const App = () => (
               <Route path="/membership" element={<Membership />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin-auth" element={<AdminAuth />} />
-              <Route path="/settings/news-events" element={<AdminProtectedRoute><NewsEventsSettings /></AdminProtectedRoute>} />
-              <Route path="/settings/background-images" element={<AdminProtectedRoute><BackgroundImagesManager /></AdminProtectedRoute>} />
+              <Route path="/settings/news-events" element={<NewsEventsSettings />} />
+              <Route path="/settings/background-images" element={<BackgroundImagesManager />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
