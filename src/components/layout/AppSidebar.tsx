@@ -37,7 +37,6 @@ const mainNavItems = [
 ];
 
 const portalItems = [
-  { title: 'Portal', url: '/portal', icon: GraduationCap },
   { title: 'Login', url: '/auth', icon: LogIn },
 ];
 
