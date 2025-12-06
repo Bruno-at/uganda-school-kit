@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   GraduationCap, 
   Phone, 
@@ -18,6 +19,8 @@ import {
 } from 'lucide-react';
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 py-12">
@@ -30,12 +33,11 @@ const Footer = () => {
               </div>
               <div>
                 <h3 className="text-lg font-bold">Excellence Academy</h3>
-                <p className="text-sm text-primary-foreground/80">Kampala, Uganda</p>
+                <p className="text-sm text-primary-foreground/80">{t('footer.location') || 'Kampala, Uganda'}</p>
               </div>
             </div>
             <p className="text-sm text-primary-foreground/80">
-              Nurturing Character, Excellence, and Innovation in every student. 
-              Preparing tomorrow's leaders through quality education and moral values.
+              {t('footer.schoolDesc')}
             </p>
             
             {/* Contact Info */}
@@ -57,15 +59,15 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Quick Links</h4>
+            <h4 className="text-lg font-semibold">{t('footer.quickLinks')}</h4>
             <nav className="space-y-2">
               {[
-                { href: '/about', label: 'About Us' },
-                { href: '/admissions', label: 'Admissions' },
-                { href: '/academics', label: 'Academics' },
-                { href: '/student-life', label: 'Student Life' },
-                { href: '/news', label: 'News & Events' },
-                { href: '/contact', label: 'Contact Us' },
+                { href: '/about', label: t('footer.aboutUs') },
+                { href: '/admissions', label: t('nav.admissions') },
+                { href: '/academics', label: t('nav.academics') },
+                { href: '/student-life', label: t('nav.studentLife') },
+                { href: '/news', label: t('nav.news') },
+                { href: '/contact', label: t('nav.contact') },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -80,16 +82,16 @@ const Footer = () => {
 
           {/* For Parents */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">For Parents</h4>
+            <h4 className="text-lg font-semibold">{t('footer.forParents')}</h4>
             <nav className="space-y-2">
               {[
-                { href: '/parents/notices', label: 'Notices & Circulars' },
-                { href: '/parents/downloads', label: 'Downloads' },
-                { href: '/parents/support', label: 'Parent Support' },
-                { href: '/portal', label: 'Parent Portal' },
-                { href: '/fees', label: 'Fee Structure' },
-                { href: '/uniforms', label: 'Uniform Guide' },
-                { href: '/pta', label: 'PTA' },
+                { href: '/parents/notices', label: t('footer.noticesCirculars') },
+                { href: '/parents/downloads', label: t('parents.downloads') },
+                { href: '/parents/support', label: t('footer.parentSupport') },
+                { href: '/portal', label: t('footer.parentPortal') },
+                { href: '/fees', label: t('footer.feeStructure') },
+                { href: '/uniforms', label: t('footer.uniformGuide') },
+                { href: '/pta', label: t('nav.pta') },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -104,16 +106,16 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Stay Connected</h4>
+            <h4 className="text-lg font-semibold">{t('footer.stayConnected')}</h4>
             <p className="text-sm text-primary-foreground/80">
-              Subscribe to receive updates about school events, admissions, and important notices.
+              {t('footer.subscribeDesc')}
             </p>
             
             {/* Newsletter Form */}
             <form className="space-y-2">
               <Input
                 type="email"
-                placeholder="Your email address"
+                placeholder={t('footer.yourEmail')}
                 className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/60"
               />
               <Button 
@@ -123,46 +125,46 @@ const Footer = () => {
                 className="w-full"
               >
                 <Send className="h-4 w-4 mr-2" />
-                Subscribe
+                {t('cta.subscribe')}
               </Button>
             </form>
 
             {/* Social Media */}
             <div className="space-y-2">
-              <p className="text-sm font-medium">Follow Us</p>
+              <p className="text-sm font-medium">{t('footer.followUs')}</p>
               <div className="flex space-x-2">
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page">
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                     <Facebook className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page">
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                     <Twitter className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our YouTube channel">
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
                     <Youtube className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our TikTok page">
+                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                     <Music className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our LinkedIn page">
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram page">
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                     <Instagram className="h-4 w-4" />
                   </a>
                 </Button>
                 <Button size="icon" variant="ghost" className="h-8 w-8 hover:bg-primary-foreground/10" asChild>
-                  <a href="https://t.me" target="_blank" rel="noopener noreferrer" aria-label="Visit our Telegram channel">
+                  <a href="https://t.me" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
                     <MessageCircle className="h-4 w-4" />
                   </a>
                 </Button>
@@ -174,14 +176,14 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-primary-foreground/80">
-            © 2024 Excellence Academy. All rights reserved.
+            {t('footer.copyright')}
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link to="/privacy" className="text-sm text-primary-foreground/80 hover:text-primary-foreground">
-              Privacy Policy
+              {t('footer.privacyPolicy')}
             </Link>
             <Link to="/terms" className="text-sm text-primary-foreground/80 hover:text-primary-foreground">
-              Terms of Service
+              {t('footer.termsOfService')}
             </Link>
           </div>
         </div>
