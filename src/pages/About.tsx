@@ -2,76 +2,52 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import {
-  Target,
-  Eye,
-  Heart,
-  Users,
-  BookOpen,
-  Award,
-  ArrowRight,
-  Mail,
-  Phone
-} from 'lucide-react';
+import { Target, Eye, Heart, Users, BookOpen, Award, ArrowRight, Mail, Phone } from 'lucide-react';
 
 // Import images
 import principalImage from '@/assets/principal-headshot.jpg';
 import classroomImage from '@/assets/classroom-scene.jpg';
-
 const About = () => {
-  const values = [
-    {
-      icon: <Heart className="h-8 w-8" />,
-      title: "Character Development",
-      description: "We prioritize moral values, integrity, and ethical behavior as the foundation of education."
-    },
-    {
-      icon: <BookOpen className="h-8 w-8" />,
-      title: "Academic Excellence",
-      description: "Committed to high standards of learning and achievement across all subjects and levels."
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Community Focus",
-      description: "Building strong relationships between students, families, and the broader community."
-    },
-    {
-      icon: <Award className="h-8 w-8" />,
-      title: "Innovation",
-      description: "Encouraging creative thinking, problem-solving, and adaptation to the modern world."
-    }
-  ];
-
-  const facultyMembers = [
-    {
-      name: "Dr. Margaret Ssemakula",
-      role: "Head Teacher",
-      qualifications: "PhD Education Leadership, M.Ed Curriculum Studies",
-      image: principalImage,
-      description: "Leading Excellence Academy with 20+ years in educational leadership and curriculum development."
-    },
-    {
-      name: "Mr. John Kiprotich",
-      role: "Deputy Head - Academics",
-      qualifications: "M.Sc Mathematics, B.Ed Secondary",
-      description: "Overseeing curriculum delivery and academic programs across O-Level and A-Level."
-    },
-    {
-      name: "Ms. Grace Namubiru",
-      role: "Head of Sciences",
-      qualifications: "M.Sc Chemistry, B.Ed Science",
-      description: "Leading our award-winning science department and laboratory programs."
-    },
-    {
-      name: "Mr. David Ochaya",
-      role: "Director of Student Affairs",
-      qualifications: "M.A Counseling Psychology, B.A Social Work",
-      description: "Supporting student welfare, counseling services, and co-curricular activities."
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const values = [{
+    icon: <Heart className="h-8 w-8" />,
+    title: "Character Development",
+    description: "We prioritize moral values, integrity, and ethical behavior as the foundation of education."
+  }, {
+    icon: <BookOpen className="h-8 w-8" />,
+    title: "Academic Excellence",
+    description: "Committed to high standards of learning and achievement across all subjects and levels."
+  }, {
+    icon: <Users className="h-8 w-8" />,
+    title: "Community Focus",
+    description: "Building strong relationships between students, families, and the broader community."
+  }, {
+    icon: <Award className="h-8 w-8" />,
+    title: "Innovation",
+    description: "Encouraging creative thinking, problem-solving, and adaptation to the modern world."
+  }];
+  const facultyMembers = [{
+    name: "Dr. Margaret Ssemakula",
+    role: "Head Teacher",
+    qualifications: "PhD Education Leadership, M.Ed Curriculum Studies",
+    image: principalImage,
+    description: "Leading Excellence Academy with 20+ years in educational leadership and curriculum development."
+  }, {
+    name: "Mr. John Kiprotich",
+    role: "Deputy Head - Academics",
+    qualifications: "M.Sc Mathematics, B.Ed Secondary",
+    description: "Overseeing curriculum delivery and academic programs across O-Level and A-Level."
+  }, {
+    name: "Ms. Grace Namubiru",
+    role: "Head of Sciences",
+    qualifications: "M.Sc Chemistry, B.Ed Science",
+    description: "Leading our award-winning science department and laboratory programs."
+  }, {
+    name: "Mr. David Ochaya",
+    role: "Director of Student Affairs",
+    qualifications: "M.A Counseling Psychology, B.A Social Work",
+    description: "Supporting student welfare, counseling services, and co-curricular activities."
+  }];
+  return <div className="min-h-screen bg-background">
       
       {/* Page Header */}
       <section className="py-20 bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
@@ -135,8 +111,7 @@ const About = () => {
 
           {/* Values Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+            {values.map((value, index) => <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
                 <div className="flex justify-center mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-light text-primary-foreground">
                     {value.icon}
@@ -144,8 +119,7 @@ const About = () => {
                 </div>
                 <h4 className="text-lg font-semibold mb-2">{value.title}</h4>
                 <p className="text-sm text-muted-foreground">{value.description}</p>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -155,11 +129,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <img
-                src={principalImage}
-                alt="Dr. Margaret Ssemakula, Head Teacher"
-                className="w-full max-w-md mx-auto rounded-2xl shadow-[var(--shadow-large)]"
-              />
+              <img src={principalImage} alt="Dr. Margaret Ssemakula, Head Teacher" className="w-full max-w-md mx-auto rounded-2xl shadow-[var(--shadow-large)]" />
             </div>
             <div className="space-y-6">
               <div>
@@ -199,25 +169,15 @@ const About = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {facultyMembers.map((member, index) => (
-              <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
-                {member.image ? (
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                  />
-                ) : (
-                  <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-primary-foreground font-bold text-xl">
+            {facultyMembers.map((member, index) => <Card key={index} className="p-6 text-center hover:shadow-[var(--shadow-large)] transition-all duration-300 hover:-translate-y-1">
+                {member.image ? <img src={member.image} alt={member.name} className="w-24 h-24 rounded-full mx-auto mb-4 object-cover" /> : <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-primary-foreground font-bold text-xl">
                     {member.name.charAt(0)}
-                  </div>
-                )}
+                  </div>}
                 <h4 className="text-lg font-semibold mb-1">{member.name}</h4>
                 <p className="text-sm text-primary font-medium mb-2">{member.role}</p>
                 <p className="text-xs text-muted-foreground mb-3">{member.qualifications}</p>
                 <p className="text-sm text-foreground">{member.description}</p>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -239,7 +199,7 @@ const About = () => {
               </Link>
             </Button>
             <Button variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" asChild>
-              <Link to="/admissions">
+              <Link to="/admissions" className="bg-gray-800">
                 Download Prospectus
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
@@ -247,8 +207,6 @@ const About = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default About;
