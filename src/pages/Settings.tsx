@@ -16,6 +16,7 @@ import { Separator } from '@/components/ui/separator';
 import { Moon, Sun, Bell, Shield, Newspaper, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
+import NotificationSubscription from '@/components/NotificationSubscription';
 
 const Settings = () => {
   const { theme, setTheme } = useTheme();
@@ -173,6 +174,9 @@ const Settings = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Notification Subscription */}
+          <NotificationSubscription />
 
           {/* Notification Settings */}
           <Card>
