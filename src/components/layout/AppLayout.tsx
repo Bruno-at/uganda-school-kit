@@ -8,6 +8,7 @@ import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatBot from '@/components/chat/ChatBot';
+import AutoTranslate from '@/components/AutoTranslate';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -79,13 +80,16 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
           </header>
 
-          {/* Main Content */}
-          <main className="flex-1">
-            {children}
-          </main>
+          {/* Main Content - AutoTranslate wraps ALL page content */}
+          <AutoTranslate>
+            <main className="flex-1">
+              {children}
+            </main>
 
-          {/* Footer */}
-          <Footer />
+            {/* Footer */}
+            <Footer />
+          </AutoTranslate>
+
         </SidebarInset>
         <ChatBot />
       </div>
