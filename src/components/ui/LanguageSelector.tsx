@@ -25,13 +25,13 @@ const LanguageSelector: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-2">
+        <Button variant="ghost" size="sm" className="gap-2" data-language-selector>
           <Globe className="h-4 w-4" />
           <span className="hidden md:inline">{currentLanguage.flag} {currentLanguage.name}</span>
           <span className="md:hidden">{currentLanguage.flag}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" data-language-selector>
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
