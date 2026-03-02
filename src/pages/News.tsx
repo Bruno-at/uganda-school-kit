@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NewsCard from '@/components/ui/NewsCard';
+import NotificationSubscription from '@/components/NotificationSubscription';
 import { useNewsItems } from '@/hooks/useNewsItems';
 import { useEvents } from '@/hooks/useEvents';
 import { format } from 'date-fns';
@@ -335,22 +336,30 @@ const News = () => {
         </div>
       </section>
 
-      {/* Newsletter Signup */}
+      {/* Newsletter & Notifications */}
       <section className="py-16 bg-gradient-to-br from-secondary to-secondary-dark text-secondary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Stay Informed</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Subscribe to our newsletter to receive the latest news, event updates, and important announcements directly to your inbox.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <Input
-              placeholder="Your email address"
-              className="bg-secondary-foreground/10 border-secondary-foreground/20 text-secondary-foreground placeholder:text-secondary-foreground/60"
-            />
-            <Button variant="outline" className="border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10">
-              Subscribe
-            </Button>
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="text-center lg:text-left">
+              <h2 className="text-4xl font-bold mb-6">Stay Informed</h2>
+              <p className="text-xl mb-8 max-w-2xl">
+                Subscribe to our newsletter to receive the latest news, event updates, and important announcements directly to your inbox.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto lg:mx-0">
+                <Input
+                  placeholder="Your email address"
+                  className="bg-secondary-foreground/10 border-secondary-foreground/20 text-secondary-foreground placeholder:text-secondary-foreground/60"
+                />
+                <Button variant="outline" className="border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10">
+                  Subscribe
+                </Button>
+              </div>
+            </div>
+            
+            <div>
+              <NotificationSubscription />
+            </div>
           </div>
         </div>
       </section>
