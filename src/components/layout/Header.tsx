@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Phone, Mail, GraduationCap, Settings } from 'lucide-react';
+import { Menu, X, Settings, Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from 'next-themes';
 import logo from '@/assets/logo.png';
 
 const Header = () => {
@@ -12,6 +13,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { t } = useLanguage();
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +22,11 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const navItems = [
     { href: '/', label: t('nav.home') },
@@ -58,16 +65,16 @@ const Header = () => {
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center space-x-3 shrink-0">
               <img src={logo} alt="Excellence Academy Logo" className="h-12 w-12 object-contain" />
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-primary">Excellence Academy</h1>
                 <p className="text-xs text-muted-foreground">Kampala, Uganda</p>
               </div>
             </Link>
 
             {/* Desktop navigation */}
-            <nav className="hidden lg:flex items-center space-x-1">
+            <nav className="hidden xl:flex items-center space-x-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -85,8 +92,17 @@ const Header = () => {
             </nav>
 
             {/* Desktop CTA buttons */}
-            <div className="hidden lg:flex items-center space-x-2">
+            <div className="hidden xl:flex items-center space-x-2 shrink-0">
               <LanguageSelector />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="h-9 w-9"
+              >
+                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                <span className="sr-only">Toggle theme</span>
+              </Button>
               <Button variant="outline" size="sm" asChild>
                 <Link to="/portal">{t('nav.portal')}</Link>
               </Button>
@@ -104,7 +120,7 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden"
+              className="xl:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -114,7 +130,7 @@ const Header = () => {
 
         {/* Mobile navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden border-t bg-background">
+          <div className="xl:hidden border-t bg-background">
             <div className="container mx-auto px-4 py-4 space-y-2">
               {navItems.map((item) => (
                 <Link
@@ -126,14 +142,21 @@ const Header = () => {
                       ? 'bg-accent text-accent-foreground'
                       : 'text-foreground'
                   )}
-                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="pt-4 space-y-2">
-                <div className="flex justify-center mb-2">
+              <div className="pt-4 space-y-2 border-t">
+                <div className="flex items-center justify-between mb-2 px-3">
                   <LanguageSelector />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    className="h-9 w-9"
+                  >
+                    {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  </Button>
                 </div>
                 <Button variant="outline" className="w-full" asChild>
                   <Link to="/portal">{t('nav.portal')}</Link>
