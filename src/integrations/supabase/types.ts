@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_date: string | null
+          category: string
+          created_at: string
+          description: string
+          featured: boolean
+          id: string
+          media_type: string
+          media_url: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          activity_date?: string | null
+          category: string
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          media_type?: string
+          media_url?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          activity_date?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          featured?: boolean
+          id?: string
+          media_type?: string
+          media_url?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount: number
