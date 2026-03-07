@@ -35,6 +35,7 @@ import Shop from "./pages/Shop";
 import Settings from "./pages/Settings";
 import NewsEventsSettings from "./pages/NewsEventsSettings";
 import BackgroundImagesManager from "./pages/BackgroundImagesManager";
+import ActivitiesSettings from "./pages/ActivitiesSettings";
 
 const queryClient = new QueryClient();
 
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="/settings" element={<Settings />} />
               <Route path="/settings/news-events" element={<NewsEventsSettings />} />
               <Route path="/settings/background-images" element={<BackgroundImagesManager />} />
+              <Route path="/settings/activities" element={<ActivitiesSettings />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

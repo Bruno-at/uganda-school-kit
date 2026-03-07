@@ -13,7 +13,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
-import { Moon, Sun, Bell, Shield, Newspaper, Image as ImageIcon } from 'lucide-react';
+import { Moon, Sun, Bell, Shield, Newspaper, Image as ImageIcon, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import NotificationSubscription from '@/components/NotificationSubscription';
@@ -98,6 +98,27 @@ const Settings = () => {
                 <Button className="w-full">
                   <Newspaper className="h-4 w-4 mr-2" />
                   Open News & Events Settings
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Activities Management */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                <CardTitle>School Activities</CardTitle>
+              </div>
+              <CardDescription>
+                Manage school activities (sports, MDD, tours, etc.) displayed on the landing page
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link to="/settings/activities">
+                <Button className="w-full">
+                  <Activity className="h-4 w-4 mr-2" />
+                  Manage Activities
                 </Button>
               </Link>
             </CardContent>
