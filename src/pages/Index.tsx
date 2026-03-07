@@ -22,6 +22,7 @@ import { format } from 'date-fns';
 // Import images
 import heroImage from '@/assets/hero-students.jpg';
 import classroomImage from '@/assets/classroom-scene.jpg';
+import ActivitiesSection from '@/components/home/ActivitiesSection';
 
 const Index = () => {
   const { t } = useLanguage();
@@ -252,6 +253,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* School Activities */}
+      <ActivitiesSection />
 
       {/* International Accreditations & Partnerships */}
       <section className="py-16">
