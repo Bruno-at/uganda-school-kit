@@ -89,6 +89,10 @@ const ActivitiesSection = () => {
 
   if (activities.length === 0) return null;
 
+  // Separate images and videos
+  const images = activities.filter(a => a.media_type === 'image');
+  const videos = activities.filter(a => a.media_type === 'video');
+
   return (
     <>
       <section className="py-16 bg-surface">
@@ -100,11 +104,29 @@ const ActivitiesSection = () => {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {activities.map((a) => (
-              <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
-            ))}
-          </div>
+          {/* Images Section */}
+          {images.length > 0 && (
+            <div className="mb-12">
+              <h3 className="text-2xl font-semibold mb-6 text-center">Image Gallery</h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {images.map((a) => (
+                  <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Videos Section */}
+          {videos.length > 0 && (
+            <div>
+              <h3 className="text-2xl font-semibold mb-6 text-center">Video Collection</h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {videos.map((a) => (
+                  <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
