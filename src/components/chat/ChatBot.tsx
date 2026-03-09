@@ -447,6 +447,25 @@ const ChatBot: React.FC = () => {
               </div>
               <p className="text-sm whitespace-pre-wrap break-words pr-8">{msg.content}</p>
 
+              {msg.role === 'assistant' && msg.content && (
+                <button
+                  onClick={() => handleSpeak(msg.content, idx)}
+                  className={cn(
+                    "mt-2 flex items-center gap-1 text-xs transition-colors",
+                    playingIndex === idx
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  title={playingIndex === idx ? "Stop speaking" : "Read aloud"}
+                >
+                  {playingIndex === idx ? (
+                    <><Square className="h-3 w-3" /> Stop</>
+                  ) : (
+                    <><Volume2 className="h-3 w-3" /> Listen</>
+                  )}
+                </button>
+              )}
+
               {msg.image && msg.imageId && (
                 <div className="mt-3 space-y-2 animate-fade-in">
                   <div className="relative group">
