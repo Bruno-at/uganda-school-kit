@@ -2,3 +2,6 @@ project_id = "pdrecbznsrphfjgojqaj"
 
 [functions.school-chat]
 verify_jwt = false
+
+[functions.elevenlabs-tts]
+verify_jwt = false
