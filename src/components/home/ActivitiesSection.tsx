@@ -91,9 +91,20 @@ const ActivitiesSection = () => {
 
   if (activities.length === 0) return null;
 
-  // Separate images and videos
-  const images = activities.filter(a => a.media_type === 'image');
-  const videos = activities.filter(a => a.media_type === 'video');
+  // Filter activities based on search term
+  const filteredActivities = useMemo(() => {
+    if (!searchTerm.trim()) return activities;
+    
+    return activities.filter(activity =>
+      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [activities, searchTerm]);
+
+  // Separate images and videos from filtered results
+  const images = filteredActivities.filter(a => a.media_type === 'image');
+  const videos = filteredActivities.filter(a => a.media_type === 'video');
 
   return (
     <>
