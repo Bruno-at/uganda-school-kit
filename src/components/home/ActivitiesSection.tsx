@@ -65,6 +65,17 @@ const ActivitiesSection = () => {
   const { t } = useLanguage();
   const [selected, setSelected] = useState<Activity | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Filter activities based on search term
+  const filteredActivities = useMemo(() => {
+    if (!searchTerm.trim()) return activities;
+    
+    return activities.filter(activity =>
+      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [activities, searchTerm]);
 
   if (isLoading) {
     return (
@@ -90,17 +101,6 @@ const ActivitiesSection = () => {
   }
 
   if (activities.length === 0) return null;
-
-  // Filter activities based on search term
-  const filteredActivities = useMemo(() => {
-    if (!searchTerm.trim()) return activities;
-    
-    return activities.filter(activity =>
-      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      activity.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [activities, searchTerm]);
 
   // Separate images and videos from filtered results
   const images = filteredActivities.filter(a => a.media_type === 'image');
