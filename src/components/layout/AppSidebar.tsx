@@ -7,9 +7,13 @@ import {
   FileText, 
   Phone, 
   Calendar,
-  Settings
+  Settings,
+  LogIn,
+  LogOut,
+  User
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 import {
   Sidebar,
   SidebarContent,
@@ -21,13 +25,18 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/ui/LanguageSelector';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/components/auth/AuthProvider';
+import AuthModal from '@/components/auth/AuthModal';
 import AutoTranslate from '@/components/AutoTranslate';
 
 export function AppSidebar() {
   const { open, isMobile, setOpenMobile } = useSidebar();
   const { t } = useLanguage();
+  const { user, role, signOut } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const mainNavItems = [
     { title: t('nav.home'), url: '/', icon: Home },
@@ -39,6 +48,11 @@ export function AppSidebar() {
     { title: t('nav.news'), url: '/news', icon: Calendar },
     { title: t('nav.contact'), url: '/contact', icon: Phone },
   ];
+
+  const userItems = user ? [
+    ...(role === 'student' ? [{ title: 'Student Dashboard', url: '/student-dashboard', icon: User }] : []),
+    ...(role === 'parent' ? [{ title: 'Parent Portal', url: '/parent-portal', icon: Users }] : []),
+  ] : [];
 
   const handleNavClick = () => {
     if (isMobile) {
@@ -93,6 +107,35 @@ export function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
 
+          {/* User Dashboard Links */}
+          {userItems.length > 0 && (
+            <SidebarGroup>
+              <SidebarGroupLabel>Your Portal</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {userItems.map((item) => (
+                    <SidebarMenuItem key={item.url}>
+                      <SidebarMenuButton asChild tooltip={item.title}>
+                        <NavLink 
+                          to={item.url}
+                          onClick={handleNavClick}
+                          className={({ isActive }) => 
+                            isActive 
+                              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' 
+                              : ''
+                          }
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>{item.title}</span>
+                        </NavLink>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          )}
+
           {/* Settings */}
           <SidebarGroup>
             <SidebarGroupLabel>{t('nav.settings')}</SidebarGroupLabel>
@@ -119,6 +162,29 @@ export function AppSidebar() {
           </SidebarGroup>
         </AutoTranslate>
 
+        {/* Auth Section */}
+        <SidebarGroup>
+          <SidebarGroupLabel data-no-translate>Account</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <div className="px-2 space-y-2">
+              {user ? (
+                <div className="space-y-2">
+                  <p className="text-xs text-sidebar-foreground/70 px-2 truncate">{user.email}</p>
+                  <Button variant="outline" size="sm" className="w-full justify-start gap-2" onClick={() => { signOut(); handleNavClick(); }}>
+                    <LogOut className="h-4 w-4" />
+                    {open && 'Sign Out'}
+                  </Button>
+                </div>
+              ) : (
+                <Button size="sm" className="w-full justify-start gap-2" onClick={() => setAuthModalOpen(true)}>
+                  <LogIn className="h-4 w-4" />
+                  {open && 'Sign In'}
+                </Button>
+              )}
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
         {/* Language Selector - excluded from auto-translate */}
         <SidebarGroup>
           <SidebarGroupLabel data-no-translate>Language</SidebarGroupLabel>
@@ -129,6 +195,8 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
     </Sidebar>
   );
 }
