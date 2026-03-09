@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 import { AppLayout } from "@/components/layout/AppLayout";
 import '@/i18n/config';
 import Index from "./pages/Index";
@@ -36,6 +37,9 @@ import Settings from "./pages/Settings";
 import NewsEventsSettings from "./pages/NewsEventsSettings";
 import BackgroundImagesManager from "./pages/BackgroundImagesManager";
 import ActivitiesSettings from "./pages/ActivitiesSettings";
+import StudentDashboard from "./pages/StudentDashboard";
+import ParentPortal from "./pages/ParentPortal";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -43,10 +47,11 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem storageKey="excellence-academy-theme">
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
           <AppLayout>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -77,12 +82,17 @@ const App = () => (
               <Route path="/settings/news-events" element={<NewsEventsSettings />} />
               <Route path="/settings/background-images" element={<BackgroundImagesManager />} />
               <Route path="/settings/activities" element={<ActivitiesSettings />} />
+              <Route path="/student-dashboard" element={<StudentDashboard />} />
+              <Route path="/parent-portal" element={<ParentPortal />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AppLayout>
-        </BrowserRouter>
-      </TooltipProvider>
+            </AppLayout>
+          </BrowserRouter>
+        </TooltipProvider>
+        </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
