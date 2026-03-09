@@ -365,7 +365,7 @@ const ChatBot: React.FC = () => {
               msg.isRemoving ? "animate-fade-out" : "animate-fade-in",
               msg.role === 'user' ? "bg-primary text-primary-foreground ml-auto max-w-[90%]" : "bg-muted text-foreground max-w-full"
             )}>
-              <div className="absolute top-2 right-2 bg-slate-50">
+              <div className="absolute top-2 right-2 bg-background/80">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button size="icon" variant="ghost" className="h-6 w-6 p-0 text-foreground/70 hover:text-foreground">
@@ -389,9 +389,9 @@ const ChatBot: React.FC = () => {
                   <div className="relative group">
                     <img src={msg.image} alt="AI Generated Diagram" className="rounded-lg border border-border max-w-full h-auto shadow-sm" />
                     <div className="absolute top-2 right-2 flex gap-2">
-                      <Button size="sm" onClick={() => handleDownloadImage(msg.image!)} className="h-8 gap-1 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-accent/50 backdrop-blur-sm font-medium animate-pulse hover:animate-none transition-all text-blue-700">
+                      <Button size="sm" onClick={() => handleDownloadImage(msg.image!)} className="h-8 gap-1 bg-gradient-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 shadow-lg hover:shadow-accent/50 backdrop-blur-sm font-medium animate-pulse hover:animate-none transition-all text-accent-foreground">
                         <Download className="h-3.5 w-3.5" />
-                        <span className="text-xs text-red-600">Download</span>
+                        <span className="text-xs">Download</span>
                       </Button>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
