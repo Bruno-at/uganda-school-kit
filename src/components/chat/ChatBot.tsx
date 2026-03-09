@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle, X, Send, Trash2, Minimize2, MoreVertical, Edit, Download, Mic, MicOff } from 'lucide-react';
+import { MessageCircle, X, Send, Trash2, Minimize2, MoreVertical, Edit, Download, Mic, MicOff, Volume2, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -47,8 +47,10 @@ const ChatBot: React.FC = () => {
   const [deletedImageIds, setDeletedImageIds] = useState<Set<string>>(new Set());
   const [isListening, setIsListening] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<ISpeechRecognition | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const { language } = useLanguage();
 
   // Check for browser speech recognition support
@@ -89,14 +91,75 @@ const ChatBot: React.FC = () => {
     }
   }, [messages]);
 
-  // Cleanup recognition on unmount
+  // Cleanup recognition and audio on unmount
   useEffect(() => {
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.abort();
       }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     };
   }, []);
+
+  const handleSpeak = useCallback(async (text: string, index: number) => {
+    // If already playing this message, stop it
+    if (playingIndex === index && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setPlayingIndex(null);
+      return;
+    }
+
+    // Stop any currently playing audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+
+    setPlayingIndex(index);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({ text }),
+        }
+      );
+
+      if (!response.ok) throw new Error('TTS request failed');
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setPlayingIndex(null);
+        audioRef.current = null;
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      audio.onerror = () => {
+        setPlayingIndex(null);
+        audioRef.current = null;
+        URL.revokeObjectURL(audioUrl);
+        toast.error('Failed to play audio');
+      };
+
+      await audio.play();
+    } catch (error) {
+      console.error('TTS error:', error);
+      setPlayingIndex(null);
+      toast.error('Text-to-speech failed. Please try again.');
+    }
+  }, [playingIndex]);
 
   const startListening = useCallback(() => {
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -383,6 +446,25 @@ const ChatBot: React.FC = () => {
                 </DropdownMenu>
               </div>
               <p className="text-sm whitespace-pre-wrap break-words pr-8">{msg.content}</p>
+
+              {msg.role === 'assistant' && msg.content && (
+                <button
+                  onClick={() => handleSpeak(msg.content, idx)}
+                  className={cn(
+                    "mt-2 flex items-center gap-1 text-xs transition-colors",
+                    playingIndex === idx
+                      ? "text-primary font-medium"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  title={playingIndex === idx ? "Stop speaking" : "Read aloud"}
+                >
+                  {playingIndex === idx ? (
+                    <><Square className="h-3 w-3" /> Stop</>
+                  ) : (
+                    <><Volume2 className="h-3 w-3" /> Listen</>
+                  )}
+                </button>
+              )}
 
               {msg.image && msg.imageId && (
                 <div className="mt-3 space-y-2 animate-fade-in">
