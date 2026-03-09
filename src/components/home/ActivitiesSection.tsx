@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useActivities, Activity } from '@/hooks/useActivities';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Play, Image as ImageIcon, Video } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Play, Image as ImageIcon, Video, Search } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const getEmbedUrl = (url: string): string | null => {
