@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useActivities, Activity } from '@/hooks/useActivities';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Play, Image as ImageIcon, Video } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Play, Image as ImageIcon, Video, Search } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const getEmbedUrl = (url: string): string | null => {
@@ -63,6 +64,18 @@ const ActivitiesSection = () => {
   const { activities, isLoading } = useActivities();
   const { t } = useLanguage();
   const [selected, setSelected] = useState<Activity | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Filter activities based on search term
+  const filteredActivities = useMemo(() => {
+    if (!searchTerm.trim()) return activities;
+    
+    return activities.filter(activity =>
+      activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      activity.category.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [activities, searchTerm]);
 
   if (isLoading) {
     return (
@@ -89,43 +102,71 @@ const ActivitiesSection = () => {
 
   if (activities.length === 0) return null;
 
-  // Separate images and videos
-  const images = activities.filter(a => a.media_type === 'image');
-  const videos = activities.filter(a => a.media_type === 'video');
+  // Separate images and videos from filtered results
+  const images = filteredActivities.filter(a => a.media_type === 'image');
+  const videos = filteredActivities.filter(a => a.media_type === 'video');
 
   return (
     <>
       <section className="py-16 bg-surface">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <h2 className="text-4xl font-bold mb-4">School Activities</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
               Explore our vibrant school activities — from sports and arts to tours and cultural events.
             </p>
+            
+            {/* Search Bar */}
+            <div className="relative max-w-md mx-auto mb-10">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <Input
+                type="text"
+                placeholder="Search activities by name, description or category..."
+                className="pl-10 h-12 w-full rounded-full bg-background border-border shadow-sm focus-visible:ring-primary"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
 
-          {/* Images Section */}
-          {images.length > 0 && (
-            <div className="mb-12">
-              <h3 className="text-2xl font-semibold mb-6 text-center">Image Gallery</h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {images.map((a) => (
-                  <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
-                ))}
-              </div>
+          {filteredActivities.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">No activities found matching your search.</p>
+              <button 
+                onClick={() => setSearchTerm('')}
+                className="mt-4 text-primary hover:underline"
+              >
+                Clear search
+              </button>
             </div>
-          )}
+          ) : (
+            <>
+              {/* Images Section */}
+              {images.length > 0 && (
+                <div className="mb-12">
+                  <h3 className="text-2xl font-semibold mb-6 text-center">Image Gallery</h3>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {images.map((a) => (
+                      <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-          {/* Videos Section */}
-          {videos.length > 0 && (
-            <div>
-              <h3 className="text-2xl font-semibold mb-6 text-center">Video Collection</h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {videos.map((a) => (
-                  <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
-                ))}
-              </div>
-            </div>
+              {/* Videos Section */}
+              {videos.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-semibold mb-6 text-center">Video Collection</h3>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {videos.map((a) => (
+                      <ActivityCard key={a.id} activity={a} onClick={() => setSelected(a)} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
