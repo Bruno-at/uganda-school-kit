@@ -64,6 +64,7 @@ const ActivitiesSection = () => {
   const { activities, isLoading } = useActivities();
   const { t } = useLanguage();
   const [selected, setSelected] = useState<Activity | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   if (isLoading) {
     return (
