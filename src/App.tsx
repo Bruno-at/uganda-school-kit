@@ -89,10 +89,11 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AppLayout>
-            </AppLayout>
-          </BrowserRouter>
-        </TooltipProvider>
-        </AuthProvider>
+            </Routes>
+          </AppLayout>
+        </BrowserRouter>
+      </TooltipProvider>
+      </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
   </QueryClientProvider>
