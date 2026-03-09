@@ -56,6 +56,147 @@ export type Database = {
         }
         Relationships: []
       }
+      alumni: {
+        Row: {
+          achievements: string | null
+          bio: string | null
+          created_at: string | null
+          current_company: string | null
+          current_position: string | null
+          email: string | null
+          graduation_year: number
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          linkedin_url: string | null
+          name: string
+          program: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          achievements?: string | null
+          bio?: string | null
+          created_at?: string | null
+          current_company?: string | null
+          current_position?: string | null
+          email?: string | null
+          graduation_year: number
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          linkedin_url?: string | null
+          name: string
+          program?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          achievements?: string | null
+          bio?: string | null
+          created_at?: string | null
+          current_company?: string | null
+          current_position?: string | null
+          email?: string | null
+          graduation_year?: number
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          linkedin_url?: string | null
+          name?: string
+          program?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      announcements: {
+        Row: {
+          content: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          priority: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          priority?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      application_forms: {
+        Row: {
+          address: string
+          application_number: string
+          created_at: string | null
+          documents: Json | null
+          grade_applying_for: string
+          id: string
+          notes: string | null
+          parent_email: string
+          parent_name: string
+          parent_phone: string
+          previous_school: string | null
+          status: string | null
+          student_dob: string
+          student_gender: string
+          student_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          address: string
+          application_number: string
+          created_at?: string | null
+          documents?: Json | null
+          grade_applying_for: string
+          id?: string
+          notes?: string | null
+          parent_email: string
+          parent_name: string
+          parent_phone: string
+          previous_school?: string | null
+          status?: string | null
+          student_dob: string
+          student_gender: string
+          student_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string
+          application_number?: string
+          created_at?: string | null
+          documents?: Json | null
+          grade_applying_for?: string
+          id?: string
+          notes?: string | null
+          parent_email?: string
+          parent_name?: string
+          parent_phone?: string
+          previous_school?: string | null
+          status?: string | null
+          student_dob?: string
+          student_gender?: string
+          student_name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount: number
@@ -149,6 +290,48 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery_items: {
+        Row: {
+          category: string
+          created_at: string | null
+          date_taken: string | null
+          description: string | null
+          id: string
+          is_featured: boolean | null
+          media_type: string
+          media_url: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          date_taken?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          date_taken?: string | null
+          description?: string | null
+          id?: string
+          is_featured?: boolean | null
+          media_type?: string
+          media_url?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -410,6 +593,57 @@ export type Database = {
           phone?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      staff_members: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          department: string | null
+          display_order: number | null
+          email: string | null
+          id: string
+          image_url: string | null
+          is_leadership: boolean | null
+          name: string
+          phone: string | null
+          position: string
+          qualifications: string | null
+          subjects_taught: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          department?: string | null
+          display_order?: number | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          is_leadership?: boolean | null
+          name: string
+          phone?: string | null
+          position: string
+          qualifications?: string | null
+          subjects_taught?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          department?: string | null
+          display_order?: number | null
+          email?: string | null
+          id?: string
+          image_url?: string | null
+          is_leadership?: boolean | null
+          name?: string
+          phone?: string | null
+          position?: string
+          qualifications?: string | null
+          subjects_taught?: string[] | null
+          updated_at?: string | null
         }
         Relationships: []
       }
