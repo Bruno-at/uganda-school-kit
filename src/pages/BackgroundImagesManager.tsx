@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
-const BackgroundImagesManager = () => {
+const BackgroundImagesManagerContent = () => {
   const { 
     images, 
     isLoading, 
