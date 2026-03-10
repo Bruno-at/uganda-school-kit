@@ -10,7 +10,8 @@ import {
   Settings,
   LogIn,
   LogOut,
-  User
+  User,
+  Shield
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
@@ -50,6 +51,7 @@ export function AppSidebar() {
   ];
 
   const userItems = user ? [
+    ...(role === 'admin' ? [{ title: 'Admin Dashboard', url: '/admin', icon: Shield }] : []),
     ...(role === 'student' ? [{ title: 'Student Dashboard', url: '/student-dashboard', icon: User }] : []),
     ...(role === 'parent' ? [{ title: 'Parent Portal', url: '/parent-portal', icon: Users }] : []),
   ] : [];

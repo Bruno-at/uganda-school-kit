@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import AdminRoute from '@/components/auth/AdminRoute';
 import { Button } from '@/components/ui/button';
 import { useHomepageBackgrounds } from '@/hooks/useHomepageBackgrounds';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
-const BackgroundImagesManager = () => {
+const BackgroundImagesManagerContent = () => {
   const { 
     images, 
     isLoading, 
@@ -203,5 +204,11 @@ const BackgroundImagesManager = () => {
     </div>
   );
 };
+
+const BackgroundImagesManager = () => (
+  <AdminRoute>
+    <BackgroundImagesManagerContent />
+  </AdminRoute>
+);
 
 export default BackgroundImagesManager;

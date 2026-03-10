@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AdminRoute from '@/components/auth/AdminRoute';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,7 +28,7 @@ const emptyForm: ActivityInsert = {
   featured: false,
 };
 
-const ActivitiesSettings = () => {
+const ActivitiesSettingsContent = () => {
   const { activities, isLoading, addActivity, updateActivity, deleteActivity, uploadMedia } = useActivities();
   const [form, setForm] = useState<ActivityInsert>(emptyForm);
   const [videoUrl, setVideoUrl] = useState('');
@@ -248,5 +249,11 @@ const ActivitiesSettings = () => {
     </div>
   );
 };
+
+const ActivitiesSettings = () => (
+  <AdminRoute>
+    <ActivitiesSettingsContent />
+  </AdminRoute>
+);
 
 export default ActivitiesSettings;
