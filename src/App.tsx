@@ -87,6 +87,8 @@ const App = () => (
               <Route path="/settings/activities" element={<ActivitiesSettings />} />
               <Route path="/student-dashboard" element={<StudentDashboard />} />
               <Route path="/parent-portal" element={<ParentPortal />} />
+              <Route path="/settings/staff" element={<StaffSettings />} />
+              <Route path="/settings/gallery" element={<GallerySettings />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

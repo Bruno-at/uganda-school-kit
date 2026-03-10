@@ -79,7 +79,7 @@ const AdminDashboardContent = () => {
               <CardTitle>Content Management</CardTitle>
               <CardDescription>Manage your website content</CardDescription>
             </CardHeader>
-            <CardContent className="grid gap-4 sm:grid-cols-3">
+            <CardContent className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <Link to="/settings/news-events">
                 <Button variant="outline" className="w-full h-24 flex-col gap-2">
                   <Newspaper className="h-6 w-6" />
@@ -96,6 +96,18 @@ const AdminDashboardContent = () => {
                 <Button variant="outline" className="w-full h-24 flex-col gap-2">
                   <ImageIcon className="h-6 w-6" />
                   Background Images
+                </Button>
+              </Link>
+              <Link to="/settings/staff">
+                <Button variant="outline" className="w-full h-24 flex-col gap-2">
+                  <Users className="h-6 w-6" />
+                  Staff Members
+                </Button>
+              </Link>
+              <Link to="/settings/gallery">
+                <Button variant="outline" className="w-full h-24 flex-col gap-2">
+                  <ImageIcon className="h-6 w-6" />
+                  Gallery
                 </Button>
               </Link>
             </CardContent>
