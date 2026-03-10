@@ -9,8 +9,9 @@ import NewsItemForm from '@/components/settings/NewsItemForm';
 import EventForm from '@/components/settings/EventForm';
 import NewsItemsList from '@/components/settings/NewsItemsList';
 import EventsList from '@/components/settings/EventsList';
+import AdminRoute from '@/components/auth/AdminRoute';
 
-const NewsEventsSettings = () => {
+const NewsEventsSettingsContent = () => {
   const [showNewsForm, setShowNewsForm] = useState(false);
   const [showEventForm, setShowEventForm] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
@@ -127,5 +128,11 @@ const NewsEventsSettings = () => {
     </div>
   );
 };
+
+const NewsEventsSettings = () => (
+  <AdminRoute>
+    <NewsEventsSettingsContent />
+  </AdminRoute>
+);
 
 export default NewsEventsSettings;
