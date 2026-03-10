@@ -28,7 +28,7 @@ const emptyForm: ActivityInsert = {
   featured: false,
 };
 
-const ActivitiesSettings = () => {
+const ActivitiesSettingsContent = () => {
   const { activities, isLoading, addActivity, updateActivity, deleteActivity, uploadMedia } = useActivities();
   const [form, setForm] = useState<ActivityInsert>(emptyForm);
   const [videoUrl, setVideoUrl] = useState('');
