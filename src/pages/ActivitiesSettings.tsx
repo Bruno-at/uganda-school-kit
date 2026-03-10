@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AdminRoute from '@/components/auth/AdminRoute';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

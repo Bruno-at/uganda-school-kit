@@ -205,4 +205,10 @@ const BackgroundImagesManagerContent = () => {
   );
 };
 
+const BackgroundImagesManager = () => (
+  <AdminRoute>
+    <BackgroundImagesManagerContent />
+  </AdminRoute>
+);
+
 export default BackgroundImagesManager;
