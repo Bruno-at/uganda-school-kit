@@ -41,6 +41,8 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ParentPortal from "./pages/ParentPortal";
 import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
+import StaffSettings from "./pages/StaffSettings";
+import GallerySettings from "./pages/GallerySettings";
 
 const queryClient = new QueryClient();
 
