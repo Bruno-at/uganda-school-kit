@@ -82,64 +82,22 @@ const Settings = () => {
         </div>
 
         <div className="grid gap-6">
-          {/* News & Events Management */}
+          {/* Admin Dashboard Link */}
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <Newspaper className="h-5 w-5" />
-                <CardTitle>News & Events</CardTitle>
+                <Shield className="h-5 w-5" />
+                <CardTitle>Admin Dashboard</CardTitle>
               </div>
               <CardDescription>
-                Manage news articles and upcoming events for your website
+                Manage News & Events, Activities, and Homepage Background Images (admin login required)
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link to="/settings/news-events">
+              <Link to="/admin">
                 <Button className="w-full">
-                  <Newspaper className="h-4 w-4 mr-2" />
-                  Open News & Events Settings
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Activities Management */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
-                <CardTitle>School Activities</CardTitle>
-              </div>
-              <CardDescription>
-                Manage school activities (sports, MDD, tours, etc.) displayed on the landing page
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link to="/settings/activities">
-                <Button className="w-full">
-                  <Activity className="h-4 w-4 mr-2" />
-                  Manage Activities
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Homepage Background Images */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <ImageIcon className="h-5 w-5" />
-                <CardTitle>Homepage Background Images</CardTitle>
-              </div>
-              <CardDescription>
-                Manage the slideshow images displayed on your homepage
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Link to="/settings/background-images">
-                <Button className="w-full">
-                  <ImageIcon className="h-4 w-4 mr-2" />
-                  Manage Homepage Background Images
+                  <Shield className="h-4 w-4 mr-2" />
+                  Open Admin Dashboard
                 </Button>
               </Link>
             </CardContent>
