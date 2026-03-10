@@ -10,7 +10,8 @@ import {
   Settings,
   LogIn,
   LogOut,
-  User
+  User,
+  Shield
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
