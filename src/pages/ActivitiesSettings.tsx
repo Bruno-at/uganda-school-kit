@@ -250,4 +250,10 @@ const ActivitiesSettingsContent = () => {
   );
 };
 
+const ActivitiesSettings = () => (
+  <AdminRoute>
+    <ActivitiesSettingsContent />
+  </AdminRoute>
+);
+
 export default ActivitiesSettings;
