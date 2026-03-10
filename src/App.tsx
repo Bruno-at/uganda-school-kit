@@ -40,6 +40,7 @@ import ActivitiesSettings from "./pages/ActivitiesSettings";
 import StudentDashboard from "./pages/StudentDashboard";
 import ParentPortal from "./pages/ParentPortal";
 import ResetPassword from "./pages/ResetPassword";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
