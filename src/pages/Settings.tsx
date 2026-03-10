@@ -13,7 +13,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useTheme } from 'next-themes';
 import { Separator } from '@/components/ui/separator';
-import { Moon, Sun, Bell, Shield, Newspaper, Image as ImageIcon, Activity } from 'lucide-react';
+import { Moon, Sun, Bell, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import NotificationSubscription from '@/components/NotificationSubscription';
