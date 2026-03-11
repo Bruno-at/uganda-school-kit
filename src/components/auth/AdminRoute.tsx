@@ -4,10 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, LogIn, Mail, Lock, AlertTriangle } from 'lucide-react';
+import { Shield, LogIn, Mail, Lock, AlertTriangle, UserPlus } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { useQuery } from '@tanstack/react-query';
 
 interface AdminRouteProps {
   children: React.ReactNode;
@@ -15,28 +14,9 @@ interface AdminRouteProps {
 
 export default function AdminRoute({ children }: AdminRouteProps) {
   const { user, role, loading } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [signingIn, setSigningIn] = useState(false);
+  const [mode, setMode] = useState<'login' | 'register'>('login');
 
-  // Check if an admin already exists
-  const { data: adminExists, isLoading: checkingAdmin } = useQuery({
-    queryKey: ['admin-exists'],
-    queryFn: async () => {
-      const { data } = await supabase.rpc('has_role', { _user_id: '00000000-0000-0000-0000-000000000000', _role: 'admin' });
-      // The above won't work for checking existence. Use a different approach.
-      // We'll check via a count query using the service - but we can't from client.
-      // Instead, try to sign up as admin and see if it's blocked by RLS "Allow first admin signup"
-      // Actually, let's just query user_roles for admin count
-      const { count } = await supabase
-        .from('user_roles')
-        .select('*', { count: 'exact', head: true })
-        .eq('role', 'admin');
-      return (count ?? 0) > 0;
-    },
-  });
-
-  if (loading || checkingAdmin) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
@@ -48,18 +28,6 @@ export default function AdminRoute({ children }: AdminRouteProps) {
   if (user && role === 'admin') {
     return <>{children}</>;
   }
-
-  const handleAdminSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSigningIn(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setSigningIn(false);
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success('Signed in successfully!');
-    }
-  };
 
   // User is logged in but not admin
   if (user && role !== 'admin') {
@@ -86,7 +54,7 @@ export default function AdminRoute({ children }: AdminRouteProps) {
     );
   }
 
-  // Not logged in - show admin login
+  // Not logged in - show login/register toggle
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
@@ -96,39 +64,82 @@ export default function AdminRoute({ children }: AdminRouteProps) {
           </div>
           <CardTitle>Admin Access Required</CardTitle>
           <CardDescription>
-            {adminExists
-              ? 'An administrator account already exists. Please sign in with the admin credentials to manage settings.'
-              : 'No administrator has been registered yet. Register a new admin account to get started.'}
+            {mode === 'login'
+              ? 'Sign in with your admin credentials to manage settings.'
+              : 'Register a new admin account. Only the first admin registration is allowed.'}
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {adminExists ? (
-            <form onSubmit={handleAdminSignIn} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="admin-email">Admin Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="admin-email" type="email" placeholder="admin@example.com" className="pl-9" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="admin-password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input id="admin-password" type="password" placeholder="••••••••" className="pl-9" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </div>
-              </div>
-              <Button type="submit" className="w-full" disabled={signingIn}>
-                <LogIn className="h-4 w-4 mr-2" />
-                {signingIn ? 'Signing in...' : 'Sign In as Admin'}
-              </Button>
-            </form>
-          ) : (
-            <AdminRegistration />
-          )}
+          {mode === 'login' ? <AdminLogin /> : <AdminRegistration />}
+          <div className="mt-4 text-center">
+            {mode === 'login' ? (
+              <p className="text-sm text-muted-foreground">
+                No admin account yet?{' '}
+                <button
+                  type="button"
+                  onClick={() => setMode('register')}
+                  className="text-primary underline hover:text-primary/80 font-medium"
+                >
+                  Register as Admin
+                </button>
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Already have an admin account?{' '}
+                <button
+                  type="button"
+                  onClick={() => setMode('login')}
+                  className="text-primary underline hover:text-primary/80 font-medium"
+                >
+                  Sign In
+                </button>
+              </p>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function AdminLogin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [signingIn, setSigningIn] = useState(false);
+
+  const handleAdminSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSigningIn(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setSigningIn(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success('Signed in successfully!');
+    }
+  };
+
+  return (
+    <form onSubmit={handleAdminSignIn} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="admin-email">Admin Email</Label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input id="admin-email" type="email" placeholder="admin@example.com" className="pl-9" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="admin-password">Password</Label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input id="admin-password" type="password" placeholder="••••••••" className="pl-9" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+      </div>
+      <Button type="submit" className="w-full" disabled={signingIn}>
+        <LogIn className="h-4 w-4 mr-2" />
+        {signingIn ? 'Signing in...' : 'Sign In as Admin'}
+      </Button>
+    </form>
   );
 }
 
@@ -155,15 +166,23 @@ function AdminRegistration() {
     }
 
     if (data.user) {
+      // Create profile
       await supabase.from('profiles').insert({
         user_id: data.user.id,
         full_name: fullName,
       });
-      await supabase.from('user_roles').insert({
+
+      // Assign admin role (RLS "Allow first admin signup" policy will block if admin already exists)
+      const { error: roleError } = await supabase.from('user_roles').insert({
         user_id: data.user.id,
         role: 'admin' as any,
       });
-      toast.success('Admin account created! You may need to confirm your email.');
+
+      if (roleError) {
+        toast.error('An admin already exists. Please sign in with the existing admin credentials.');
+      } else {
+        toast.success('Admin account created! You may need to confirm your email.');
+      }
     }
     setLoading(false);
   };
@@ -189,6 +208,7 @@ function AdminRegistration() {
         </div>
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
+        <UserPlus className="h-4 w-4 mr-2" />
         {loading ? 'Creating...' : 'Register as Admin'}
       </Button>
     </form>
