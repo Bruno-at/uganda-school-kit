@@ -48,7 +48,84 @@ const SEOHead: React.FC = () => {
     setMeta('twitter:card', 'summary_large_image');
     setMeta('twitter:title', meta.title);
     setMeta('twitter:description', meta.description);
+
+    // JSON-LD Organization (on all pages)
+    const orgId = 'jsonld-organization';
+    let orgScript = document.getElementById(orgId) as HTMLScriptElement;
+    if (!orgScript) {
+      orgScript = document.createElement('script');
+      orgScript.id = orgId;
+      orgScript.type = 'application/ld+json';
+      document.head.appendChild(orgScript);
+    }
+    orgScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'School',
+      name: 'Excellence Academy',
+      url: window.location.origin,
+      logo: `${window.location.origin}/favicon.png`,
+      description: 'World-class education nurturing character, excellence, and innovation in Kampala, Uganda.',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Kyanja',
+        addressLocality: 'Kampala',
+        addressCountry: 'UG',
+      },
+      telephone: '+256 700 123 456',
+      email: 'info@excellenceacademy.ug',
+      sameAs: [
+        'https://facebook.com/excellenceacademy',
+        'https://twitter.com/excellenceacad',
+        'https://instagram.com/excellenceacademy',
+      ],
+      foundingDate: '2000',
+      numberOfStudents: { '@type': 'QuantitativeValue', value: 1200 },
+    });
+
+    // JSON-LD BreadcrumbList
+    const bcId = 'jsonld-breadcrumb';
+    let bcScript = document.getElementById(bcId) as HTMLScriptElement;
+    if (!bcScript) {
+      bcScript = document.createElement('script');
+      bcScript.id = bcId;
+      bcScript.type = 'application/ld+json';
+      document.head.appendChild(bcScript);
+    }
+    const breadcrumbItems = [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: window.location.origin + '/' },
+      ...pathSegments.map((seg, i) => ({
+        '@type': 'ListItem',
+        position: i + 2,
+        name: seg.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+        item: window.location.origin + '/' + pathSegments.slice(0, i + 1).join('/'),
+      })),
+    ];
+    bcScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbItems,
+    });
+
+    // JSON-LD WebPage
+    const wpId = 'jsonld-webpage';
+    let wpScript = document.getElementById(wpId) as HTMLScriptElement;
+    if (!wpScript) {
+      wpScript = document.createElement('script');
+      wpScript.id = wpId;
+      wpScript.type = 'application/ld+json';
+      document.head.appendChild(wpScript);
+    }
+    wpScript.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: meta.title,
+      description: meta.description,
+      url: window.location.href,
+      isPartOf: { '@type': 'WebSite', name: 'Excellence Academy', url: window.location.origin },
+    });
   }, [pathname, meta]);
+
+  const pathSegments = pathname.split('/').filter(Boolean);
 
   return null;
 };
