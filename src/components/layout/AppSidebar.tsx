@@ -11,7 +11,9 @@ import {
   LogIn,
   LogOut,
   User,
-  Shield
+  Shield,
+  Camera,
+  Award
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';

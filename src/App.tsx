@@ -96,6 +96,8 @@ const App = () => (
               <Route path="/settings/staff" element={<StaffSettings />} />
               <Route path="/settings/gallery" element={<GallerySettings />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/alumni" element={<AlumniPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
