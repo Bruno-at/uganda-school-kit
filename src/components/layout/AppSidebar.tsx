@@ -11,7 +11,9 @@ import {
   LogIn,
   LogOut,
   User,
-  Shield
+  Shield,
+  Camera,
+  Award
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
@@ -47,6 +49,8 @@ export function AppSidebar() {
     { title: t('nav.studentLife'), url: '/student-life', icon: Users },
     { title: t('nav.parents'), url: '/parents', icon: FileText },
     { title: t('nav.news'), url: '/news', icon: Calendar },
+    { title: 'Gallery', url: '/gallery', icon: Camera },
+    { title: 'Alumni', url: '/alumni', icon: Award },
     { title: t('nav.contact'), url: '/contact', icon: Phone },
   ];
 

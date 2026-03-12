@@ -43,6 +43,10 @@ import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffSettings from "./pages/StaffSettings";
 import GallerySettings from "./pages/GallerySettings";
+import AlumniPage from "./pages/Alumni";
+import GalleryPage from "./pages/Gallery";
+import CookieConsent from "./components/CookieConsent";
+import SEOHead from "./components/SEOHead";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +59,8 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+          <SEOHead />
+          <CookieConsent />
           <AppLayout>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -90,6 +96,8 @@ const App = () => (
               <Route path="/settings/staff" element={<StaffSettings />} />
               <Route path="/settings/gallery" element={<GallerySettings />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/alumni" element={<AlumniPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
