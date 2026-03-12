@@ -43,6 +43,10 @@ import ResetPassword from "./pages/ResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import StaffSettings from "./pages/StaffSettings";
 import GallerySettings from "./pages/GallerySettings";
+import AlumniPage from "./pages/Alumni";
+import GalleryPage from "./pages/Gallery";
+import CookieConsent from "./components/CookieConsent";
+import SEOHead from "./components/SEOHead";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +59,8 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+          <SEOHead />
+          <CookieConsent />
           <AppLayout>
             <Routes>
               <Route path="/" element={<Index />} />
